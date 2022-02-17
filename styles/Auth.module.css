@@ -41,3 +41,9 @@
   color: #026bff;
   cursor: pointer;
 }
+
+@media only screen and (min-width: 1200px) {
+  .container {
+    width: 50%;
+  }
+}

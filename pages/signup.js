@@ -1,4 +1,4 @@
-import { Auth } from "aws-amplify";
+import { useContext } from "react";
 import Input from "../shared/components/Input";
 import styles from "../styles/Auth.module.css";
 import useForm from "../shared/hooks/form-hook";
@@ -8,6 +8,7 @@ import {
 } from "../shared/utility/validators";
 import Button from "../shared/components/Button";
 import Link from "next/link";
+import { AuthContext } from "../shared/context/auth-context";
 
 export default function Signup() {
   const [formState, inputHandler] = useForm(
@@ -23,21 +24,13 @@ export default function Signup() {
     },
     false
   );
+  const { signup } = useContext(AuthContext)
+
 
   const handleSignup = async (e) => {
-    e.preventDefault();
-    let response;
-    try {
-      response = await Auth.signUp(
-        formState.inputs.email.value,
-        formState.inputs.password.value
-      );
-      console.log(user);
-    } catch (err) {
-      console.log("error signing up", err);
-    }
-    console.log(response)
-  };
+    e.preventDefault()
+    let response = await signup(formState);
+  }
 
   return (
     <div className={styles.pageContainer}>
