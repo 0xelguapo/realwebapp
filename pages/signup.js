@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Input from "../shared/components/Input";
 import styles from "../styles/Auth.module.css";
 import useForm from "../shared/hooks/form-hook";
@@ -11,62 +11,75 @@ import Link from "next/link";
 import { AuthContext } from "../shared/context/auth-context";
 
 export default function Signup() {
+  const [confirmMode, setConfirmMode] = useState(true);
   const [formState, inputHandler] = useForm(
     {
       email: {
         value: "",
-        isValid: "",
+        isValid: false,
       },
       password: {
         value: "",
-        isValid: "",
+        isValid: false,
       },
     },
     false
   );
-  const { signup } = useContext(AuthContext)
-
+  const { signup } = useContext(AuthContext);
 
   const handleSignup = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let response = await signup(formState);
-  }
+    if (response) {
+      setConfirmMode(true);
+    }
+  };
 
   return (
     <div className={styles.pageContainer}>
       <div className={styles.container}>
-        <h3 className={styles.title}>Create your account</h3>
-        <form>
-          <div className={styles.inputContainer}>
-            <Input
-              id="email"
-              onInput={inputHandler}
-              headerText="Email"
-              errorText="Please enter a valid email"
-              validators={[VALIDATOR_EMAIL()]}
-              type="text"
-            />
-          </div>
-          <div className={styles.inputContainer}>
-            <Input
-              id="password"
-              onInput={inputHandler}
-              headerText="Password"
-              errorText="Please use more than 8 characters!"
-              validators={[VALIDATOR_REQUIRE()]}
-              type="password"
-            />
-          </div>
-          <div className={styles.buttonContainer}>
-            <Button onClick={handleSignup}>Continue</Button>
-          </div>
-        </form>
-        <p className={styles.switch}>
-          Have an account?{" "}
-          <Link href="/login">
-            <a className={styles.link}>Sign in</a>
-          </Link>{" "}
-        </p>
+        {!confirmMode ? (
+          <>
+            {" "}
+            <h3 className={styles.title}>Create your account</h3>
+            <form>
+              <div className={styles.inputContainer}>
+                <Input
+                  id="email"
+                  onInput={inputHandler}
+                  headerText="Email"
+                  errorText="Please enter a valid email"
+                  validators={[VALIDATOR_EMAIL()]}
+                  type="text"
+                />
+              </div>
+              <div className={styles.inputContainer}>
+                <Input
+                  id="password"
+                  onInput={inputHandler}
+                  headerText="Password"
+                  errorText="Please use more than 8 characters!"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  type="password"
+                />
+              </div>
+              <div className={styles.buttonContainer}>
+                <Button onClick={handleSignup}>Continue</Button>
+              </div>
+            </form>
+            <p className={styles.switch}>
+              Have an account?{" "}
+              <Link href="/login">
+                <a className={styles.link}>Sign in</a>
+              </Link>{" "}
+            </p>
+          </>
+        ) : (
+          <>
+            <h3 className={styles.title}>Please Verify Your Email</h3>
+            <p>Enter the code sent to your email</p>
+          </>
+        )}
       </div>
     </div>
   );

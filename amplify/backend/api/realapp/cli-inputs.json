@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "realapp",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/eric/realapp/amplify/backend/api/realapp/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authrealapp8e8e08f1"
+    }
+  }
+}

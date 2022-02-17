@@ -18,7 +18,7 @@ const inputReducer = (state, action) => {
 export default function Input(props) {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: "",
-    isValid: false,
+    isValid: props.initialValidity,
     isTouched: false,
   });
 
@@ -62,4 +62,5 @@ export default function Input(props) {
 
 Input.defaultProps = {
   validators: [],
+  initialValidity: false,
 };

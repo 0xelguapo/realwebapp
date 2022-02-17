@@ -14,11 +14,23 @@ function AuthContextProvider({ children }) {
         formState.inputs.email.value,
         formState.inputs.password.value
       );
-      console.log(user);
     } catch (err) {
       console.log("error signing up", err);
     }
-    console.log(response);
+    return response
+  };
+
+  const login = async (formState) => {
+    let response;
+    try {
+      response = await Auth.signIn(
+        formState.inputs.email.value,
+        formState.inputs.password.value
+      );
+    } catch (err) {
+      console.log("error logging in", err);
+    }
+      return response
   };
 
   return (
