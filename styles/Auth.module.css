@@ -18,10 +18,18 @@
 
 .title {
   font-size: 1.5rem;
+  margin: 0;
+}
+
+.errorMessage {
+  margin-top: 5px;
+  margin-bottom: 0;
+  color: red;
 }
 
 .inputContainer {
   margin: 0 auto;
+  padding: 1rem 0;
 }
 
 .buttonContainer {
@@ -40,6 +48,19 @@
 .link:hover {
   color: #026bff;
   cursor: pointer;
+}
+
+.titleSub {
+}
+
+.resend {
+  color: #025bffc9;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.resend:hover {
+  color: #003392c9;
 }
 
 @media only screen and (min-width: 1200px) {

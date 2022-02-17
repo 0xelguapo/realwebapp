@@ -1,40 +1,39 @@
-import { createContext } from "react";
+import { createContext, useCallback, useEffect } from "react";
 import { useState } from "react";
-import { Auth } from "aws-amplify";
+import { Auth, Hub } from "aws-amplify";
 
 const AuthContext = createContext();
 
 function AuthContextProvider({ children }) {
   const [user, setUser] = useState();
 
-  const signup = async (formState) => {
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  useEffect(() => {
+    Hub.listen("auth", () => {
+      checkUser();
+    });
+  }, []);
+
+  const checkUser = async () => {
     let response;
     try {
-      response = await Auth.signUp(
-        formState.inputs.email.value,
-        formState.inputs.password.value
-      );
+      response = await Auth.currentAuthenticatedUser();
+      setUser(response);
     } catch (err) {
-      console.log("error signing up", err);
+      console.log(err);
+      setUser(null);
     }
-    return response
+    console.log(response);
   };
 
-  const login = async (formState) => {
-    let response;
-    try {
-      response = await Auth.signIn(
-        formState.inputs.email.value,
-        formState.inputs.password.value
-      );
-    } catch (err) {
-      console.log("error logging in", err);
-    }
-      return response
-  };
 
   return (
-    <AuthContext.Provider value={{ user, signup }}>
+    <AuthContext.Provider
+      value={{ user }}
+    >
       {children}
     </AuthContext.Provider>
   );

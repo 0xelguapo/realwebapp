@@ -9,9 +9,12 @@ import {
 import Button from "../shared/components/Button";
 import Link from "next/link";
 import { AuthContext } from "../shared/context/auth-context";
+import { Auth } from "aws-amplify";
+import { useRouter } from "next/router";
 
 export default function Signup() {
-  const [confirmMode, setConfirmMode] = useState(true);
+  const [confirmMode, setConfirmMode] = useState(false);
+  const [error, setError] = useState("");
   const [formState, inputHandler] = useForm(
     {
       email: {
@@ -22,16 +25,72 @@ export default function Signup() {
         value: "",
         isValid: false,
       },
+      confirmation: {
+        value: "",
+        isValid: true,
+      },
     },
     false
   );
-  const { signup } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [router, user]);
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    let response = await signup(formState);
-    if (response) {
-      setConfirmMode(true);
+    let response;
+    try {
+      response = await Auth.signUp(
+        formState.inputs.email.value,
+        formState.inputs.password.value
+      );
+    } catch (err) {
+      console.log("error signing up", err);
+    }
+    setConfirmMode(true);
+  };
+
+  const handleConfirmSignup = async (e) => {
+    e.preventDefault();
+    try {
+      await Auth.confirmSignUp(
+        formState.inputs.email.value,
+        formState.inputs.confirmation.value
+      );
+      let response = await Auth.signIn(
+        formState.inputs.email.value,
+        formState.inputs.password.value
+      );
+      if (response) {
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      console.log("error confirming", err.message);
+      if (err.name === "CodeMismatchException") {
+        setError("Invalid Code. Please try again");
+      }
+      if (
+        err.message === "User is already confirmed." ||
+        err.message.includes("Current status is CONFIRMED")
+      ) {
+        setError("Already a user! Please log in instead");
+      }
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      await Auth.resendSignUp(formState.inputs.email.value);
+    } catch (err) {
+      console.log("error resending", err);
+      if (err.message === "User is already confirmed.") {
+        setError("Email is confirmed, please log in instead.");
+      }
     }
   };
 
@@ -40,8 +99,8 @@ export default function Signup() {
       <div className={styles.container}>
         {!confirmMode ? (
           <>
-            {" "}
             <h3 className={styles.title}>Create your account</h3>
+            <p className={styles.errorMessage}>{error}</p>
             <form>
               <div className={styles.inputContainer}>
                 <Input
@@ -52,8 +111,6 @@ export default function Signup() {
                   validators={[VALIDATOR_EMAIL()]}
                   type="text"
                 />
-              </div>
-              <div className={styles.inputContainer}>
                 <Input
                   id="password"
                   onInput={inputHandler}
@@ -71,14 +128,36 @@ export default function Signup() {
               Have an account?{" "}
               <Link href="/login">
                 <a className={styles.link}>Sign in</a>
-              </Link>{" "}
+              </Link>
             </p>
           </>
         ) : (
-          <>
+          <div className={styles.confirmContainer}>
             <h3 className={styles.title}>Please Verify Your Email</h3>
-            <p>Enter the code sent to your</p>
-          </>
+            <p className={styles.titleSub}>
+              Enter the code sent to{" "}
+              <span style={{ fontWeight: 700 }}>
+                {formState.inputs.email.value}
+              </span>
+            </p>
+            <form>
+              <Input
+                id="confirmation"
+                placeholder="6-Digit Code"
+                onInput={inputHandler}
+                initialValidity={true}
+              />
+              <p className={styles.errorMessage}>{error}</p>
+              <div className={styles.buttonContainer}>
+                <Button onClick={handleConfirmSignup} type="submit">
+                  Continue
+                </Button>
+              </div>
+            </form>
+            <p className={styles.resend} onClick={handleResend}>
+              or Resend Code
+            </p>
+          </div>
         )}
       </div>
     </div>
