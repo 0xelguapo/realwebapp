@@ -1,0 +1,43 @@
+.pageContainer {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5%;
+  width: 90%;
+  height: 55%;
+  border: 2px solid black;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.inputContainer {
+  margin: 0 auto;
+}
+
+.buttonContainer {
+  margin: 1rem auto;
+}
+
+.switch {
+  text-align: center;
+}
+
+.link {
+  color: #026bffc9;
+  font-weight: 500;
+}
+
+.link:hover {
+  color: #026bff;
+  cursor: pointer;
+}
