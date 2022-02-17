@@ -77,7 +77,7 @@ export default function Signup() {
         ) : (
           <>
             <h3 className={styles.title}>Please Verify Your Email</h3>
-            <p>Enter the code sent to your email</p>
+            <p>Enter the code sent to your</p>
           </>
         )}
       </div>
