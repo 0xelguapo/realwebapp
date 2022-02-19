@@ -26,7 +26,6 @@ function ClientContextProvider({ children }) {
 
   useEffect(() => {
     getAllClients();
-    console.log("gettingAllClients");
   }, [getAllClients]);
 
   const onSuccess = () => {

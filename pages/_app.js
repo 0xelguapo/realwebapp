@@ -5,6 +5,7 @@ import awsconfig from "../aws-exports";
 import nProgress from "nprogress";
 import { useRouter } from "next/router";
 import { useEffect, useCallback } from "react";
+import { ClientContextProvider } from "../shared/context/client-context";
 
 Amplify.configure(awsconfig);
 
@@ -25,13 +26,15 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthContextProvider>
-      {Component.PageLayout ? (
-        <Component.PageLayout>
+      <ClientContextProvider>
+        {Component.PageLayout ? (
+          <Component.PageLayout>
+            <Component {...pageProps} />
+          </Component.PageLayout>
+        ) : (
           <Component {...pageProps} />
-        </Component.PageLayout>
-      ) : (
-        <Component {...pageProps} />
-      )}
+        )}
+      </ClientContextProvider>
     </AuthContextProvider>
   );
 }

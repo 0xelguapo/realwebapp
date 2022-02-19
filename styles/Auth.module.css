@@ -10,7 +10,7 @@
   justify-content: center;
   padding: 5%;
   width: 90%;
-  height: 55%;
+  min-height: 55%;
   border: 2px solid black;
   margin: 0 auto;
   border-radius: 10px;
