@@ -1,0 +1,15 @@
+projects:
+  realapp:
+    schemaPath: amplify/backend/api/realapp/build/schema.graphql
+    includes:
+      - shared/graphql
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: shared
+        region: us-west-1
+        apiId: null
+        maxDepth: 2

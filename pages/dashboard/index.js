@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
-import styles from "../styles/Dashboard.module.css";
+import styles from "./Dashboard.module.css";
+import DashboardLayout from "../../shared/components/ui/Layouts/DashboardLayout";
+import LoadingSpinner from "../../shared/components/ui/Loading/LoadingSpinner";
 
-export default function Dashboard() {
-  const router = useRouter();
-
+function Dashboard() {
   return (
     <div className={styles.pageContainer}>
       <Head>
@@ -16,6 +15,11 @@ export default function Dashboard() {
         />
         <link rel="icon" href="/icon.svg" />
       </Head>
+      
     </div>
   );
 }
+
+Dashboard.PageLayout = DashboardLayout;
+
+export default Dashboard;

@@ -25,7 +25,13 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthContextProvider>
-      <Component {...pageProps} />
+      {Component.PageLayout ? (
+        <Component.PageLayout>
+          <Component {...pageProps} />
+        </Component.PageLayout>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </AuthContextProvider>
   );
 }
