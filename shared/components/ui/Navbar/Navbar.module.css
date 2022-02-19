@@ -90,6 +90,34 @@
   font-weight: 500;
 }
 
+/* fixed not sticky because wrapped in parent element */
+/* element is un-stickied when parent element leaves the viewport */
+.dashContainer {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  position: -webkit-sticky;
+  height: 4rem;
+  padding: 0 1.5rem;
+  background: white;
+  border-bottom: .5px solid rgba(0, 0, 0, 0.06);
+}
+
+.dashLogoContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  flex: 0.1;
+}
+
+.dashLogoImage {
+  display: flex;
+  margin-right: 0.5rem;
+}
+
  @keyframes fade-in {
   0% {
     opacity: 0;

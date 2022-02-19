@@ -1,13 +1,27 @@
-import styles from "./Navbar.module.css";
 import { useState } from "react";
+import styles from "./Navbar.module.css";
 import Link from "next/link";
+import Image from "next/image";
 
-export default function Navbar() {
+export default function Navbar({ dashboard }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  if (dashboard) {
+    return (
+      <div className={styles.dashContainer}>
+        <div className={styles.dashLogoContainer}>
+          <div className={styles.dashLogoImage}>
+            <Image src="/logo.svg" width={35} height={35} alt="logo" />
+          </div>
+          CoAgent.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

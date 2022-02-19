@@ -2,5 +2,15 @@
   display: flex;
   background: #f1f1f1;
   width: 100%;
+  min-height: 200vh;
 }
 
+.clientsContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.clientsHeaderContainer {
+  flex: .1;
+}
