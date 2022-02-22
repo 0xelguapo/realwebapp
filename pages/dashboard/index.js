@@ -100,7 +100,7 @@ function Dashboard() {
             {rows.map((row) => {
               prepareRow(row);
               return (
-                <tr key={row.original.id} {...row.getRowProps()}>
+                <tr className={styles.row} key={row.original.id} {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
                       <td key={cell.row.original.id} {...cell.getCellProps()}>

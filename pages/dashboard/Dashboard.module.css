@@ -15,3 +15,7 @@
 .clientsHeaderContainer {
   flex: .1;
 }
+
+.row:nth-child(even) {
+  background: white;
+}

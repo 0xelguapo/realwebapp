@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 import { AuthContextProvider } from "../shared/context/auth-context";
 import "../styles/globals.css";
 import Amplify from "aws-amplify";
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
           </Component.PageLayout>
         ) : (
+
           <Component {...pageProps} />
         )}
       </ClientContextProvider>
