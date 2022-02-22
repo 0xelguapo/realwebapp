@@ -3,9 +3,6 @@ import Head from "next/head";
 import styles from "./Dashboard.module.css";
 import DashboardLayout from "../../shared/components/ui/Layouts/DashboardLayout";
 import LoadingSpinner from "../../shared/components/ui/Loading/LoadingSpinner";
-import { useClients } from "../../shared/context/client-context";
-import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
-import GlobalFilter from "../../shared/components/Table/GlobalFilter";
 import ClientTable from "../../shared/components/Table/ClientTable";
 
 function Dashboard() {

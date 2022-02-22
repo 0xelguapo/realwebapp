@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
-import styles from './ClientTable.module.css'
+import { useMemo } from "react";
+import styles from "./ClientTable.module.css";
 import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
 import GlobalFilter from "./GlobalFilter";
 import { useClients } from "../../context/client-context";
+import AddClient from "../AddClient/AddClient";
 
 export default function ClientTable() {
   const { clientsArray } = useClients();
@@ -42,6 +43,9 @@ export default function ClientTable() {
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
+        <div className={styles.addClientContainer}>
+          <AddClient />
+        </div>
       </div>
       <table {...getTableProps()}>
         <thead>
