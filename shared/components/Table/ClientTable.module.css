@@ -1,22 +1,16 @@
-.pageContainer {
-  display: flex;
-  background: #f1f1f1;
-  width: 100%;
-  min-height: 200vh;
-}
-
 .clientsContainer {
   display: flex;
   width: 100%;
   flex-direction: column;
-  padding-top: 4rem;
 }
+
 
 .clientsHeaderContainer {
   display: flex;
   flex: .05;
   align-items: center;
   justify-content: space-between;
+  padding: 1.5rem 0;
 }
 
 .header {
