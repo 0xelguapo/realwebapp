@@ -4,7 +4,7 @@
   'nav nav'
   'side main';
   grid-template-rows: 1fr auto;
-  grid-template-columns: 1fr 8fr;
+  grid-template-columns: 13rem 8fr;
 }
 
 .navbar {

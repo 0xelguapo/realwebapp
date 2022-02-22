@@ -1,10 +1,12 @@
 .sidebarContainer {
   display: flex;
   position: -webkit-sticky;
-  position: sticky;
+  position: fixed;
   flex-direction: column;
   top: 4rem;
   padding: 1rem;
+  height: 100%;
+  width: 13rem;
   background: #fdfdfd;
   border-right: .5px solid rgba(0, 0, 0, 0.06);
 }

@@ -99,7 +99,7 @@
   position: -webkit-sticky;
   height: 4rem;
   padding: 0 1.5rem;
-  background: white;
+  background: #fdfdfd;
   border-bottom: .5px solid rgba(0, 0, 0, 0.06);
 }
 
