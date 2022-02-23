@@ -41,6 +41,10 @@ export default function AddClient() {
     setOpen(!open);
   };
 
+  const handleAddPhone = () => {
+    let newForm = { ...formState, }
+  }
+
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
