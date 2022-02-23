@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./AddClient.module.css";
 import Modal from "../UI/Modal/Modal.js";
 import Image from "next/image";
@@ -61,35 +61,27 @@ export default function AddClient() {
             <h2>Add a Contact</h2>
             <form>
               <div className={styles.inputBlocks}>
-                <div className={styles.inputContainer}>
-                  <Input
-                    id="name"
-                    onInput={inputHandler}
-                    headerText="Name"
-                    placeholder="Required"
-                    errorText="Please enter a name"
-                    validators={[VALIDATOR_REQUIRE()]}
-                  />
-                </div>
-                <div className={styles.inputContainer}>
-                  <Input
-                    id="company"
-                    onInput={inputHandler}
-                    headerText="Company"
-                  />
-                </div>
+                <Input
+                  id="name"
+                  onInput={inputHandler}
+                  headerText="Name"
+                  placeholder="Required"
+                  errorText="Please enter a name"
+                  validators={[VALIDATOR_REQUIRE()]}
+                />
+                <Input
+                  id="company"
+                  onInput={inputHandler}
+                  headerText="Company"
+                />
               </div>
               <div className={styles.inputBlocks}>
-                <div className={styles.inputContainer}>
-                  <Input
-                    id="phone"
-                    onInput={inputHandler}
-                    headerText="Phone Number"
-                  />
-                </div>
-                <div className={styles.inputContainer}>
-                  <Input id="email" onInput={inputHandler} headerText="Email" />
-                </div>
+                <Input id="email" onInput={inputHandler} headerText="Email" />
+                <Input
+                  id="phone"
+                  onInput={inputHandler}
+                  headerText="Phone Number"
+                />
               </div>
             </form>
           </div>

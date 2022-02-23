@@ -25,7 +25,3 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
-
-.inputContainer {
-  flex: .48;
-}
