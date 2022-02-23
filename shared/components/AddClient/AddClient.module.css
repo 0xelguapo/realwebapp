@@ -19,3 +19,13 @@
 .modalContainer {
   padding: 2rem;
 }
+
+.inputBlocks {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.inputContainer {
+  flex: .48;
+}

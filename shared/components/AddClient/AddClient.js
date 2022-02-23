@@ -60,27 +60,37 @@ export default function AddClient() {
           <div className={styles.modalContainer}>
             <h2>Add a Contact</h2>
             <form>
-              <div className={styles.inputBlock}>
-                <Input
-                  id="name"
-                  onInput={inputHandler}
-                  headerText="Name"
-                  placeholder="Required"
-                  errorText="Please enter a name"
-                  validators={[VALIDATOR_REQUIRE()]}
-                />
-                <Input
-                  id="company"
-                  onInput={inputHandler}
-                  headerText="Company"
-                />
+              <div className={styles.inputBlocks}>
+                <div className={styles.inputContainer}>
+                  <Input
+                    id="name"
+                    onInput={inputHandler}
+                    headerText="Name"
+                    placeholder="Required"
+                    errorText="Please enter a name"
+                    validators={[VALIDATOR_REQUIRE()]}
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <Input
+                    id="company"
+                    onInput={inputHandler}
+                    headerText="Company"
+                  />
+                </div>
               </div>
-              <Input
-                id="phone"
-                onInput={inputHandler}
-                headerText="Phone Number"
-              />
-              <Input id="email" onInput={inputHandler} headerText="Email" />
+              <div className={styles.inputBlocks}>
+                <div className={styles.inputContainer}>
+                  <Input
+                    id="phone"
+                    onInput={inputHandler}
+                    headerText="Phone Number"
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <Input id="email" onInput={inputHandler} headerText="Email" />
+                </div>
+              </div>
             </form>
           </div>
         </Modal>
