@@ -42,7 +42,7 @@ export default function Input(props) {
   }, [id, value, isValid, onInput]);
 
   return (
-    <div className={styles.container}>
+    <div className={!props.addMode ? styles.container : styles.addModeContainer}>
       <p className={styles.headerText}>{props.headerText}</p>
       <input
         id={props.id}

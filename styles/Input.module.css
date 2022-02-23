@@ -1,6 +1,7 @@
 .container {
   width: 100%;
-  padding: .8rem 0;
+  padding: 0;
+  margin-top: 1.6rem;
 }
 
 .headerText {
@@ -28,4 +29,9 @@
   font-size: .8rem;
   color: red;
   position: absolute
+}
+
+.addModeContainer {
+  width: 100%;
+  padding: 0;
 }
