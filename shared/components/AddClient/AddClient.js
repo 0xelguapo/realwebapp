@@ -1,13 +1,18 @@
 import { useEffect, useState, useRef } from "react";
-import styles from "./AddClient.module.css";
+import { API } from "aws-amplify";
+import * as mutations from "../../graphql/mutations";
+import { VALIDATOR_REQUIRE } from "../../utility/validators";
 import Modal from "../UI/Modal/Modal.js";
 import Image from "next/image";
 import Input from "../Input.js";
 import useForm from "../../hooks/form-hook.js";
-import { VALIDATOR_REQUIRE } from "../../utility/validators";
+import styles from "./AddClient.module.css";
+import { useClients } from "../../context/client-context";
+import { phoneFormat } from "../../utility/phoneFormat";
 
 export default function AddClient() {
   const [open, setOpen] = useState(false);
+  const { addClient } = useClients();
   const [initialForm, setInitialForm] = useState({
     name: {
       value: "",
@@ -35,7 +40,7 @@ export default function AddClient() {
     phone: [formState.inputs.phone.value, ...phoneInputs],
     email: formState.inputs.email.value,
   };
-  
+
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -48,24 +53,29 @@ export default function AddClient() {
   };
 
   const handleAddPhone = (e) => {
-    e.preventDefault()
-    let newInput = [...phoneInputs, ""]
-    setPhoneInputs(newInput)
-  }
+    e.preventDefault();
+    let newInput = [...phoneInputs, ""];
+    setPhoneInputs(newInput);
+  };
 
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      setPhoneInputs([])
+      setPhoneInputs([]);
     }
   }, [open]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(clientDetails)
-  }
+    const response = await addClient(formState, clientDetails);
+    if (response) {
+      console.log("success", response);
+    } else {
+      console.log("some error occured");
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -100,25 +110,37 @@ export default function AddClient() {
                     id="phone"
                     onInput={inputHandler}
                     headerText="Phone Number"
+                    phoneInput={true}
                   />
                   {phoneInputs.map((p, index) => (
                     <input
-                    className={styles.dynamicPhoneInput}
+                      className={styles.dynamicPhoneInput}
                       key={index}
                       name="number"
-                      value={phoneInputs[index]}
+                      value={phoneFormat(phoneInputs[index])}
                       onChange={(event) =>
                         handleDynamicPhoneChange(index, event)
                       }
                     />
                   ))}
-                  <button className={styles.addButton} onClick={handleAddPhone}> + Add Number</button>
+                  <button className={styles.addButton} onClick={handleAddPhone}>
+                    {" "}
+                    + Add Number
+                  </button>
                 </div>
               </div>
             </form>
             <div className={styles.ctaContainer}>
-              <button className={styles.cancel} onClick={handleOpen}>Cancel</button>
-              <button className={styles.save} type="submit" onClick={handleSubmit}>Save</button>
+              <button className={styles.cancel} onClick={handleOpen}>
+                Cancel
+              </button>
+              <button
+                className={styles.save}
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Save
+              </button>
             </div>
           </div>
         </Modal>

@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "react";
 import styles from "../../styles/Input.module.css";
+import { phoneFormat } from "../utility/phoneFormat.js";
 import { validate } from "../utility/validators";
 
 const inputReducer = (state, action) => {
@@ -12,6 +13,8 @@ const inputReducer = (state, action) => {
       };
     case "TOUCH":
       return { ...state, isTouched: true };
+    case "PHONE_INPUT_CHANGE":
+      return { ...state, value: phoneFormat(action.value), isValid: true };
   }
 };
 
@@ -23,11 +26,19 @@ export default function Input(props) {
   });
 
   const handleChange = (e) => {
-    dispatch({
-      type: "INPUT_CHANGE",
-      value: e.target.value,
-      validators: props.validators,
-    });
+    if (props.phoneInput) {
+      dispatch({
+        type: "PHONE_INPUT_CHANGE",
+        value: e.target.value,
+        validators: props.validators,
+      });
+    } else {
+      dispatch({
+        type: "INPUT_CHANGE",
+        value: e.target.value,
+        validators: props.validators,
+      });
+    }
   };
 
   const handleTouch = () => {
@@ -42,7 +53,9 @@ export default function Input(props) {
   }, [id, value, isValid, onInput]);
 
   return (
-    <div className={!props.addMode ? styles.container : styles.addModeContainer}>
+    <div
+      className={!props.addMode ? styles.container : styles.addModeContainer}
+    >
       <p className={styles.headerText}>{props.headerText}</p>
       <input
         id={props.id}
@@ -50,7 +63,7 @@ export default function Input(props) {
         className={styles.input}
         onChange={handleChange}
         onBlur={handleTouch}
-        value={inputState.value} 
+        value={inputState.value}
         type={props.type}
       />
       {!inputState.isValid && inputState.isTouched && (

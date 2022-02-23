@@ -72,6 +72,7 @@ export default function ClientTable() {
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
+              console.log(row)
               return (
                 <tr
                   className={styles.row}
