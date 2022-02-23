@@ -5,7 +5,7 @@ import Amplify from "aws-amplify";
 import awsconfig from "../aws-exports";
 import nProgress from "nprogress";
 import { useRouter } from "next/router";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { ClientContextProvider } from "../shared/context/client-context";
 
 Amplify.configure(awsconfig);

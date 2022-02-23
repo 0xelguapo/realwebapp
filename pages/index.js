@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import Navbar from '../shared/components/ui/Navbar/Navbar'
-import DashboardLayout from '../shared/components/ui/Layouts/DashboardLayout'
-import HomepageLayout from '../shared/components/ui/Layouts/HomepageLayout'
+import HomepageLayout from '../shared/components/UI/Layouts/HomepageLayout'
 
 export default function Home() {
   return (

@@ -1,7 +1,6 @@
 import Head from "next/head";
 import styles from "./Dashboard.module.css";
-import DashboardLayout from "../../shared/components/ui/Layouts/DashboardLayout";
-import LoadingSpinner from "../../shared/components/ui/Loading/LoadingSpinner";
+import DashboardLayout from "../../shared/components/UI/Layouts/DashboardLayout";
 import ClientTable from "../../shared/components/Table/ClientTable";
 
 function Dashboard() {

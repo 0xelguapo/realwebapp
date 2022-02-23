@@ -4,9 +4,10 @@ import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
 import GlobalFilter from "./GlobalFilter";
 import { useClients } from "../../context/client-context";
 import AddClient from "../AddClient/AddClient";
+import LoadingSpinner from "../UI/Loading/LoadingSpinner";
 
 export default function ClientTable() {
-  const { clientsArray } = useClients();
+  const { clientsArray, isLoading } = useClients();
 
   const data = useMemo(() => {
     return [...clientsArray];
@@ -47,47 +48,53 @@ export default function ClientTable() {
           <AddClient />
         </div>
       </div>
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  className={styles.header}
-                  key={column.id}
-                  {...column.getHeaderProps()}
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr
-                className={styles.row}
-                key={row.original.id}
-                {...row.getRowProps()}
-              >
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      className={styles.data}
-                      key={cell.row.original.id}
-                      {...cell.getCellProps()}
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  );
-                })}
+      {isLoading ? (
+        <div className={styles.loadingContainer}>
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    className={styles.header}
+                    key={column.id}
+                    {...column.getHeaderProps()}
+                  >
+                    {column.render("Header")}
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  className={styles.row}
+                  key={row.original.id}
+                  {...row.getRowProps()}
+                >
+                  {row.cells.map((cell) => {
+                    return (
+                      <td
+                        className={styles.data}
+                        key={cell.row.original.id}
+                        {...cell.getCellProps()}
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
