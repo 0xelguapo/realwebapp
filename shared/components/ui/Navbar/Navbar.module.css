@@ -75,7 +75,6 @@
   flex-direction: column;
   top: 0;
   width: 100%;
-  border: 1px solid black;
   background: white;
   height: 80vh;
   padding-top: 3.5rem;
@@ -130,5 +129,9 @@
 @media only screen and (min-width: 900px) {
   .container {
     padding: 0 15%;
+  }
+
+  .menuBurger {
+    display: none;
   }
 }
