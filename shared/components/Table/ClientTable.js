@@ -1,13 +1,89 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import styles from "./ClientTable.module.css";
 import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
 import GlobalFilter from "./GlobalFilter";
 import { useClients } from "../../context/client-context";
 import AddClient from "../AddClient/AddClient";
 import LoadingSpinner from "../UI/Loading/LoadingSpinner";
+import Image from "next/image";
+
+const EditableCell = ({
+  value: initialValue,
+  row: { index },
+  column: { id },
+  updateMyData,
+}) => {
+  const [value, setValue] = useState(initialValue);
+  const [editMode, setEditMode] = useState(false);
+  const inputRef = useRef(null);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleBlur = () => {
+    updateMyData(index, id, value);
+    setEditMode(false);
+  };
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleBlur();
+    }
+  };
+
+  const enterEditMode = () => {
+    setEditMode(true);
+  };
+
+  const exitEditMode = () => {
+    setEditMode(false);
+  };
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  useEffect(() => {
+    if (editMode) {
+      console.log('run')
+      inputRef.current.focus();
+    } 
+  }, [editMode]);
+
+  return (
+    <div className={styles.editCellContainer}>
+      {editMode ? (
+        <>
+          <input
+            className={styles.editInput}
+            value={value}
+            onChange={handleChange}
+            onKeyDown={handleEnter}
+            onBlur={handleBlur}
+            ref={inputRef}
+          />
+         
+        </>
+      ) : (
+        <>
+          <div className={styles.valueContainer}>{value}</div>
+          <button className={styles.editButton} onClick={enterEditMode}>
+            <Image src="/editcell.svg" width={20} height={20} alt="edit" />
+          </button>
+        </>
+      )}
+    </div>
+  );
+};
+
+const defaultColumn = {
+  Cell: EditableCell,
+};
 
 export default function ClientTable() {
-  const { clientsArray, isLoading } = useClients();
+  const { clientsArray, isLoading, updateClient } = useClients();
+  const [skipPageReset, setSkipPageReset] = useState(false);
 
   const data = useMemo(() => {
     return [...clientsArray];
@@ -23,7 +99,27 @@ export default function ClientTable() {
     []
   );
 
-  const tableInstance = useTable({ columns, data }, useGlobalFilter);
+  const updateMyData = async (rowIndex, columnId, value) => {
+    setSkipPageReset(true);
+    const clientObject = { ...data[rowIndex] };
+    const { createdAt, updatedAt, owner, ...updatedClient } = clientObject;
+    const response = await updateClient({
+      ...updatedClient,
+      [columnId]: value,
+    });
+    console.log(response);
+  };
+
+  const tableInstance = useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+      autoResetPage: !skipPageReset,
+      updateMyData,
+    },
+    useGlobalFilter
+  );
 
   const {
     getTableProps,
@@ -72,7 +168,6 @@ export default function ClientTable() {
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
-              console.log(row)
               return (
                 <tr
                   className={styles.row}

@@ -1,4 +1,10 @@
-import { useState, createContext, useCallback, useEffect, useContext } from "react";
+import {
+  useState,
+  createContext,
+  useCallback,
+  useEffect,
+  useContext,
+} from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
@@ -39,7 +45,7 @@ function ClientContextProvider({ children }) {
     let response;
     let newClientsArray = [];
     if (!formState.inputs.name.value) {
-      alert('Required name field is empty, please enter a value')
+      alert("Required name field is empty, please enter a value");
     } else {
       try {
         response = await API.graphql(
@@ -58,6 +64,25 @@ function ClientContextProvider({ children }) {
     console.log(response);
   };
 
+  const updateClient = async (clientDetails) => {
+    let response;
+    let newClientsArray = [];
+    try {
+      response = await API.graphql(
+        graphqlOperation(mutations.updateClient, { input: clientDetails })
+      );
+    } catch (err) {
+      console.log("error updating", err);
+    }
+    if (response) {
+      newClientsArray = [response.data.updateClient, ...clientsArray];
+      // setClientsArray(newClientsArray);
+      onSuccess();
+      return response;
+    }
+    console.log(response);
+  };
+
   return (
     <ClientsContext.Provider
       value={{
@@ -66,6 +91,7 @@ function ClientContextProvider({ children }) {
         successStatus,
         getAllClients,
         addClient,
+        updateClient,
       }}
     >
       {children}
@@ -75,8 +101,8 @@ function ClientContextProvider({ children }) {
 
 function useClients() {
   const context = useContext(ClientsContext);
-  if(context === undefined) {
-    throw new Error('useClients must be used within ClientContextProvider')
+  if (context === undefined) {
+    throw new Error("useClients must be used within ClientContextProvider");
   }
   return context;
 }
