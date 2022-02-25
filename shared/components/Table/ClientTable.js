@@ -1,11 +1,17 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useEffect, useRef, forwardRef } from "react";
 import styles from "./ClientTable.module.css";
-import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
+import {
+  useTable,
+  useGlobalFilter,
+  useRowSelect,
+  usePagination,
+} from "react-table";
 import GlobalFilter from "./GlobalFilter";
 import { useClients } from "../../context/client-context";
 import AddClient from "../AddClient/AddClient";
 import LoadingSpinner from "../UI/Loading/LoadingSpinner";
 import Image from "next/image";
+import InputCheckbox from "./IndeterminateCheckbox";
 
 const EditableCell = ({
   value: initialValue,
@@ -36,19 +42,15 @@ const EditableCell = ({
     setEditMode(true);
   };
 
-  const exitEditMode = () => {
-    setEditMode(false);
-  };
-
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
 
   useEffect(() => {
     if (editMode) {
-      console.log('run')
+      console.log("run");
       inputRef.current.focus();
-    } 
+    }
   }, [editMode]);
 
   return (
@@ -63,7 +65,6 @@ const EditableCell = ({
             onBlur={handleBlur}
             ref={inputRef}
           />
-         
         </>
       ) : (
         <>
@@ -118,7 +119,27 @@ export default function ClientTable() {
       autoResetPage: !skipPageReset,
       updateMyData,
     },
-    useGlobalFilter
+    useGlobalFilter,
+    usePagination,
+    useRowSelect,
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        {
+          id: "selection",
+          Header: ({ getToggleAllPageRowsSelectedProps }) => (
+            <div>
+              <InputCheckbox {...getToggleAllPageRowsSelectedProps()} />
+            </div>
+          ),
+          Cell: ({ row }) => (
+            <div>
+              <InputCheckbox {...row.getToggleRowSelectedProps()} />
+            </div>
+          ),
+        },
+        ...columns,
+      ]);
+    }
   );
 
   const {
@@ -126,10 +147,14 @@ export default function ClientTable() {
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
+    pageCount,
+    nextPage,
+    selectedFlatRows,
     prepareRow,
     preGlobalFilteredRows,
     setGlobalFilter,
-    state,
+    state
   } = tableInstance;
 
   return (
