@@ -44,54 +44,7 @@
   margin: 0 auto;
 }
 
-.valueContainer {
+.pagination {
   display: flex;
-  align-items: center;
-  width: 10rem;
-  flex-grow: 1;
-  height: 1.8rem;
-  overflow: hidden;
-}
-
-.valueContainer:hover {
-  overflow: visible;
-}
-
-.editInput {
-  height: 1.5rem;
-  flex-grow: .9;
-  background: none;
-  border: 1px solid rgb(177, 177, 177);
-  border-radius: 5px;
-  padding-left: .3rem;
-}
-
-.editInput:focus {
- outline: none;
-}
-
-
-.editInput, .valueContainer {
-  font-weight: 400;
-  font-size: .9rem;
-}
-
-.editCellContainer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.editCellContainer:hover button{
-  display: flex;
-  cursor: pointer;
-  opacity: 1;
-}
-
-.editButton {
-  display: flex;
-  align-items: center;
-  opacity: 0;
-  background: #d3d3d3;
-  border-radius: 5px;
-  border: none;
+  height: 2rem;
 }

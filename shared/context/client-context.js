@@ -83,6 +83,22 @@ function ClientContextProvider({ children }) {
     console.log(response);
   };
 
+  const deleteClient = async (clientDetails) => {
+    let response;
+    try {
+      response = await API.graphql(
+        graphqlOperation(mutations.deleteClient, { input: clientDetails })
+      );
+    } catch (err) {
+      console.log("error deleting", err);
+    }
+    if (response) {
+      onSuccess();
+      return response;
+    }
+    console.log(response);
+  };
+
   return (
     <ClientsContext.Provider
       value={{
@@ -92,6 +108,7 @@ function ClientContextProvider({ children }) {
         getAllClients,
         addClient,
         updateClient,
+        deleteClient
       }}
     >
       {children}
