@@ -96,7 +96,7 @@ export default function ClientTable() {
     setGlobalFilter,
     state,
   } = tableInstance;
-
+  
   const handleDeleteClient = async () => {
   }
 
