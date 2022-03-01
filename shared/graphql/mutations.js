@@ -1,6 +1,48 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const batchDelete = /* GraphQL */ `
+  mutation BatchDelete($ids: [ID]) {
+    batchDelete(ids: $ids) {
+      id
+      name
+      company
+      phone
+      email
+      properties {
+        items {
+          id
+          street
+          city
+          state
+          zip
+          createdAt
+          updatedAt
+          clientPropertiesId
+          owner
+        }
+        nextToken
+      }
+      tasks {
+        items {
+          id
+          clientId
+          title
+          content
+          completed
+          date
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const createClient = /* GraphQL */ `
   mutation CreateClient(
     $input: CreateClientInput!
@@ -13,9 +55,31 @@ export const createClient = /* GraphQL */ `
       phone
       email
       properties {
+        items {
+          id
+          street
+          city
+          state
+          zip
+          createdAt
+          updatedAt
+          clientPropertiesId
+          owner
+        }
         nextToken
       }
       tasks {
+        items {
+          id
+          clientId
+          title
+          content
+          completed
+          date
+          createdAt
+          updatedAt
+          owner
+        }
         nextToken
       }
       createdAt
@@ -36,9 +100,31 @@ export const updateClient = /* GraphQL */ `
       phone
       email
       properties {
+        items {
+          id
+          street
+          city
+          state
+          zip
+          createdAt
+          updatedAt
+          clientPropertiesId
+          owner
+        }
         nextToken
       }
       tasks {
+        items {
+          id
+          clientId
+          title
+          content
+          completed
+          date
+          createdAt
+          updatedAt
+          owner
+        }
         nextToken
       }
       createdAt
@@ -59,9 +145,31 @@ export const deleteClient = /* GraphQL */ `
       phone
       email
       properties {
+        items {
+          id
+          street
+          city
+          state
+          zip
+          createdAt
+          updatedAt
+          clientPropertiesId
+          owner
+        }
         nextToken
       }
       tasks {
+        items {
+          id
+          clientId
+          title
+          content
+          completed
+          date
+          createdAt
+          updatedAt
+          owner
+        }
         nextToken
       }
       createdAt
@@ -87,6 +195,12 @@ export const createProperty = /* GraphQL */ `
         company
         phone
         email
+        properties {
+          nextToken
+        }
+        tasks {
+          nextToken
+        }
         createdAt
         updatedAt
         owner
@@ -115,6 +229,12 @@ export const updateProperty = /* GraphQL */ `
         company
         phone
         email
+        properties {
+          nextToken
+        }
+        tasks {
+          nextToken
+        }
         createdAt
         updatedAt
         owner
@@ -143,6 +263,12 @@ export const deleteProperty = /* GraphQL */ `
         company
         phone
         email
+        properties {
+          nextToken
+        }
+        tasks {
+          nextToken
+        }
         createdAt
         updatedAt
         owner
@@ -172,6 +298,12 @@ export const createTask = /* GraphQL */ `
         company
         phone
         email
+        properties {
+          nextToken
+        }
+        tasks {
+          nextToken
+        }
         createdAt
         updatedAt
         owner
@@ -200,6 +332,12 @@ export const updateTask = /* GraphQL */ `
         company
         phone
         email
+        properties {
+          nextToken
+        }
+        tasks {
+          nextToken
+        }
         createdAt
         updatedAt
         owner
@@ -228,6 +366,12 @@ export const deleteTask = /* GraphQL */ `
         company
         phone
         email
+        properties {
+          nextToken
+        }
+        tasks {
+          nextToken
+        }
         createdAt
         updatedAt
         owner

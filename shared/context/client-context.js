@@ -5,8 +5,7 @@ import {
   useEffect,
   useContext,
 } from "react";
-import { API, graphqlOperation, DataStore } from "aws-amplify";
-import { Client } from '../../models'
+import { API, graphqlOperation } from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 
@@ -84,21 +83,20 @@ function ClientContextProvider({ children }) {
     console.log(response);
   };
 
-  // const deleteClient = async (clientDetails) => {
-  //   let response;
-  //   try {
-  //     response = await API.graphql(
-  //       graphqlOperation(mutations.deleteClient, { input: clientDetails })
-  //     );
-  //   } catch (err) {
-  //     console.log("error deleting", err);
-  //   }
-  //   if (response) {
-  //     onSuccess();
-  //     return response;
-  //   }
-  //   console.log(response);
-  // };
+  const deleteClients = async (clientDetails) => {
+    let response;
+    try {
+      response = await API.graphql(
+        graphqlOperation(mutations.deleteClient, { input: clientDetails })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    if (response) {
+      onSuccess();
+      return response;
+    }
+  };
 
   return (
     <ClientsContext.Provider
@@ -109,7 +107,7 @@ function ClientContextProvider({ children }) {
         getAllClients,
         addClient,
         updateClient,
-        deleteClient
+        deleteClients,
       }}
     >
       {children}

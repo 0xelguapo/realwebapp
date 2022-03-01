@@ -1,6 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { API } from "aws-amplify";
-import * as mutations from "../../graphql/mutations";
 import { VALIDATOR_REQUIRE } from "../../utility/validators";
 import Modal from "../UI/Modal/Modal.js";
 import Image from "next/image";

@@ -12,15 +12,16 @@ import LoadingSpinner from "../UI/Loading/LoadingSpinner";
 import GlobalFilter from "./GlobalFilter";
 import InputCheckbox from "./IndeterminateCheckbox";
 import EditableCell from "./EditableCell";
+import Success from "../UI/Status/Success";
 
 const defaultColumn = {
   Cell: EditableCell,
 };
 
 export default function ClientTable() {
-  const { clientsArray, isLoading, updateClient, deleteClient } = useClients();
+  const { clientsArray, isLoading, updateClient, deleteClients, succsesStatus } = useClients();
   const [skipPageReset, setSkipPageReset] = useState(false);
-  const [deleteMode, setDeleteMode] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('Successfully deleted')
 
   const data = useMemo(() => {
     return [...clientsArray];
@@ -78,7 +79,6 @@ export default function ClientTable() {
     }
   );
 
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -96,15 +96,20 @@ export default function ClientTable() {
     setGlobalFilter,
     state,
   } = tableInstance;
-  
-  const handleDeleteClient = async () => {
-  }
 
-  console.log(selectedFlatRows.map(i => (i.original.id)))
-  
+ const handleDeleteClients = async () => {
+   const selectedClients = selectedFlatRows.map((i) => i.original.id)
+   console.log(selectedClients)
+   for(let i = 0; i < selectedClients.length; i++) {
+     const response = await deleteClients({ id: selectedClients[i]})
+     console.log(response)
+   }
+ }
+
 
   return (
     <div className={styles.clientsContainer}>
+      <Success>{successMessage}</Success>
       <div className={styles.clientsHeaderContainer}>
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
@@ -122,7 +127,9 @@ export default function ClientTable() {
         <button onClick={() => nextPage()} disabled={!canNextPage}>
           {" > "}
         </button>
-        {Object.keys(state.selectedRowIds).length !== 0 && <button onClick={handleDeleteClient}>Delete</button>}
+        {Object.keys(state.selectedRowIds).length !== 0 && (
+          <button onClick={handleDeleteClients}>Delete</button>
+        )}
       </div>
       {isLoading ? (
         <div className={styles.loadingContainer}>
