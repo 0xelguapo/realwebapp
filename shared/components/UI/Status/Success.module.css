@@ -1,15 +1,40 @@
-.container {
+.active {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   position: absolute;
   bottom: 30px;
-  right: 30px;
+  right: -275px;
   color: white;
   font-weight: 500;
-  width: 14rem;
-  padding: 0.6rem 1rem;
+  min-width: 16rem;
+  padding: .5rem 1.5rem .5rem 1rem;
   border-radius: 10px;
-  background: #026bffd3;
+  background: #026bff;
+  animation: slide-in 3.5s linear;
 }
 
+.image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(0);
+  }
+  5% {
+    transform: translateX(-315px)
+  }
+  95% {
+    transform: translateX(-315px)
+  }
+  100% {
+    transform: translate(0px);
+  }
+}
+
+.disabled {
+  display: none;
+}

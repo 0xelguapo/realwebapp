@@ -15,6 +15,7 @@ function ClientContextProvider({ children }) {
   const [clientsArray, setClientsArray] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [successStatus, setSuccessStatus] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const getAllClients = useCallback(async () => {
     setIsLoading(true);
@@ -58,6 +59,7 @@ function ClientContextProvider({ children }) {
     if (response) {
       newClientsArray = [response.data.createClient, ...clientsArray];
       setClientsArray(newClientsArray);
+      setSuccessMessage("Successfully added client");
       onSuccess();
       return response;
     }
@@ -77,25 +79,35 @@ function ClientContextProvider({ children }) {
     if (response) {
       newClientsArray = [response.data.updateClient, ...clientsArray];
       // setClientsArray(newClientsArray);
+      setSuccessMessage("Successfully updated client");
       onSuccess();
       return response;
     }
     console.log(response);
   };
 
-  const deleteClients = async (clientDetails) => {
+  const deleteClients = async (selectedFlatRows) => {
     let response;
-    try {
-      response = await API.graphql(
-        graphqlOperation(mutations.deleteClient, { input: clientDetails })
-      );
-    } catch (err) {
-      console.log(err);
+    let finalResponses = [];
+    const selectedClients = selectedFlatRows.map((i) => i.original.id);
+    for (let i = 0; i < selectedClients.length; i++) {
+      try {
+        response = await API.graphql(
+          graphqlOperation(mutations.deleteClient, {
+            input: { id: selectedClients[i] },
+          })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+      if (response) {
+        setSuccessMessage("Successfully deleted client(s)");
+        onSuccess();
+        finalResponses.push(response.data.deleteClient);
+      }
     }
-    if (response) {
-      onSuccess();
-      return response;
-    }
+    // let newClientsArray = clientsArray.filter((el) => finalResponses.indexOf(el) === -1)
+    return finalResponses;
   };
 
   return (
@@ -104,6 +116,7 @@ function ClientContextProvider({ children }) {
         clientsArray,
         isLoading,
         successStatus,
+        successMessage,
         getAllClients,
         addClient,
         updateClient,

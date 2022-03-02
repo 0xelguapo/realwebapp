@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import styles from "./ClientTable.module.css";
 import {
   useTable,
@@ -19,13 +19,23 @@ const defaultColumn = {
 };
 
 export default function ClientTable() {
-  const { clientsArray, isLoading, updateClient, deleteClients, succsesStatus } = useClients();
+  const {
+    clientsArray,
+    isLoading,
+    updateClient,
+    deleteClients,
+    successStatus,
+    successMessage,
+  } = useClients();
   const [skipPageReset, setSkipPageReset] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('Successfully deleted')
 
   const data = useMemo(() => {
     return [...clientsArray];
   }, [clientsArray]);
+
+  useEffect(() => {
+    setSkipPageReset(false)
+  }, [data, clientsArray])
 
   const columns = useMemo(
     () => [
@@ -97,19 +107,14 @@ export default function ClientTable() {
     state,
   } = tableInstance;
 
- const handleDeleteClients = async () => {
-   const selectedClients = selectedFlatRows.map((i) => i.original.id)
-   console.log(selectedClients)
-   for(let i = 0; i < selectedClients.length; i++) {
-     const response = await deleteClients({ id: selectedClients[i]})
-     console.log(response)
-   }
- }
 
+  const handleDeleteClients = async () => {
+    const response = await deleteClients(selectedFlatRows);
+  };
 
   return (
     <div className={styles.clientsContainer}>
-      <Success>{successMessage}</Success>
+      <Success status={successStatus}>{successMessage}</Success>
       <div className={styles.clientsHeaderContainer}>
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
