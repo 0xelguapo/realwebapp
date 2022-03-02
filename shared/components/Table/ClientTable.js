@@ -33,9 +33,9 @@ export default function ClientTable() {
     return [...clientsArray];
   }, [clientsArray]);
 
-  useEffect(() => {
-    setSkipPageReset(false)
-  }, [data, clientsArray])
+  // useEffect(() => {
+  //   setSkipPageReset(false)
+  // }, [data, clientsArray])
 
   const columns = useMemo(
     () => [
@@ -109,7 +109,7 @@ export default function ClientTable() {
 
 
   const handleDeleteClients = async () => {
-    const response = await deleteClients(selectedFlatRows);
+    await deleteClients(selectedFlatRows);
   };
 
   return (
