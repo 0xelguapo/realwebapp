@@ -18,6 +18,12 @@ const defaultColumn = {
   Cell: EditableCell,
 };
 
+const phoneFormat = (value) => {
+  if (value) {
+    return value.replace(/[\[\]']+/g, "");
+  }
+};
+
 export default function ClientTable() {
   const {
     clientsArray,
@@ -33,9 +39,9 @@ export default function ClientTable() {
     return [...clientsArray];
   }, [clientsArray]);
 
-  // useEffect(() => {
-  //   setSkipPageReset(false)
-  // }, [data, clientsArray])
+  useEffect(() => {
+    setSkipPageReset(false);
+  }, [data, clientsArray]);
 
   const columns = useMemo(
     () => [
@@ -107,7 +113,6 @@ export default function ClientTable() {
     state,
   } = tableInstance;
 
-
   const handleDeleteClients = async () => {
     await deleteClients(selectedFlatRows);
   };
@@ -173,7 +178,9 @@ export default function ClientTable() {
                         key={cell.row.original.id}
                         {...cell.getCellProps()}
                       >
-                        {cell.render("Cell")}
+                        {cell.column.Header === "Phone"
+                          ? phoneFormat(cell.value)
+                          : cell.render("Cell")}
                       </td>
                     );
                   })}

@@ -56,6 +56,14 @@ export default function AddClient() {
     setPhoneInputs(newInput);
   };
 
+  const handleRemovePhone = (e, index) => {
+    e.preventDefault();
+    console.log(index);
+    let currentInputs = [...phoneInputs];
+    const newArray = currentInputs.filter((el, ind) => ind !== index)
+    setPhoneInputs(newArray)
+  }
+
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -84,50 +92,62 @@ export default function AddClient() {
       {open && (
         <Modal onOpen={handleOpen}>
           <div className={styles.modalContainer}>
-            <h2>Add a Contact</h2>
-            <form>
-              <div className={styles.inputBlocks}>
-                <Input
-                  id="name"
-                  onInput={inputHandler}
-                  headerText="Name"
-                  placeholder="Required"
-                  errorText="Please enter a name"
-                  validators={[VALIDATOR_REQUIRE()]}
-                />
-                <Input
-                  id="company"
-                  onInput={inputHandler}
-                  headerText="Company"
-                />
-              </div>
-              <div className={styles.inputBlocks}>
-                <Input id="email" onInput={inputHandler} headerText="Email" />
-                <div className={styles.phoneBlockContainer}>
+            <div className={styles.modalForm}>
+              <h2 className={styles.modalTitle}>Add a Contact</h2>
+              <form>
+                <div className={styles.inputBlocks}>
                   <Input
-                    id="phone"
+                    id="name"
                     onInput={inputHandler}
-                    headerText="Phone Number"
-                    phoneInput={true}
+                    headerText="Name"
+                    placeholder="Required"
+                    errorText="Please enter a name"
+                    validators={[VALIDATOR_REQUIRE()]}
                   />
-                  {phoneInputs.map((p, index) => (
-                    <input
-                      className={styles.dynamicPhoneInput}
-                      key={index}
-                      name="number"
-                      value={phoneFormat(phoneInputs[index])}
-                      onChange={(event) =>
-                        handleDynamicPhoneChange(index, event)
-                      }
-                    />
-                  ))}
-                  <button className={styles.addButton} onClick={handleAddPhone}>
-                    {" "}
-                    + Add Number
-                  </button>
+                  <Input
+                    id="company"
+                    onInput={inputHandler}
+                    headerText="Company"
+                  />
                 </div>
-              </div>
-            </form>
+                <div className={styles.inputBlocks}>
+                  <Input id="email" onInput={inputHandler} headerText="Email" />
+                  <div className={styles.phoneBlockContainer}>
+                    <Input
+                      id="phone"
+                      onInput={inputHandler}
+                      headerText="Phone Number"
+                      phoneInput={true}
+                    />
+                    {phoneInputs.map((p, index) => (
+                      <div
+                        key={index}
+                        className={styles.additionalPhoneInputContainer}
+                      >
+                        <input
+                          className={styles.dynamicPhoneInput}
+                          name="number"
+                          value={phoneFormat(phoneInputs[index])}
+                          onChange={(event) =>
+                            handleDynamicPhoneChange(index, event)
+                          }
+                        />
+                        <button className={styles.removeButton} onClick={(e) => handleRemovePhone(e, index)}>
+                          <div className={styles.removeLine}></div>
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      className={styles.addButton}
+                      onClick={handleAddPhone}
+                    >
+                      {" "}
+                      + Add Number
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
             <div className={styles.ctaContainer}>
               <button className={styles.cancel} onClick={handleOpen}>
                 Cancel

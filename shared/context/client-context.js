@@ -6,7 +6,6 @@ import {
   useContext,
 } from "react";
 import { API, graphqlOperation } from "aws-amplify";
-import { compareArrays } from "../utility/arrayComparison";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 
@@ -107,8 +106,11 @@ function ClientContextProvider({ children }) {
         finalResponses.push(response.data.deleteClient);
       }
     }
-    const newArray = clientsArray.filter(item => !finalResponses.some(removedItem => removedItem.id === item.id))
-    setClientsArray(newArray)
+    const newArray = clientsArray.filter(
+      (item) =>
+        !finalResponses.some((removedItem) => removedItem.id === item.id)
+    );
+    setClientsArray(newArray);
     return finalResponses;
   };
 
