@@ -88,30 +88,31 @@ function ClientContextProvider({ children }) {
 
   const deleteClients = async (selectedFlatRows) => {
     let response;
-    let finalResponses = [];
-    const selectedClients = selectedFlatRows.map((i) => i.original.id);
-    for (let i = 0; i < selectedClients.length; i++) {
-      try {
-        response = await API.graphql(
-          graphqlOperation(mutations.deleteClient, {
-            input: { id: selectedClients[i] },
-          })
-        );
-      } catch (err) {
-        console.log(err);
-      }
-      if (response) {
-        setSuccessMessage("Successfully deleted client(s)");
-        onSuccess();
-        finalResponses.push(response.data.deleteClient);
-      }
+    const promises = selectedFlatRows.map((i) => {
+      return API.graphql(
+        graphqlOperation(mutations.deleteClient, {
+          input: { id: i.original.id },
+        })
+      );
+    });
+    try {
+      response = await Promise.all(promises);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
     }
-    const newArray = clientsArray.filter(
-      (item) =>
-        !finalResponses.some((removedItem) => removedItem.id === item.id)
-    );
-    setClientsArray(newArray);
-    return finalResponses;
+    if (response) {
+      setSuccessMessage("Successfully deleted client(s)");
+      onSuccess();
+      const newArray = clientsArray.filter(
+        (item) =>
+          !response.some(
+            (removedItem) => removedItem.data.deleteClient.id === item.id
+          )
+      );
+      setClientsArray(newArray);
+      return response;
+    }
   };
 
   return (

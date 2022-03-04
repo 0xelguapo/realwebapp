@@ -22,6 +22,14 @@ export default function Sidebar() {
               <a>Tasks</a>
             </Link>
           </div>
+          <div className={styles.link}>
+            <div className={styles.logoImage}>
+              <Image src="/task.svg" width={23} height={23} alt="settings" />
+            </div>
+            <Link href="/dashboard/settings">
+              <a>Settings</a>
+            </Link>
+          </div>
         </div>
       </div>
   );

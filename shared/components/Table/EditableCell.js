@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
-import Image from 'next/image'
-import styles from './EditableCell.module.css'
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import styles from "./EditableCell.module.css";
 
 const EditableCell = ({
   value: initialValue,
@@ -17,6 +17,10 @@ const EditableCell = ({
   };
 
   const handleBlur = () => {
+    if(value === initialValue) {
+      setEditMode(false)
+      return
+    }
     updateMyData(index, id, value);
     setEditMode(false);
   };
@@ -37,7 +41,6 @@ const EditableCell = ({
 
   useEffect(() => {
     if (editMode) {
-      console.log("run");
       inputRef.current.focus();
     }
   }, [editMode]);
@@ -67,4 +70,4 @@ const EditableCell = ({
   );
 };
 
-export default EditableCell
+export default EditableCell;
