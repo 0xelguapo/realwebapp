@@ -4,33 +4,49 @@ import styles from "./Sidebar.module.css";
 
 export default function Sidebar() {
   return (
-      <div className={styles.sidebarContainer}>
-        <div className={styles.links}>
-          <div className={styles.link}>
-            <div className={styles.logoImage}>
-              <Image src="/people.svg" width={23} height={23} alt="clients" />
+    <div className={styles.sidebarContainer}>
+      <div className={styles.links}>
+        <Link href="/dashboard">
+          <a>
+            <div className={styles.link}>
+              <div className={styles.logoImage}>
+                <Image
+                  src="/clients.svg"
+                  width={23}
+                  height={23}
+                  alt="clients"
+                />
+              </div>
+              Clients
             </div>
-            <Link href="/dashboard">
-              <a>Clients</a>
-            </Link>
-          </div>
-          <div className={styles.link}>
-            <div className={styles.logoImage}>
-              <Image src="/task.svg" width={23} height={23} alt="task" />
+          </a>
+        </Link>
+        <Link href="/dashboard">
+          <a>
+            <div className={styles.link}>
+              <div className={styles.logoImage}>
+                <Image src="/task.svg" width={23} height={23} alt="task" />
+              </div>
+              Tasks
             </div>
-            <Link href="/dashboard">
-              <a>Tasks</a>
-            </Link>
-          </div>
-          <div className={styles.link}>
-            <div className={styles.logoImage}>
-              <Image src="/task.svg" width={23} height={23} alt="settings" />
+          </a>
+        </Link>
+        <Link href="/settings">
+          <a>
+            <div className={styles.link}>
+              <div className={styles.logoImage}>
+                <Image
+                  src="/settings.svg"
+                  width={23}
+                  height={23}
+                  alt="settings"
+                />
+              </div>
+              Settings
             </div>
-            <Link href="/dashboard/settings">
-              <a>Settings</a>
-            </Link>
-          </div>
-        </div>
+          </a>
+        </Link>
       </div>
+    </div>
   );
 }
