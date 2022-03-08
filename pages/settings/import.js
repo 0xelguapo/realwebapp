@@ -1,63 +1,107 @@
 import { useState, useCallback } from "react";
+import styles from "./Import.module.css";
 import Head from "next/head";
 import Image from "next/image";
 import DashboardLayout from "../../shared/components/UI/Layouts/DashboardLayout";
-import { useDropzone } from "react-dropzone";
+import { useCSVReader, formatFileSize } from "react-papaparse";
 
 function Import() {
+  const { CSVReader } = useCSVReader();
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState();
+  const [hoverState, setHoverState] = useState(false);
 
-  const onDrop = useCallback((acceptedFile) => {
-    setSelectedFile(acceptedFile);
-    console.log(acceptedFile);
+  const handleUploadedFile = useCallback((uploadedFile) => {
+    setSelectedFile(uploadedFile);
+    setHoverState(false);
+    console.log(uploadedFile);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    multiple: false,
-  });
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setHoverState(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setHoverState(false);
+  };
+
+  const incrementStep = () => {
+    setCurrentStep(prevStep => prevStep + 1);
+  }
+
+  // const onDrop = useCallback((acceptedFile) => {
+  //   setSelectedFile(acceptedFile);
+  // }, []);
+
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  //   onDrop,
+  //   multiple: false,
+  //   accept: "text/plain,.csv,.xls",
+  // });
 
   const steps = [
     {
       Component: (
-        <div className="container h-full flex flex-col py-24 px-12 justify-center">
-          <div
-            className="flex justify-center items-center border-2 border-dashed border-lightgray-500 border-radius basis-1/5"
-            {...getRootProps()}
+        <>
+          <CSVReader
+            onUploadAccepted={handleUploadedFile}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
           >
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <p>Drop your file here!</p>
-            ) : (
-              <>
-                {selectedFile ? (
-                  <div className="flex items-center">
-                    <Image
-                      src="/fileSelected.svg"
-                      width={40}
-                      height={40}
-                      alt="file"
-                    />
-                    <p className="text-lg font-bold">{selectedFile[0].name}</p>
-                  </div>
+            {({
+              getRootProps,
+              acceptedFile,
+              ProgressBar,
+              getRemoveFileProps,
+              Remove,
+            }) => (
+              <div
+                className={
+                  hoverState || acceptedFile 
+                    ? `${styles.importContainer} ${styles.importContainerActive}`
+                    : styles.importContainer
+                }
+                {...getRootProps()}
+              >
+                {acceptedFile ? (
+                  <>
+                    <div className={styles.remove} {...getRemoveFileProps()}>
+                      <Remove color={"red"} />
+                    </div>
+                    <p className={styles.selectedFileTitle}>{acceptedFile.name}</p>
+                    <div className={styles.progressBar}>
+                      <ProgressBar />
+                    </div>
+                  </>
                 ) : (
-                  <div className="flex items-center">
-                    <Image src="/file.svg" width={40} height={40} alt="file" />
-                    <p className="">Drag and drop your .csv file here</p>
-                  </div>
+                  <div>Drag your CSV file here or click to upload</div>
                 )}
-              </>
+              </div>
             )}
-          </div>
-          <div className="basis-3/5 py-8 px-6">Description Div</div>
-        </div>
+          </CSVReader>
+          <div className={styles.oneDescriptionContainer}>Description Div</div>
+        </>
       ),
     },
+    {
+      Component: (
+        <>
+        <div className={styles.twoContainer}>
+          <div className={styles.columnsContainer}>
+            <h3 className={styles.columnsContainerTitle}>Spreadsheet Columns</h3>
+            <div className={styles.hasHeader}><input type="checkbox" />The first row in my file is a column header</div>
+            
+          </div>
+        </div>
+        </>
+      )
+    }
   ];
 
   return (
-    <div className="container w-full h-screen">
+    <div className={styles.pageContainer}>
       <Head>
         <title>CoAgent Dashboard | Settings</title>
         <meta
@@ -66,8 +110,20 @@ function Import() {
         />
         <link rel="icon" href="/icon.svg" />
       </Head>
-
-      {steps[currentStep].Component}
+      <div className={styles.container}>
+        <div className={styles.headingContainer}>
+          <div className={styles.stepsGuide}>
+            steps
+          </div>
+          <div className={styles.buttonContainer}>
+            <button className={styles.backButton}>Back</button>
+            <button className={styles.nextButton} onClick={incrementStep}>
+              Next
+            </button>
+          </div>
+        </div>
+        {steps[currentStep].Component}
+      </div>
     </div>
   );
 }
