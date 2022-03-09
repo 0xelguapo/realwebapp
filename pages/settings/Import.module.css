@@ -63,7 +63,8 @@
   font-weight: 700;
 }
 
-.importButton:hover {
+.importButton:hover, 
+.backButton:hover{
   cursor: pointer;
 }
 

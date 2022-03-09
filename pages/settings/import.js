@@ -31,6 +31,10 @@ function Import() {
     setCurrentStep(prevStep => prevStep + 1);
   }
 
+  const decrementStep = () => {
+    setCurrentStep(prevStep => prevStep - 1)
+  }
+
   // const onDrop = useCallback((acceptedFile) => {
   //   setSelectedFile(acceptedFile);
   // }, []);
@@ -116,8 +120,8 @@ function Import() {
             steps
           </div>
           <div className={styles.buttonContainer}>
-            <button className={styles.backButton}>Back</button>
-            <button className={styles.nextButton} onClick={incrementStep}>
+            <button className={styles.backButton} onClick={decrementStep}>Back</button>
+            <button className={styles.nextButton} onClick={incrementStep} disabled={!selectedFile}>
               Next
             </button>
           </div>
