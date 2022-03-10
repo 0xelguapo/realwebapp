@@ -14,7 +14,7 @@ function Import() {
   const handleUploadedFile = useCallback((uploadedFile) => {
     setSelectedFile(uploadedFile);
     setHoverState(false);
-    console.log(uploadedFile);
+    console.log(selectedFile);
   }, []);
 
   const handleDragOver = (e) => {
@@ -34,16 +34,6 @@ function Import() {
   const decrementStep = () => {
     setCurrentStep(prevStep => prevStep - 1)
   }
-
-  // const onDrop = useCallback((acceptedFile) => {
-  //   setSelectedFile(acceptedFile);
-  // }, []);
-
-  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
-  //   onDrop,
-  //   multiple: false,
-  //   accept: "text/plain,.csv,.xls",
-  // });
 
   const steps = [
     {
@@ -96,7 +86,12 @@ function Import() {
           <div className={styles.columnsContainer}>
             <h3 className={styles.columnsContainerTitle}>Spreadsheet Columns</h3>
             <div className={styles.hasHeader}><input type="checkbox" />The first row in my file is a column header</div>
-            
+            <div className={styles.mappingsContainer}>
+              {selectedFile &&
+              selectedFile.data[1].map((el, index) => 
+                <div className={styles.preview} key={index}>{el}</div>
+              )}
+            </div>
           </div>
         </div>
         </>

@@ -136,3 +136,13 @@
 .columnsContainerTitle {
   font-size: 1.4rem;
 }
+
+.mappingsContainer {
+  display: flex;
+  border: 1px solid black;
+  flex-direction: column;
+}
+
+.preview {
+  border: 1px solid red;
+}
