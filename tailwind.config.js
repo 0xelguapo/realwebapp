@@ -1,9 +1,19 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./pages/**/*.{js,jsx}", 
-  "./shared/components/**/*.{js,jsx}",
+  content: [
+    "./pages/**/*.{js, ts, jsx, tsx}",
+    "./shared/components/Subscribe/SubscribeInput.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '45vh': '45vh',
+        '35rem': '30rem'
+      },
+      colors: {
+        'bridal': '#FFFDF9'
+      }
+    },
   },
-  plugins: [],
-};
+  plugins: [require('@tailwindcss/typography')],
+}

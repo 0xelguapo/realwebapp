@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --cta-blue: #026bff;
   --cta-blue-hover: #1b7aff;

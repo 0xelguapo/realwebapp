@@ -5,12 +5,40 @@
 
 type Client @model @auth(rules: [{ allow: owner }]) {
   id: ID!
-  name: String!
+  name: String! @index(name: "byName", queryField: "clientByName")
   company: String
   phone: String
   email: String
-  properties: [Property] @hasMany
+  notes: String
+  favorite: Boolean @default(value: "false")
+  connectionHistory: [ConnectionHistory] @hasMany(indexName: "byConnectionHistory", fields: ["id"])
+  properties: [Property] @hasMany(indexName: "")
   tasks: [Task] @hasMany(indexName: "byClient", fields: ["id"])
+  group: [ClientGroup] @manyToMany(relationName: "GroupsClients")
+  reminder: [Reminder] @hasMany(indexName: "byReminder", fields: ["id"])
+}
+
+type Reminder @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  date: String!
+  recurring: Boolean @default(value: "false")
+  recurDate: String
+  clientId: ID! @index(name: "byReminder")
+  client: Client @belongsTo(fields: ["clientId"])
+}
+
+type ClientGroup @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  title: String!
+  clients: [Client] @manyToMany(relationName: "GroupsClients")
+}
+
+type ConnectionHistory @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  title: String!
+  date: String
+  clientId: ID! @index(name: "byConnectionHistory", sortKeyFields: ["title"])
+  client: Client @belongsTo(fields: ["clientId"])
 }
 
 type Property @model @auth(rules: [{ allow: owner }]) {
@@ -32,6 +60,8 @@ type Task @model @auth(rules: [{ allow: owner }]) {
   client: Client @belongsTo(fields: ["clientId"])
 }
 
-type Mutation {
-  batchDelete(ids: [ID]): [Client]
+type Note @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  title: String
+  content: String
 }

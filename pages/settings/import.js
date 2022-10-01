@@ -12,9 +12,10 @@ function Import() {
   const [hoverState, setHoverState] = useState(false);
 
   const handleUploadedFile = useCallback((uploadedFile) => {
-    setSelectedFile(uploadedFile);
-    setHoverState(false);
-    console.log(selectedFile);
+    if(uploadedFile) {
+      setSelectedFile(uploadedFile)
+      setHoverState(false);
+    }
   }, []);
 
   const handleDragOver = (e) => {

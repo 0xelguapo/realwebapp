@@ -1,10 +1,31 @@
 .container {
   display: flex;
-  background: white;
+  background: black;
   justify-content: space-between;
-  height: 3rem;
+  height: 3.5rem;
   align-items: center;
   padding: 0 3%;
+}
+
+.logoImage {
+  display: flex;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logoContainer:hover {
+  cursor: pointer;
+  color: rgb(39, 158, 255);
+}
+
+.logoText {
+  margin-left: 0.4rem;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: rgb(231 229 228);
 }
 
 .right {
@@ -15,7 +36,7 @@
 
 .signIn {
   font-weight: 500;
-  color: #7b7b7c;
+  color: rgb(231 229 228);
   margin-right: 15px
 }
 
@@ -32,7 +53,7 @@
 .menuBurger {
   width: 25px;
   height: 3px;
-  background: #7b7b7c;
+  background: rgb(231 229 228);
   border-radius: 5px;
   transition: all 0.5s ease-in-out;
 }
@@ -43,7 +64,7 @@
   content: "";
   width: 25px;
   height: 3px;
-  background: #7b7b7c;
+  background: rgb(231 229 228);
   border-radius: 5px;
   transition: all 0.5s ease-in-out;
 }
@@ -75,7 +96,7 @@
   flex-direction: column;
   top: 0;
   width: 100%;
-  background: white;
+  background: rgb(231 229 228);
   height: 80vh;
   padding-top: 3.5rem;
   animation: fade-in .3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
