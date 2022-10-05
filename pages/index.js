@@ -3,7 +3,7 @@ import HomepageLayout from "../shared/components/UI/Layouts/HomepageLayout";
 import Image from "next/image";
 import Link from "next/link";
 import SubscribeInput from "../shared/components/UI/CTA/SubscribeInput";
-import CTAButton from '../shared/components/UI/CTA/CTAButton'
+import CTAButton from "../shared/components/UI/CTA/CTAButton";
 import Date from "../shared/lib/date";
 import { getSortedPostsData } from "../shared/lib/publications";
 
@@ -27,28 +27,59 @@ export default function Home({ allPostsData }) {
         />
         <link rel="icon" href="/logo.svg" />
       </Head>
-      <div className="flex items-center px-4 py-5 flex-col h-[800px] bg-black md:flex-row md:items-start md:px-36 md:py-10 md:justify-center">
-        <div className="flex flex-col px-4 text-stone-200 mb-5 md:pt-10">
-          <h1 className="text-4xl font-extrabold text-center leading-tight md:text-left">
+      <div className="flex items-center px-4 py-5 flex-col h-[800px] bg-black md:h-[90vh] md:px-36 md:py-10">
+        <div className="flex flex-col px-4 text-stone-200 mb-5 md:pt-6 md:items-center">
+          <h1 className="text-4xl font-extrabold text-center leading-tight md:text-left md:text-7xl">
             Made for Agents.
           </h1>
-          <p className="text-center mt-2 font-medium md:text-left">
+          <p className="text-center mt-2 font-medium mb-8 md:text-2xl">
             Finally, a powerful app to help you manage <br />
             client and prospect relationships
           </p>
-          <CTAButton>Try It Free</CTAButton>
-        </div>
-        <div className="px-4 flex flex-col-reverse h-full">
-          <Image
-            src="/homepage/clientDetails.svg"
-            width={370}
-            height={690}
-            alt="news on phone"
-            objectFit="cover"
-          />
+          <div className="flex w-full justify-center">
+            <CTAButton>Try It Free</CTAButton>
+          </div>
+          <div className="block h-[700px] md:w-[20vw] md:-mt-12">
+            <Image
+              src="/homepage/clientDetails.svg"
+              layout="responsive"
+              width={375}
+              height={812}
+              alt="news on phone"
+            />
+          </div>
         </div>
       </div>
-      <div className="py-10">
+
+      <main className="flex justify-center px-4 border-4 flex-col">
+        <div className="py-10">
+          <h1 className="text-4xl font-extrabold text-center mb-4">
+            On the Go
+          </h1>
+          <p className="text-center text-xl">
+            Designed for the networking professional
+          </p>
+        </div>
+        <div className="pt-10 bg-black text-stone-200">
+          <h1 className="text-4xl font-extrabold text-center mb-2">
+            Stay Productive
+          </h1>
+          <p className="text-center text-xl mb-8">
+            Keep track of your need-to-dos
+          </p>
+          <div className="md:w-[30vw] md:m-auto">
+            <Image
+              src="/homepage/focus.png"
+              layout="responsive"
+              width={375}
+              height={419}
+              alt="homepage of app"
+            />
+          </div>
+        </div>
+      </main>
+
+      {/* <div className="py-10">
         <h2 className="text-center text-3xl font-bold">Recent Blog Posts</h2>
         <div className="flex flex-col flex-wrap py-10 justify-center sm:flex-row">
           {allPostsData.slice(0, 3).map(({ id, title, date }) => (
@@ -80,7 +111,8 @@ export default function Home({ allPostsData }) {
             </a>
           </Link>
         </div>
-      </div>
+      </div> */}
+
       <div className="bg-slate-200 py-10 px-4">
         <h3 className="text-center font-medium text-3xl">About Us</h3>
         <p className="text-center mt-5">

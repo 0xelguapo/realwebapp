@@ -32,7 +32,7 @@ export default function Publications({ allPostsData }) {
           {allPostsData.map(({id, title, date, description, category}) => (
             <div key={id} className="flex flex-col h-35rem sm:w-[450px]">
             <Link href={`/publications/${id}`}>
-              <a className="flex flex-col w-2/3 m-auto h-5/6 min-w-[400px]">
+              <a className="flex flex-col w-2/3 m-auto h-5/6 min-w-[350px] min-h-[350px]">
                 <Image
                   src={`/postImages/${id}.jpg`}
                   width={400}

@@ -1,7 +1,7 @@
 ---
 title: Benefits of Being a Real Estate Agent
 date: '2022-07-18'
-category: 
+category: 'Lifestyle'
 description: Is becoming a real estate agent a fulfilling career? What can you expect to do as a real estate agent? Let's talk about what kind of person makes a great real estate agent, and what you should be prepared for.
 ---
 

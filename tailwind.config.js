@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     "./pages/**/*.{js, ts, jsx, tsx}",
-    "./shared/components/Subscribe/SubscribeInput.js"
+    "./shared/components/UI/CTA/**/*.js"
   ],
   theme: {
     extend: {
@@ -11,7 +11,9 @@ module.exports = {
         '35rem': '30rem'
       },
       colors: {
-        'bridal': '#FFFDF9'
+        'bridal': '#FFFDF9',
+        'ctablue': '#0071e3',
+        'hoverctablue': '#0077ed',
       }
     },
   },
