@@ -26,12 +26,22 @@ export default function Navbar({ dashboard }) {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.logoContainer}>
-          <div className={styles.logoImage}>
-            <Image src="/logo.svg" width={35} height={35} alt="logo" />
-          </div>
-          <h3 className={styles.logoText}>CoAgent.</h3>
+        <div className={styles.left}>
+          <Link href="/">
+            <a>
+              <div className={styles.logoContainer}>
+                <div className={styles.logoImage}>
+                  <Image src="/logo.svg" width={35} height={35} alt="logo" />
+                </div>
+                <h3 className={styles.logoText}>CoAgent.</h3>
+              </div>
+            </a>
+          </Link>
+          {/* <div className={styles.links}>
+            <p>Blog</p>
+          </div> */}
         </div>
+
         <div className={styles.right}>
           <div className={styles.signIn}>
             <Link href="/login">

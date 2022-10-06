@@ -28,6 +28,16 @@
   color: rgb(231 229 228);
 }
 
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.links {
+  margin-left: 5rem;
+  color: rgb(231 229 228);
+}
+
 .right {
   display: flex;
   align-items: center;
