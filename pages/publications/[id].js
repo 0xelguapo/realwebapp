@@ -4,7 +4,7 @@ import { getAllPostsIds, getPostData } from "../../shared/lib/publications";
 import Date from "../../shared/lib/date";
 import Navbar from "../../shared/components/UI/Navbar/Navbar";
 import md from "markdown-it";
-import SubscribeInput from "../../shared/components/Subscribe/SubscribeInput";
+// import SubscribeInput from "../../shared/components/UI/SubscribeInput";
 
 export async function getStaticProps({ params }) {
   const postData = await getPostData(params.id);
@@ -63,9 +63,9 @@ export default function Publication({ postData }) {
           <p className="text-2xl font-medium text-center pb-5">
             Get Smarter in Real Estate, with Bite-Sized emails
           </p>
-          <div className="w-2/4 m-auto">
+          {/* <div className="w-2/4 m-auto">
             <SubscribeInput focus={false} />
-          </div>
+          </div> */}
         </div>
       </div>
     </>

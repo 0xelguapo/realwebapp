@@ -27,8 +27,8 @@ export default function Home({ allPostsData }) {
         />
         <link rel="icon" href="/logo.svg" />
       </Head>
-      <div className="flex items-center px-4 py-5 flex-col h-[800px] bg-black md:h-[90vh] md:px-36 md:py-10">
-        <div className="flex flex-col px-4 text-stone-200 mb-5 md:pt-6 md:items-center">
+      <div className="flex items-center px-6 py-5 flex-col h-[800px] bg-black md:h-[90vh] md:px-36 md:py-10">
+        <div className="flex flex-col px-6 text-stone-200 mb-5 md:pt-6 md:items-center">
           <h1 className="text-4xl font-extrabold text-center leading-tight md:text-left md:text-7xl">
             Made for Agents.
           </h1>
@@ -51,16 +51,57 @@ export default function Home({ allPostsData }) {
         </div>
       </div>
 
-      <main className="flex justify-center px-4 border-4 flex-col">
-        <div className="py-10">
-          <h1 className="text-4xl font-extrabold text-center mb-4">
-            On the Go
-          </h1>
-          <p className="text-center text-xl">
-            Designed for the networking professional
-          </p>
+      <main className="flex justify-center flex-col">
+        <div className="py-[5rem]">
+          <div>
+            <h1 className="text-4xl font-extrabold text-center mb-4">
+              Easy to Get Started
+            </h1>
+            <p className="text-center text-xl">
+              Using Excel or another CRM? We make it easy to get started.
+            </p>
+          </div>
+          <div className="md:flex md:flex-row">
+            <div className="items-center justify-center text-center md:flex md:flex-col md:flex-auto">
+              <div className="block md:w-[45vw] px-6 mt-16">
+                <Image
+                  src="/homepage/uploadClients.png"
+                  layout="responsive"
+                  width={400}
+                  height={250}
+                  alt="upload clients with csv"
+                />
+              </div>
+              <h3 className="text-2xl font-bold mt-5">
+                Import with a simple drag and drop
+              </h3>
+              <p className="mt-5">
+                Automatically upload all your data simply by drag-and-dropping
+                your excel or .csv file
+              </p>
+            </div>
+            <div className="items-center justify-center text-center mt-16 md:flex md:flex-col md:flex-auto">
+              <div className="block px-6 md:w-[45vw]">
+                <Image
+                  src="/homepage/onePlace.png"
+                  width={400}
+                  height={250}
+                  layout="responsive"
+                  alt="all your contacts in one place"
+                />
+              </div>
+              <h3 className="text-2xl font-bold mt-5">
+                Start building better relationships
+              </h3>
+              <p className="mt-5">
+                Upload once, sync while at your work station and on-the-go with
+                our iOS app
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="pt-10 bg-black text-stone-200">
+
+        <div className="pt-10 bg-black text-stone-200 px-6">
           <h1 className="text-4xl font-extrabold text-center mb-2">
             Stay Productive
           </h1>
@@ -113,7 +154,7 @@ export default function Home({ allPostsData }) {
         </div>
       </div> */}
 
-      <div className="bg-slate-200 py-10 px-4">
+      <div className="bg-slate-200 py-10">
         <h3 className="text-center font-medium text-3xl">About Us</h3>
         <p className="text-center mt-5">
           Curated real estate news, delivered to you weekly. <br />
