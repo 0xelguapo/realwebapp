@@ -1,26 +1,42 @@
 .pageContainer {
   height: 100vh;
   width: 100%;
-  padding: 7rem 2rem 0 2rem;
+  padding: 7rem 0 0 0;
+  background-color: #f3f3f3;
 }
 
 .container {
   display: flex;
-  height: 100%;
+  height: 95%;
   flex-direction: column;
+  background-color: white;;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .headingContainer {
   display: flex;
-  height: 4rem;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  height: 7rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0rem 1.5rem;
+}
+
+.headingText {
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.headingDescription {
+  margin-top: 1rem;
 }
 
 .buttonContainer {
   display: flex;
-  justify-content: space-between;
-  width: 15rem;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 1.5rem 1.5rem;
 }
 
 .nextButton {
@@ -31,6 +47,7 @@
   background: #026bff;
   color: white;
   font-weight: 700;
+  margin-left: 1rem;
 }
 
 .nextButton:hover:enabled {
@@ -40,8 +57,8 @@
 
 .nextButton:disabled {
   cursor: default;
-  background: rgb(172, 172, 172);
-  color: rgb(131, 131, 131);
+  background: #a4cafe;
+  color: rgb(218, 218, 218);
 }
 
 .backButton {
@@ -53,28 +70,47 @@
   font-weight: 700;
 }
 
-.importButton {
-  height: 1.5rem;
-  width: 8rem;
-  border: none;
-  border-radius: 5px;
-  background: #026bff;
-  color: white;
-  font-weight: 700;
-}
-
-.importButton:hover, 
-.backButton:hover{
+.backButton:hover {
   cursor: pointer;
 }
 
+/* Step One Begins */
+
+.stepOneContainer {
+  display: flex;
+  flex-direction: row;
+  height: 75%;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.oneLeftContainer {
+  display: flex;
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border-right: 1px solid #e5e7eb;
+}
+
+.oneLeftContainerHeading {
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.oneRightContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 2rem;
+}
+
 .importContainer {
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 2px dashed lightgray;
   border-radius: 10px;
-  flex: 0.2;
   cursor: pointer;
 }
 
@@ -100,49 +136,72 @@
   margin-left: 1rem;
 }
 
-.oneDescriptionContainer {
-  display: flex;
-  flex: 0.6;
-  padding: 2rem 1rem;
-}
-
 .dragText {
   font-weight: 500;
   margin: 0;
 }
 
 .remove {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 .progressBar {
   position: absolute;
-  width: 50%;
+  width: 30%;
   padding: 0 5rem;
   margin-top: 3rem;
 }
 
+/* Step Two Begins */
+
 .twoContainer {
-  border: 1px solid black;
   display: flex;
   flex: 1;
 }
 
-.columnsContainer {
-  flex: .5;
-  border: 1px solid red;
+.twoLeft {
+  flex: 0.5;
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem 1.5rem 1rem 1.5rem;
 }
 
-.columnsContainerTitle {
+.twoLeftTitle {
   font-size: 1.4rem;
+  font-weight: 500;
+  padding: .5rem 0;
+}
+
+.hasHeader {
+  display: flex;
+  padding: .5rem 0;
+}
+
+.hasHeaderInput {
+  margin-right: .5rem;
 }
 
 .mappingsContainer {
   display: flex;
-  border: 1px solid black;
   flex-direction: column;
 }
 
-.preview {
-  border: 1px solid red;
+.previewField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 3rem;
+  border: 1px solid #e5e7eb;
+  margin-bottom: .4rem;
+  border-radius: 5px;
+}
+
+.importedField {
+  padding: 0 1rem;
+  flex: 1;
+  border-right: 1px solid #e5e7eb;
+}
+
+.mappedField {
+  padding: 0 1rem;
+  flex: 1;
 }

@@ -1,4 +1,4 @@
-import 'regenerator-runtime/runtime';
+import "regenerator-runtime/runtime";
 import { AuthContextProvider } from "../shared/context/auth-context";
 import "../styles/globals.css";
 import Amplify from "aws-amplify";
@@ -7,6 +7,8 @@ import nProgress from "nprogress";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ClientContextProvider } from "../shared/context/client-context";
+import { Provider } from "react-redux";
+import store from "../shared/redux/index";
 
 Amplify.configure(awsconfig);
 
@@ -27,16 +29,17 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthContextProvider>
-      <ClientContextProvider>
-        {Component.PageLayout ? (
-          <Component.PageLayout>
+      <Provider store={store}>
+        <ClientContextProvider>
+          {Component.PageLayout ? (
+            <Component.PageLayout>
+              <Component {...pageProps} />
+            </Component.PageLayout>
+          ) : (
             <Component {...pageProps} />
-          </Component.PageLayout>
-        ) : (
-
-          <Component {...pageProps} />
-        )}
-      </ClientContextProvider>
+          )}
+        </ClientContextProvider>
+      </Provider>
     </AuthContextProvider>
   );
 }

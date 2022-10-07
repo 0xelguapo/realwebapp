@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
+    "@reduxjs/toolkit": "^1.8.5",
     "aws-amplify": "^4.3.14",
     "date-fns": "^2.29.3",
     "gray-matter": "^4.0.3",
@@ -18,8 +19,10 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.36.1",
+    "react-icons": "^4.4.0",
     "react-papaparse": "^4.0.2",
-    "react-table": "^7.7.0"
+    "react-redux": "^8.0.4",
+    "react-table": "^7.8.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.7",

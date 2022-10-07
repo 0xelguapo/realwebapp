@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import styles from "./Import.module.css";
 import Head from "next/head";
-import Image from "next/image";
 import DashboardLayout from "../../shared/components/UI/Layouts/DashboardLayout";
 import { useCSVReader, formatFileSize } from "react-papaparse";
 
@@ -12,9 +11,10 @@ function Import() {
   const [hoverState, setHoverState] = useState(false);
 
   const handleUploadedFile = useCallback((uploadedFile) => {
-    if(uploadedFile) {
-      setSelectedFile(uploadedFile)
+    if (uploadedFile) {
+      setSelectedFile(uploadedFile);
       setHoverState(false);
+      console.log(uploadedFile)
     }
   }, []);
 
@@ -29,75 +29,92 @@ function Import() {
   };
 
   const incrementStep = () => {
-    setCurrentStep(prevStep => prevStep + 1);
-  }
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
 
   const decrementStep = () => {
-    setCurrentStep(prevStep => prevStep - 1)
-  }
+    setCurrentStep((prevStep) => prevStep - 1);
+  };
 
   const steps = [
     {
       Component: (
-        <>
-          <CSVReader
-            onUploadAccepted={handleUploadedFile}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-          >
-            {({
-              getRootProps,
-              acceptedFile,
-              ProgressBar,
-              getRemoveFileProps,
-              Remove,
-            }) => (
-              <div
-                className={
-                  hoverState || acceptedFile 
-                    ? `${styles.importContainer} ${styles.importContainerActive}`
-                    : styles.importContainer
-                }
-                {...getRootProps()}
-              >
-                {acceptedFile ? (
-                  <>
-                    <div className={styles.remove} {...getRemoveFileProps()}>
-                      <Remove color={"red"} />
-                    </div>
-                    <p className={styles.selectedFileTitle}>{acceptedFile.name}</p>
-                    <div className={styles.progressBar}>
-                      <ProgressBar />
-                    </div>
-                  </>
-                ) : (
-                  <div>Drag your CSV file here or click to upload</div>
-                )}
-              </div>
-            )}
-          </CSVReader>
-          <div className={styles.oneDescriptionContainer}>Description Div</div>
-        </>
+        <div className={styles.stepOneContainer}>
+          <div className={styles.oneLeftContainer}>
+            <h1 className={styles.headingText}>
+              Before uploading your file
+            </h1>
+
+          </div>
+          <div className={styles.oneRightContainer}>
+            <CSVReader
+              onUploadAccepted={handleUploadedFile}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+            >
+              {({
+                getRootProps,
+                acceptedFile,
+                ProgressBar,
+                getRemoveFileProps,
+                Remove,
+              }) => (
+                <div
+                  className={
+                    hoverState || acceptedFile
+                      ? `${styles.importContainer} ${styles.importContainerActive}`
+                      : styles.importContainer
+                  }
+                  {...getRootProps()}
+                >
+                  {acceptedFile ? (
+                    <>
+                      <div className={styles.remove} {...getRemoveFileProps()}>
+                        <Remove color={"red"} />
+                      </div>
+                      <p className={styles.selectedFileTitle}>
+                        {acceptedFile.name}
+                      </p>
+                      <div className={styles.progressBar}>
+                        <ProgressBar />
+                      </div>
+                    </>
+                  ) : (
+                    <div>Drag your CSV file here or click to upload</div>
+                  )}
+                </div>
+              )}
+            </CSVReader>
+          </div>
+        </div>
       ),
     },
     {
       Component: (
         <>
-        <div className={styles.twoContainer}>
-          <div className={styles.columnsContainer}>
-            <h3 className={styles.columnsContainerTitle}>Spreadsheet Columns</h3>
-            <div className={styles.hasHeader}><input type="checkbox" />The first row in my file is a column header</div>
-            <div className={styles.mappingsContainer}>
-              {selectedFile &&
-              selectedFile.data[1].map((el, index) => 
-                <div className={styles.preview} key={index}>{el}</div>
-              )}
+          <div className={styles.twoContainer}>
+            <div className={styles.twoLeft}>
+              <h3 className={styles.twoLeftTitle}>
+                Spreadsheet Columns
+              </h3>
+              <div className={styles.hasHeader}>
+                <input type="checkbox" className={styles.hasHeaderInput} />
+                <p>The first row in my file is a column header, do not import it</p>
+              </div>
+              <div className={styles.mappingsContainer}>
+                {selectedFile &&
+                  selectedFile.data[1].map((el, index) => (
+                    <div className={styles.previewField} key={index}>
+                      <div className={styles.importedField}>{el}</div>
+                      <div className={styles.mappedField}></div>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
         </>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -112,17 +129,29 @@ function Import() {
       </Head>
       <div className={styles.container}>
         <div className={styles.headingContainer}>
-          <div className={styles.stepsGuide}>
-            steps
-          </div>
-          <div className={styles.buttonContainer}>
-            <button className={styles.backButton} onClick={decrementStep}>Back</button>
-            <button className={styles.nextButton} onClick={incrementStep} disabled={!selectedFile}>
-              Next
-            </button>
-          </div>
+          <h1 className={styles.headingText}>Import Data</h1>
+          <p className={styles.headingDescription}>
+            You can import only contacts, or you can import contacts along with
+            their associated properties together.
+          </p>
         </div>
         {steps[currentStep].Component}
+        <div className={styles.buttonContainer}>
+          <button
+            className={styles.backButton}
+            onClick={decrementStep}
+            disabled={currentStep === 0}
+          >
+            Back
+          </button>
+          <button
+            className={styles.nextButton}
+            onClick={incrementStep}
+            disabled={!selectedFile}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

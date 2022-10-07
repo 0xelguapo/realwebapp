@@ -2,7 +2,8 @@
   display: flex;
   background: #f1f1f1;
   width: 100%;
-  min-height: 200vh;
+  min-height: 100vh;
+  padding-bottom: 2rem;
 }
 
 .clientsContainer {

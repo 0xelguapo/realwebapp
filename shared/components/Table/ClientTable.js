@@ -13,35 +13,35 @@ import GlobalFilter from "./GlobalFilter";
 import InputCheckbox from "./IndeterminateCheckbox";
 import EditableCell from "./EditableCell";
 import Success from "../UI/Status/Success";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  editClient,
+  fetchClients,
+  selectAllClients,
+} from "../../redux/clients-slice";
+import { IoChevronForward, IoChevronBack } from "react-icons/io5";
 
 const defaultColumn = {
   Cell: EditableCell,
 };
 
-const phoneFormat = (value) => {
-  if (value) {
-    return value.replace(/[\[\]']+/g, "");
-  }
-};
-
 export default function ClientTable() {
-  const {
-    clientsArray,
-    isLoading,
-    updateClient,
-    deleteClients,
-    successStatus,
-    successMessage,
-  } = useClients();
+  const dispatch = useDispatch();
+  const allClients = useSelector(selectAllClients);
+  const status = useSelector((state) => state.clients.status);
+  const { updateClient, deleteClients, successStatus, successMessage } =
+    useClients();
   const [skipPageReset, setSkipPageReset] = useState(false);
 
-  const data = useMemo(() => {
-    return [...clientsArray];
-  }, [clientsArray]);
+  const phoneFormat = (value) => {
+    if (value) {
+      return value.replace(/[\[\]']+/g, "");
+    }
+  };
 
-  useEffect(() => {
-    setSkipPageReset(false);
-  }, [data, clientsArray]);
+  const data = useMemo(() => {
+    return [...allClients];
+  }, [allClients]);
 
   const columns = useMemo(
     () => [
@@ -80,12 +80,12 @@ export default function ClientTable() {
         {
           id: "selection",
           Header: ({ getToggleAllPageRowsSelectedProps }) => (
-            <div>
+            <div className={styles.checkBoxContainer}>
               <InputCheckbox {...getToggleAllPageRowsSelectedProps()} />
             </div>
           ),
           Cell: ({ row }) => (
-            <div>
+            <div className={styles.checkBoxContainer}>
               <InputCheckbox {...row.getToggleRowSelectedProps()} />
             </div>
           ),
@@ -106,6 +106,7 @@ export default function ClientTable() {
     previousPage,
     canNextPage,
     canPreviousPage,
+    setPageSize,
     selectedFlatRows,
     prepareRow,
     preGlobalFilteredRows,
@@ -113,8 +114,19 @@ export default function ClientTable() {
     state,
   } = tableInstance;
 
+  state.pageSize = 25;
+
+  useEffect(() => {
+    dispatch(fetchClients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setSkipPageReset(false);
+  }, [data, allClients]);
+
   const handleDeleteClients = async () => {
-    await deleteClients(selectedFlatRows);
+    console.log(selectedFlatRows);
+    // await deleteClients(selectedFlatRows);
   };
 
   return (
@@ -130,18 +142,26 @@ export default function ClientTable() {
           <AddClient />
         </div>
       </div>
-      <div className={styles.pagination}>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {" < "}
+      <div className={styles.pageButtonsContainer}>
+        <button
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+          className={styles.pageButton}
+        >
+          <IoChevronBack size={20} color="#4e4e4e" />
         </button>
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {" > "}
+        <button
+          onClick={() => nextPage()}
+          disabled={!canNextPage}
+          className={styles.pageButton}
+        >
+          <IoChevronForward size={20} color="#4e4e4e" />
         </button>
         {Object.keys(state.selectedRowIds).length !== 0 && (
           <button onClick={handleDeleteClients}>Delete</button>
         )}
       </div>
-      {isLoading ? (
+      {status !== "succeeded" ? (
         <div className={styles.loadingContainer}>
           <LoadingSpinner />
         </div>
@@ -163,7 +183,7 @@ export default function ClientTable() {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {page.map((row, i) => {
               prepareRow(row);
               return (
                 <tr
@@ -178,9 +198,7 @@ export default function ClientTable() {
                         key={cell.row.original.id}
                         {...cell.getCellProps()}
                       >
-                        {cell.column.Header === "Phone"
-                          ? phoneFormat(cell.value)
-                          : cell.render("Cell")}
+                       {cell.render("Cell")}
                       </td>
                     );
                   })}

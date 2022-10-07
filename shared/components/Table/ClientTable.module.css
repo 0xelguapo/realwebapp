@@ -2,27 +2,47 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  flex: 1;
 }
-
 
 .clientsHeaderContainer {
   display: flex;
-  flex: .05;
+  flex: 0.05;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 4rem 1.5rem .3rem;
+  padding: 1.5rem 4rem 1.5rem 0.3rem;
 }
 
 .header {
   text-align: left;
-  padding-left: .5rem;
+  padding-left: 0.5rem;
   height: 2.5rem;
   background: white;
+  border-right: 1px solid #e5e7eb;
+}
+
+.pageButtonsContainer {
+  display: flex;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.pageButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border-width: 1;
+  border-color: black;
+  margin-right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: #d7d7d7;
 }
 
 .row {
-  height: 2rem;
-  font-size: .9rem;
+  height: 2.5rem;
+  font-size: 0.9rem;
 }
 
 .row:nth-child(odd) {
@@ -34,7 +54,16 @@
 }
 
 .data {
-  padding-left: .5rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-right: 1px solid #e5e7eb;
+}
+
+.checkBoxContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.5rem;
 }
 
 .loadingContainer {
@@ -42,9 +71,4 @@
   top: 50%;
   left: 50%;
   margin: 0 auto;
-}
-
-.pagination {
-  display: flex;
-  height: 2rem;
 }

@@ -1,10 +1,20 @@
+.editCellContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editCellContainer:hover button {
+  display: flex;
+  cursor: pointer;
+  opacity: 1;
+}
 
 .valueContainer {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   width: 10rem;
   flex-grow: 1;
-  height: 1.8rem;
+  height: 1.5rem;
   overflow: hidden;
 }
 
@@ -14,39 +24,78 @@
 
 .editInput {
   height: 1.5rem;
-  flex-grow: .9;
+  flex-grow: 0.9;
   background: none;
   border: 1px solid rgb(177, 177, 177);
   border-radius: 5px;
-  padding-left: .3rem;
+  padding-left: 0.3rem;
 }
 
 .editInput:focus {
- outline: none;
+  outline: none;
 }
 
-
-.editInput, .valueContainer {
+.editInput,
+.valueContainer {
   font-weight: 400;
-  font-size: .9rem;
-}
-
-.editCellContainer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.editCellContainer:hover button{
-  display: flex;
-  cursor: pointer;
-  opacity: 1;
+  font-size: 0.9rem;
 }
 
 .editButton {
   display: flex;
   align-items: center;
+  justify-content: center;
   opacity: 0;
-  background: #d3d3d3;
+  background: #d7d7d7;
   border-radius: 5px;
   border: none;
+  padding: 0 0.5rem;
+}
+
+.editEmailContainer {
+  display: flex;
+  position: absolute;
+  flex: 1;
+  flex-direction: column;
+  background-color: white;
+  min-height: 12rem;
+  width: 20rem;
+}
+
+.editEmailHeadingContainer {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  flex: 0.1;
+  padding: 1rem;
+}
+
+.editEmailBody {
+  flex: 1;
+  padding: 1rem 0;
+}
+
+.editEmailButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  background-color: #f3f4f6;
+  padding: 0.5rem;
+}
+
+.saveEmailButton {
+  background-color: #026bff;
+  color: white;
+  padding: 0.3rem 1rem;
+  font-weight: 500;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.cancelEmailButton {
+  background-color: #f9fafb;
+  padding: 0.3rem 1rem;
+  border-radius: 5px;
+  border: 0.5px solid #d1d5db;
 }

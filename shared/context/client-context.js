@@ -31,10 +31,6 @@ function ClientContextProvider({ children }) {
     setIsLoading(false);
   }, []);
 
-  useEffect(() => {
-    getAllClients();
-  }, [getAllClients]);
-
   const onSuccess = () => {
     setSuccessStatus(true);
     setTimeout(() => {
