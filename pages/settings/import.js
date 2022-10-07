@@ -1,8 +1,13 @@
 import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import styles from "./Import.module.css";
 import Head from "next/head";
 import DashboardLayout from "../../shared/components/UI/Layouts/DashboardLayout";
 import { useCSVReader, formatFileSize } from "react-papaparse";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import Bucket from "../../shared/components/Import/Bucket";
+import DraggableBox from "../../shared/components/Import/DraggableBox";
 
 function Import() {
   const { CSVReader } = useCSVReader();
@@ -10,11 +15,23 @@ function Import() {
   const [selectedFile, setSelectedFile] = useState();
   const [hoverState, setHoverState] = useState(false);
 
+  const [boxes] = useState([
+    { name: "First Name", schema: "firstname" },
+    { name: "Last Name", schema: "lastname" },
+    { name: "Company", schema: "company" },
+    { name: "Email", schema: "email" },
+    { name: "Phone", schema: "phone" },
+    { name: "Property Street Address", schema: "street" },
+    { name: "Property City", schema: "city" },
+    { name: "Property State", schema: "state" },
+    { name: "Property Zip", schema: "zip" },
+  ]);
+
   const handleUploadedFile = useCallback((uploadedFile) => {
     if (uploadedFile) {
       setSelectedFile(uploadedFile);
       setHoverState(false);
-      console.log(uploadedFile)
+      console.log(uploadedFile);
     }
   }, []);
 
@@ -41,10 +58,7 @@ function Import() {
       Component: (
         <div className={styles.stepOneContainer}>
           <div className={styles.oneLeftContainer}>
-            <h1 className={styles.headingText}>
-              Before uploading your file
-            </h1>
-
+            <h1 className={styles.headingText}>Before uploading your file</h1>
           </div>
           <div className={styles.oneRightContainer}>
             <CSVReader
@@ -92,26 +106,54 @@ function Import() {
     {
       Component: (
         <>
-          <div className={styles.twoContainer}>
-            <div className={styles.twoLeft}>
-              <h3 className={styles.twoLeftTitle}>
-                Spreadsheet Columns
-              </h3>
-              <div className={styles.hasHeader}>
-                <input type="checkbox" className={styles.hasHeaderInput} />
-                <p>The first row in my file is a column header, do not import it</p>
+          <DndProvider backend={HTML5Backend}>
+            <div className={styles.twoContainer}>
+              <div className={styles.twoLeft}>
+                <div className={styles.twoHeadingContainer}>
+                  <h3 className={styles.twoSectionTitle}>
+                    Spreadsheet Columns
+                  </h3>
+                  <div className={styles.hasHeader}>
+                    <input type="checkbox" className={styles.hasHeaderInput} />
+                    <p>
+                      The first row in my file is a column header, do not import
+                      it
+                    </p>
+                  </div>
+                </div>
+                <div className={styles.mappingsContainer}>
+                  {selectedFile &&
+                    selectedFile.data[1].map((el, index) => (
+                      <div className={styles.previewField} key={index}>
+                        <div className={styles.importedField}>
+                          <div className={styles.importedFieldHeader}>
+                            {selectedFile.data[0][index]}
+                          </div>
+                          <div className={styles.importedFieldNonHeader}>
+                            {el}
+                          </div>
+                        </div>
+                        <div className={styles.mappingField}>
+                          <Bucket index={index} />
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
-              <div className={styles.mappingsContainer}>
-                {selectedFile &&
-                  selectedFile.data[1].map((el, index) => (
-                    <div className={styles.previewField} key={index}>
-                      <div className={styles.importedField}>{el}</div>
-                      <div className={styles.mappedField}></div>
-                    </div>
+              <div className={styles.twoRight}>
+                <div className={styles.twoHeadingContainer}>
+                  <h3 className={styles.twoSectionTitle}>
+                    CoAgent data fields
+                  </h3>
+                </div>
+                <div className={styles.boxesContainer}>
+                  {boxes.map((box, index) => (
+                    <DraggableBox key={index} name={box.name} />
                   ))}
+                </div>
               </div>
             </div>
-          </div>
+          </DndProvider>
         </>
       ),
     },

@@ -7,9 +7,8 @@
 
 .container {
   display: flex;
-  height: 95%;
   flex-direction: column;
-  background-color: white;;
+  background-color: white;
   border-top: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -18,7 +17,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 7rem;
+  min-height: 7rem;
   border-bottom: 1px solid #e5e7eb;
   padding: 0rem 1.5rem;
 }
@@ -90,11 +89,6 @@
   border-right: 1px solid #e5e7eb;
 }
 
-.oneLeftContainerHeading {
-  font-weight: 400;
-  font-size: 1.5rem;
-}
-
 .oneRightContainer {
   display: flex;
   justify-content: center;
@@ -159,25 +153,30 @@
   flex: 1;
 }
 
+.twoHeadingContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.twoSectionTitle {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
 .twoLeft {
-  flex: 0.5;
+  flex: 1;
   border-right: 1px solid #e5e7eb;
   padding: 1rem 1.5rem 1rem 1.5rem;
 }
 
-.twoLeftTitle {
-  font-size: 1.4rem;
-  font-weight: 500;
-  padding: .5rem 0;
-}
-
 .hasHeader {
   display: flex;
-  padding: .5rem 0;
+  margin-top: 0.5rem;
 }
 
 .hasHeaderInput {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 .mappingsContainer {
@@ -189,19 +188,39 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 3rem;
+  height: 4rem;
   border: 1px solid #e5e7eb;
-  margin-bottom: .4rem;
+  margin-bottom: 0.4rem;
   border-radius: 5px;
 }
 
 .importedField {
   padding: 0 1rem;
   flex: 1;
-  border-right: 1px solid #e5e7eb;
+  flex: column;
+  font-size: 0.9rem;
 }
 
-.mappedField {
-  padding: 0 1rem;
+.importedFieldHeader {
+  font-weight: 600;
+}
+
+.importedFieldNonHeader {
+  color: #6c6c6c;
+}
+
+.mappingField {
   flex: 1;
+  height: 100%;
+}
+
+.twoRight {
+  flex: 1;
+  padding: 1rem 1.5rem 1rem 1.5rem;
+}
+
+.boxesContainer {
+  max-height: calc(65vh * .8);
+  overflow-y: scroll;
+  padding-right: 1rem;
 }
