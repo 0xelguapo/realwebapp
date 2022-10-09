@@ -1,0 +1,80 @@
+.headingText {
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.headingDescription {
+  margin-top: 1rem;
+}
+
+
+.stepOneContainer {
+  display: flex;
+  flex-direction: row;
+  height: 75%;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.oneLeftContainer {
+  display: flex;
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border-right: 1px solid #e5e7eb;
+}
+
+.oneRightContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 2rem;
+}
+
+.importContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed lightgray;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.importContainer:hover {
+  background: #f6f6f6;
+}
+
+.importContainerActive {
+  background: rgb(233, 233, 233);
+}
+
+.selectedFileContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25rem;
+  cursor: pointer;
+}
+
+.selectedFileTitle {
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin-left: 1rem;
+}
+
+.dragText {
+  font-weight: 500;
+  margin: 0;
+}
+
+.remove {
+  margin-right: 0.5rem;
+}
+
+.progressBar {
+  position: absolute;
+  width: 30%;
+  padding: 0 5rem;
+  margin-top: 3rem;
+}

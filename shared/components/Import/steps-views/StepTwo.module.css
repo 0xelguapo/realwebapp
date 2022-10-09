@@ -1,0 +1,90 @@
+.twoContainer {
+  display: flex;
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.twoInfoContainer {
+  background-color: #f2f8ff;
+  padding: .5rem 1rem;
+  display: flex; 
+}
+
+.twoInfoText {
+  font-size: .9rem;
+  font-weight: 400;
+  margin-left: 10px;
+}
+
+.twoHeadingContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.twoSectionTitle {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.twoLeft {
+  flex: 1;
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem 1.5rem;
+}
+
+.hasHeader {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.hasHeaderInput {
+  margin-right: 0.5rem;
+}
+
+.mappingsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.previewField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 4rem;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 0.4rem;
+  border-radius: 5px;
+}
+
+.importedField {
+  padding: 0 1rem;
+  flex: 1;
+  flex: column;
+  font-size: 0.9rem;
+}
+
+.importedFieldHeader {
+  font-weight: 600;
+}
+
+.importedFieldNonHeader {
+  color: #6c6c6c;
+}
+
+.mappingField {
+  flex: 1;
+  height: 100%;
+}
+
+.twoRight {
+  flex: 1;
+  padding: 1rem 2rem;
+  height: 100%;
+}
+
+.boxesContainer {
+  height: 400px;
+  overflow-y: scroll;
+  padding-right: 1rem;
+}

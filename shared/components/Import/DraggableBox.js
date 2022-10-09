@@ -1,15 +1,15 @@
 import { useDrag } from "react-dnd";
 
-export default function DraggableBox({ name, schema, isDropped }) {
+export default function DraggableBox({ name, item, isDropped, boxes }) {
   const [{ isDragging }, drag, dragPreview] = useDrag(
     () => ({
       type: "BOX",
-      item: { schema },
+      item: { item },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
     }),
-    [name]
+    [name, boxes]
   );
 
   return (
