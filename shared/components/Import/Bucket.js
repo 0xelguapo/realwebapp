@@ -1,8 +1,9 @@
 import { useDrop } from "react-dnd";
 
-export default function Bucket() {
+export default function Bucket({ onDrop, droppedItem }) {
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: "BOX",
+    drop: onDrop,
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -15,16 +16,16 @@ export default function Bucket() {
       role="Bucket"
       style={{
         backgroundColor: isOver ? "#f9f9f9" : "white",
-        display: 'flex',
+        display: "flex",
         height: "100%",
         width: "100%",
-        alignItems: 'center',
-        paddingLeft: '1rem',
+        alignItems: "center",
+        paddingLeft: "1rem",
         borderLeftWidth: 1,
-        borderColor: '#e5e7eb',
-        fontStyle: 'italic',
-        fontSize: '.9rem',
-        color: '#6c6c6c'
+        borderColor: "#e5e7eb",
+        fontStyle: "italic",
+        fontSize: ".9rem",
+        color: "#6c6c6c",
       }}
     >
       {canDrop ? "Release here to drop" : "Drag a box here"}

@@ -7,6 +7,7 @@
 
 .container {
   display: flex;
+  height: 750px;
   flex-direction: column;
   background-color: white;
   border-top: 1px solid #e5e7eb;
@@ -151,6 +152,19 @@
 .twoContainer {
   display: flex;
   flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.twoInfoContainer {
+  background-color: #f2f8ff;
+  padding: .5rem 1rem;
+  display: flex; 
+}
+
+.twoInfoText {
+  font-size: .9rem;
+  font-weight: 400;
+  margin-left: 10px;
 }
 
 .twoHeadingContainer {
@@ -167,7 +181,7 @@
 .twoLeft {
   flex: 1;
   border-right: 1px solid #e5e7eb;
-  padding: 1rem 1.5rem 1rem 1.5rem;
+  padding: 1rem 1.5rem;
 }
 
 .hasHeader {
@@ -216,11 +230,12 @@
 
 .twoRight {
   flex: 1;
-  padding: 1rem 1.5rem 1rem 1.5rem;
+  padding: 1rem 2rem;
+  height: 100%;
 }
 
 .boxesContainer {
-  max-height: calc(65vh * .8);
+  height: 400px;
   overflow-y: scroll;
   padding-right: 1rem;
 }

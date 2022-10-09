@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import dynamic from "next/dynamic";
 import styles from "./Import.module.css";
 import Head from "next/head";
 import DashboardLayout from "../../shared/components/UI/Layouts/DashboardLayout";
@@ -8,6 +7,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import Bucket from "../../shared/components/Import/Bucket";
 import DraggableBox from "../../shared/components/Import/DraggableBox";
+import { FiInfo } from "react-icons/fi";
 
 function Import() {
   const { CSVReader } = useCSVReader();
@@ -16,16 +16,23 @@ function Import() {
   const [hoverState, setHoverState] = useState(false);
 
   const [boxes] = useState([
-    { name: "First Name", schema: "firstname" },
-    { name: "Last Name", schema: "lastname" },
-    { name: "Company", schema: "company" },
-    { name: "Email", schema: "email" },
+    { name: "First Name", schema: "firstname", type: "BOX" },
+    { name: "Last Name", schema: "lastname", type: "BOX" },
+    { name: "Company", schema: "company", type: "BOX" },
+    { name: "Email", schema: "email", type: "BOX" },
     { name: "Phone", schema: "phone" },
-    { name: "Property Street Address", schema: "street" },
-    { name: "Property City", schema: "city" },
-    { name: "Property State", schema: "state" },
-    { name: "Property Zip", schema: "zip" },
+    { name: "Property Street Address", schema: "street", type: "BOX" },
+    { name: "Property City", schema: "city", type: "BOX" },
+    { name: "Property State", schema: "state", type: "BOX" },
+    { name: "Property Zip", schema: "zip", type: "BOX" },
   ]);
+
+  const droppedBoxNames = [];
+  const handleDrop = (index, item) => {
+    const { schema } = item;
+    droppedBoxNames[index] = schema;
+    console.log(droppedBoxNames);
+  };
 
   const handleUploadedFile = useCallback((uploadedFile) => {
     if (uploadedFile) {
@@ -109,6 +116,14 @@ function Import() {
           <DndProvider backend={HTML5Backend}>
             <div className={styles.twoContainer}>
               <div className={styles.twoLeft}>
+                <div className={styles.twoInfoContainer}>
+                  <FiInfo size={24} color="76a9fa" />
+                  <p className={styles.twoInfoText}>
+                    Drag the data fields from the right side to the left side
+                    boxes that match your data. Unmapped columns will not be
+                    imported.
+                  </p>
+                </div>
                 <div className={styles.twoHeadingContainer}>
                   <h3 className={styles.twoSectionTitle}>
                     Spreadsheet Columns
@@ -134,7 +149,9 @@ function Import() {
                           </div>
                         </div>
                         <div className={styles.mappingField}>
-                          <Bucket index={index} />
+                          <Bucket
+                            onDrop={(item) => handleDrop(index, item)}
+                          />
                         </div>
                       </div>
                     ))}
@@ -145,10 +162,17 @@ function Import() {
                   <h3 className={styles.twoSectionTitle}>
                     CoAgent data fields
                   </h3>
+                  <p>
+                    Drag the correct data fields to your Spreadsheet Columns
+                  </p>
                 </div>
                 <div className={styles.boxesContainer}>
                   {boxes.map((box, index) => (
-                    <DraggableBox key={index} name={box.name} />
+                    <DraggableBox
+                      key={index}
+                      name={box.name}
+                      schema={box.schema}
+                    />
                   ))}
                 </div>
               </div>
