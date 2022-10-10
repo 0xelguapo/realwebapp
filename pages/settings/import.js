@@ -5,6 +5,8 @@ import DashboardLayout from "../../shared/components/UI/Layouts/DashboardLayout"
 import update from "immutability-helper";
 import StepOne from "../../shared/components/Import/steps-views/StepOne";
 import StepTwo from "../../shared/components/Import/steps-views/StepTwo";
+import StepThree from "../../shared/components/Import/steps-views/StepThree";
+import { ImportContextProvider } from "../../shared/context/import-context";
 
 function Import() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -30,7 +32,7 @@ function Import() {
       setDroppedBoxNames(
         update(droppedBoxNames, {
           [index]: {
-            $set: item.item.schema,
+            $set: item,
           },
         })
       );
@@ -40,7 +42,6 @@ function Import() {
           $splice: [[indexOf, 1]],
         })
       );
-      console.log(droppedBoxNames);
     },
     [boxes, setBoxes, droppedBoxNames]
   );
@@ -48,15 +49,14 @@ function Import() {
   const handleUndrop = (index, item) => {
     setDroppedBoxNames(
       update(droppedBoxNames, {
-        $splice: [[index, 1]],
+        [index]: { $set: null },
       })
     );
     setBoxes(
       update(boxes, {
-        $unshift: [item.item],
+        $unshift: [item],
       })
     );
-    console.log("undrop");
     console.log(item);
   };
 
@@ -103,23 +103,35 @@ function Import() {
             You can import only contacts, or you can import contacts along with
             their associated properties together.
           </p>
+          <button onClick={() => console.log(boxes)}>
+            printdropped
+          </button>
         </div>
-        {currentStep === 0 && (
-          <StepOne
-            handleUploadedFile={handleUploadedFile}
-            handleDragOver={handleDragOver}
-            handleDragLeave={handleDragLeave}
-            hoverState={hoverState}
-          />
-        )}
-        {currentStep === 1 && (
-          <StepTwo
-            selectedFile={selectedFile}
-            boxes={boxes}
-            handleDrop={handleDrop}
-            handleUndrop={handleUndrop}
-          />
-        )}
+        <ImportContextProvider>
+          {currentStep === 0 && (
+            <StepOne
+              handleUploadedFile={handleUploadedFile}
+              handleDragOver={handleDragOver}
+              handleDragLeave={handleDragLeave}
+              hoverState={hoverState}
+            />
+          )}
+          {currentStep === 1 && (
+            <StepTwo
+              selectedFile={selectedFile}
+              boxes={boxes}
+              handleDrop={handleDrop}
+              handleUndrop={handleUndrop}
+              droppedBoxNames={droppedBoxNames}
+            />
+          )}
+          {currentStep === 2 && (
+            <StepThree
+              droppedBoxNames={droppedBoxNames}
+              selectedFile={selectedFile}
+            />
+          )}
+        </ImportContextProvider>
         <div className={styles.buttonContainer}>
           <button
             className={styles.backButton}
@@ -128,13 +140,17 @@ function Import() {
           >
             Back
           </button>
-          <button
-            className={styles.nextButton}
-            onClick={incrementStep}
-            disabled={!selectedFile}
-          >
-            Next
-          </button>
+          {currentStep < 2 ? (
+            <button
+              className={styles.nextButton}
+              onClick={incrementStep}
+              disabled={!selectedFile}
+            >
+              Next
+            </button>
+          ) : (
+            <button className={styles.nextButton}>Import</button>
+          )}
         </div>
       </div>
     </div>

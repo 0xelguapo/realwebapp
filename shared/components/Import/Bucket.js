@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDrop } from "react-dnd";
+import { IoClose } from "react-icons/io5";
 
 export default function Bucket({
   onDrop,
@@ -7,17 +8,15 @@ export default function Bucket({
   boxes,
   indexOf,
   handleUndrop,
+  droppedBoxNames,
 }) {
-  const [itemName, setItemName] = useState("");
-  const [currentItem, setCurrentItem] = useState({});
+  console.log(droppedBoxNames[indexOf])
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: "BOX",
-      canDrop: () => !itemName,
+      canDrop: () => !droppedBoxNames[indexOf],
       drop: (item, monitor) => {
         onDrop(item, monitor);
-        setItemName(item.item.name);
-        setCurrentItem(item);
       },
       collect: (monitor) => ({
         isOver: monitor.isOver(),
@@ -28,8 +27,7 @@ export default function Bucket({
   );
 
   const unDrop = () => {
-    handleUndrop(indexOf, currentItem);
-    setItemName("");
+    handleUndrop(indexOf, droppedBoxNames[indexOf].item);
   };
 
   return (
@@ -37,12 +35,11 @@ export default function Bucket({
       ref={drop}
       role="Bucket"
       style={{
-        backgroundColor: canDrop ? "#f9f9f9" : "white",
+        backgroundColor: canDrop ? "#ececec" : "#f7f7f7",
         display: "flex",
         height: "100%",
         width: "100%",
         alignItems: "center",
-        paddingLeft: "1rem",
         borderLeftWidth: 1,
         borderColor: "#e5e7eb",
         fontStyle: "italic",
@@ -50,14 +47,32 @@ export default function Bucket({
         color: "#6c6c6c",
       }}
     >
-      {itemName ? (
-        <div>
-          {itemName} <button onClick={unDrop}>Undrop</button>
+      {droppedBoxNames[indexOf] ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            color: "black",
+            fontStyle: "normal",
+            fontWeight: 700,
+            height: "100%",
+            alignItems: "center",
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            background: 'white'
+          }}
+        >
+          {droppedBoxNames[indexOf].item.name}
+          <button onClick={unDrop}>
+            <IoClose size={20} color="#454545" />
+          </button>
         </div>
       ) : canDrop ? (
-        "Release here to drop"
+        <div style={{paddingLeft: '1rem'}}>Release here to drop</div>
       ) : (
-        "Drag a box here"
+        <div style={{paddingLeft: '1rem'}}>Drag a box here</div>
       )}
     </div>
   );

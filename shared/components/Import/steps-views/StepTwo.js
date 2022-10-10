@@ -10,6 +10,7 @@ export default function StepTwo({
   selectedFile,
   handleDrop,
   handleUndrop,
+  droppedBoxNames
 }) {
   return (
     <DndProvider backend={HTML5Backend}>
@@ -47,6 +48,7 @@ export default function StepTwo({
                       boxes={boxes}
                       handleUndrop={handleUndrop}
                       indexOf={index}
+                      droppedBoxNames={droppedBoxNames}
                     />
                   </div>
                 </div>
