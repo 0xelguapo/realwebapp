@@ -16,7 +16,7 @@ function Import() {
   const [boxes, setBoxes] = useState([
     { name: "First Name", schema: "firstname", type: "BOX" },
     { name: "Last Name", schema: "lastname", type: "BOX" },
-    { name: "Company", schema: "company", type: "BOX" },
+    { name: "Company / Title", schema: "company", type: "BOX" },
     { name: "Email", schema: "email", type: "BOX" },
     { name: "Phone", schema: "phone" },
     { name: "Property Street Address", schema: "street", type: "BOX" },
@@ -100,14 +100,10 @@ function Import() {
         <div className={styles.headingContainer}>
           <h1 className={styles.headingText}>Import Data</h1>
           <p className={styles.headingDescription}>
-            You can import only contacts, or you can import contacts along with
+            You can import contacts and properties separately, or you can import contacts along with
             their associated properties together.
           </p>
-          <button onClick={() => console.log(boxes)}>
-            printdropped
-          </button>
         </div>
-        <ImportContextProvider>
           {currentStep === 0 && (
             <StepOne
               handleUploadedFile={handleUploadedFile}
@@ -131,7 +127,6 @@ function Import() {
               selectedFile={selectedFile}
             />
           )}
-        </ImportContextProvider>
         <div className={styles.buttonContainer}>
           <button
             className={styles.backButton}

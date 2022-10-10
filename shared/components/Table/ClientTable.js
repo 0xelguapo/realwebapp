@@ -198,7 +198,7 @@ export default function ClientTable() {
                         key={cell.row.original.id}
                         {...cell.getCellProps()}
                       >
-                       {cell.render("Cell")}
+                        {cell.render("Cell")}
                       </td>
                     );
                   })}

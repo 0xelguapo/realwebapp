@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./EditableCell.module.css";
 import { FiEdit3 } from "react-icons/fi";
+import EditCellModal from "./EditCellModal";
 
 const EditableCell = ({
   value: initialValue,
@@ -51,30 +52,20 @@ const EditableCell = ({
       {editMode ? (
         <>
           {id === "email" && (
-            <div className={styles.editEmailContainer}>
-              <div className={styles.editEmailHeadingContainer}>
-                <h3>Edit Emails</h3>
-              </div>
-              <div className={styles.editEmailBody}></div>
-              <div className={styles.editEmailButtonsContainer}>
-                <button
-                  className={styles.cancelEmailButton}
-                  onClick={() => setEditMode(false)}
-                >
-                  Cancel
-                </button>
-                <button className={styles.saveEmailButton}>Save</button>
-              </div>
-            </div>
+            <EditCellModal
+              title="Edit Emails"
+              handleCancel={() => setEditMode(false)}
+            >
+              {/* <input
+                className={styles.editInput}
+                value={value}
+                onChange={handleChange}
+                onKeyDown={handleEnter}
+                onBlur={handleBlur}
+                ref={inputRef}
+              /> */}
+            </EditCellModal>
           )}
-          {/* <input
-            className={styles.editInput}
-            value={value}
-            onChange={handleChange}
-            onKeyDown={handleEnter}
-            onBlur={handleBlur}
-            ref={inputRef}
-          /> */}
         </>
       ) : (
         <>

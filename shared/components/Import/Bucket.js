@@ -10,7 +10,7 @@ export default function Bucket({
   handleUndrop,
   droppedBoxNames,
 }) {
-  console.log(droppedBoxNames[indexOf])
+  console.log(droppedBoxNames[indexOf]);
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: "BOX",
@@ -61,7 +61,7 @@ export default function Bucket({
             alignItems: "center",
             paddingLeft: "1rem",
             paddingRight: "1rem",
-            background: 'white'
+            background: "white",
           }}
         >
           {droppedBoxNames[indexOf].item.name}
@@ -70,9 +70,9 @@ export default function Bucket({
           </button>
         </div>
       ) : canDrop ? (
-        <div style={{paddingLeft: '1rem'}}>Release here to drop</div>
+        <div style={{ paddingLeft: "1rem" }}>Release here to drop</div>
       ) : (
-        <div style={{paddingLeft: '1rem'}}>Drag a box here</div>
+        <div style={{ paddingLeft: "1rem" }}>Drag a box here</div>
       )}
     </div>
   );

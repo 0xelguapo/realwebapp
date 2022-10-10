@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
 import { useCSVReader, formatFileSize } from "react-papaparse";
 import styles from "./StepOne.module.css";
+import { IoCheckmarkCircleOutline } from 'react-icons/io5'
 
 export default function StepOne({
   handleUploadedFile,
@@ -38,9 +38,10 @@ export default function StepOne({
             >
               {acceptedFile ? (
                 <>
-                  <div className={styles.remove} {...getRemoveFileProps()}>
+                <IoCheckmarkCircleOutline size={25} color="green" />
+                  {/* <div className={styles.remove} {...getRemoveFileProps()}>
                     <Remove color={"red"} />
-                  </div>
+                  </div> */}
                   <p className={styles.selectedFileTitle}>
                     {acceptedFile.name}
                   </p>

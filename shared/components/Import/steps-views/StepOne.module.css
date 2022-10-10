@@ -11,8 +11,8 @@
 .stepOneContainer {
   display: flex;
   flex-direction: row;
-  height: 75%;
   border-bottom: 1px solid #e5e7eb;
+  height: 587px;
 }
 
 .oneLeftContainer {

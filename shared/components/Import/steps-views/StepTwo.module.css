@@ -45,6 +45,8 @@
 .mappingsContainer {
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+  height: 400px;
 }
 
 .previewField {
@@ -78,7 +80,7 @@
 }
 
 .twoRight {
-  flex: 1;
+  flex: .8;
   padding: 1rem 2rem;
   height: 100%;
 }

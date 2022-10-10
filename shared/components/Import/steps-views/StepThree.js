@@ -1,9 +1,9 @@
 import styles from "./StepThree.module.css";
 
-export default function StepThree({droppedBoxNames, selectedFile}) {
+export default function StepThree({ droppedBoxNames, selectedFile }) {
   console.log(droppedBoxNames);
   console.log(selectedFile);
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.previewContainer}>
@@ -12,6 +12,20 @@ export default function StepThree({droppedBoxNames, selectedFile}) {
           <p className={styles.previewHeadingSubtext}>
             Please validate the first 3 rows of your imported file
           </p>
+        </div>
+        <div className={styles.body}>
+          {droppedBoxNames.map((box, index) => {
+            if (box) {
+              return (
+                <div key={index} className={styles.previewRowsContainer}>
+                  <div className={styles.previewRowHeader}>{box.item.name}</div>
+                  <div className={styles.previewRow}>{selectedFile.data[1][index]}</div>
+                  <div className={styles.previewRow}>{selectedFile.data[2][index]}</div>
+                  <div className={styles.previewRow}>{selectedFile.data[3][index]}</div>
+                </div>
+              );
+            }
+          })}
         </div>
       </div>
     </div>

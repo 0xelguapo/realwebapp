@@ -1,8 +1,8 @@
 .container {
-    display: flex;
-    flex: 1;
-    border-bottom: 1px solid #e5e7eb;
-    flex-direction: column;
+  display: flex;
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+  flex-direction: column;
 }
 
 .previewContainer {
@@ -12,11 +12,34 @@
 .previewHeading {
   font-weight: 600;
   font-size: 1.1rem;
-  color: #454545
+  color: #454545;
 }
 
 .previewHeadingSubtext {
   color: #454545;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.previewRowsContainer {
+  flex: 1;
+  min-width: 250px;
+  overflow-x: scroll;
+  margin-bottom: 3rem;
+}
+
+.previewRowHeader {
+  display: 'flex';
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  background-color: #e9e9e9;
+}
+
+.previewRow {
+}
