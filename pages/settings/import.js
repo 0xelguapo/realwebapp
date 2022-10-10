@@ -6,24 +6,25 @@ import update from "immutability-helper";
 import StepOne from "../../shared/components/Import/steps-views/StepOne";
 import StepTwo from "../../shared/components/Import/steps-views/StepTwo";
 import StepThree from "../../shared/components/Import/steps-views/StepThree";
-import { ImportContextProvider } from "../../shared/context/import-context";
+
+const initialBoxState = [
+  { name: "First Name", schema: "firstname", type: "BOX" },
+  { name: "Last Name", schema: "lastname", type: "BOX" },
+  { name: "Company / Title", schema: "company", type: "BOX" },
+  { name: "Email", schema: "email", type: "BOX" },
+  { name: "Phone", schema: "phone" },
+  { name: "Property Street Address", schema: "street", type: "BOX" },
+  { name: "Property City", schema: "city", type: "BOX" },
+  { name: "Property State", schema: "state", type: "BOX" },
+  { name: "Property Zip", schema: "zip", type: "BOX" },
+];
 
 function Import() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState();
   const [hoverState, setHoverState] = useState(false);
 
-  const [boxes, setBoxes] = useState([
-    { name: "First Name", schema: "firstname", type: "BOX" },
-    { name: "Last Name", schema: "lastname", type: "BOX" },
-    { name: "Company / Title", schema: "company", type: "BOX" },
-    { name: "Email", schema: "email", type: "BOX" },
-    { name: "Phone", schema: "phone" },
-    { name: "Property Street Address", schema: "street", type: "BOX" },
-    { name: "Property City", schema: "city", type: "BOX" },
-    { name: "Property State", schema: "state", type: "BOX" },
-    { name: "Property Zip", schema: "zip", type: "BOX" },
-  ]);
+  const [boxes, setBoxes] = useState(initialBoxState);
 
   const [droppedBoxNames, setDroppedBoxNames] = useState([]);
 
@@ -60,13 +61,14 @@ function Import() {
     console.log(item);
   };
 
-  const handleUploadedFile = useCallback((uploadedFile) => {
+  const handleUploadedFile = (uploadedFile) => {
     if (uploadedFile) {
       setSelectedFile(uploadedFile);
       setHoverState(false);
-      console.log(uploadedFile);
     }
-  }, []);
+    setBoxes(initialBoxState);
+    setDroppedBoxNames([]);
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -100,33 +102,33 @@ function Import() {
         <div className={styles.headingContainer}>
           <h1 className={styles.headingText}>Import Data</h1>
           <p className={styles.headingDescription}>
-            You can import contacts and properties separately, or you can import contacts along with
-            their associated properties together.
+            You can import contacts and properties separately, or you can import
+            contacts along with their associated properties together.
           </p>
         </div>
-          {currentStep === 0 && (
-            <StepOne
-              handleUploadedFile={handleUploadedFile}
-              handleDragOver={handleDragOver}
-              handleDragLeave={handleDragLeave}
-              hoverState={hoverState}
-            />
-          )}
-          {currentStep === 1 && (
-            <StepTwo
-              selectedFile={selectedFile}
-              boxes={boxes}
-              handleDrop={handleDrop}
-              handleUndrop={handleUndrop}
-              droppedBoxNames={droppedBoxNames}
-            />
-          )}
-          {currentStep === 2 && (
-            <StepThree
-              droppedBoxNames={droppedBoxNames}
-              selectedFile={selectedFile}
-            />
-          )}
+        {currentStep === 0 && (
+          <StepOne
+            handleUploadedFile={handleUploadedFile}
+            handleDragOver={handleDragOver}
+            handleDragLeave={handleDragLeave}
+            hoverState={hoverState}
+          />
+        )}
+        {currentStep === 1 && (
+          <StepTwo
+            selectedFile={selectedFile}
+            boxes={boxes}
+            handleDrop={handleDrop}
+            handleUndrop={handleUndrop}
+            droppedBoxNames={droppedBoxNames}
+          />
+        )}
+        {currentStep === 2 && (
+          <StepThree
+            droppedBoxNames={droppedBoxNames}
+            selectedFile={selectedFile}
+          />
+        )}
         <div className={styles.buttonContainer}>
           <button
             className={styles.backButton}

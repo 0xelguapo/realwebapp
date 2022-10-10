@@ -10,7 +10,6 @@ export default function Bucket({
   handleUndrop,
   droppedBoxNames,
 }) {
-  console.log(droppedBoxNames[indexOf]);
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: "BOX",

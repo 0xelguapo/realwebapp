@@ -9,6 +9,7 @@ function AuthContextProvider({ children }) {
 
   useEffect(() => {
     checkUser();
+    console.log(user)
   }, []);
 
   useEffect(() => {

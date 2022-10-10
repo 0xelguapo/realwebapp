@@ -60,9 +60,9 @@ export default function AddClient() {
     e.preventDefault();
     console.log(index);
     let currentInputs = [...phoneInputs];
-    const newArray = currentInputs.filter((el, ind) => ind !== index)
-    setPhoneInputs(newArray)
-  }
+    const newArray = currentInputs.filter((el, ind) => ind !== index);
+    setPhoneInputs(newArray);
+  };
 
   useEffect(() => {
     if (open) {
@@ -74,13 +74,16 @@ export default function AddClient() {
   }, [open]);
 
   const handleSubmit = async (e) => {
+    // e.preventDefault();
+    // const response = await addClient(formState, clientDetails);
+    // if (response) {
+    //   console.log("success", response);
+    // } else {
+    //   console.log("some error occured");
+    // }
     e.preventDefault();
-    const response = await addClient(formState, clientDetails);
-    if (response) {
-      console.log("success", response);
-    } else {
-      console.log("some error occured");
-    }
+    const res = await fetch("/api/client/batch-add-clients", { method: "POST" });
+    console.log(res)
   };
 
   return (
@@ -132,7 +135,10 @@ export default function AddClient() {
                             handleDynamicPhoneChange(index, event)
                           }
                         />
-                        <button className={styles.removeButton} onClick={(e) => handleRemovePhone(e, index)}>
+                        <button
+                          className={styles.removeButton}
+                          onClick={(e) => handleRemovePhone(e, index)}
+                        >
                           <div className={styles.removeLine}></div>
                         </button>
                       </div>
