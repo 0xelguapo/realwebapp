@@ -1,5 +1,21 @@
 {
-  "function": {},
+  "function": {
+    "batchcreateclients": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "realapp",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    }
+  },
   "auth": {
     "realapp8e8e08f1": {
       "service": "Cognito",

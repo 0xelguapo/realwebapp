@@ -74,16 +74,13 @@ export default function AddClient() {
   }, [open]);
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // const response = await addClient(formState, clientDetails);
-    // if (response) {
-    //   console.log("success", response);
-    // } else {
-    //   console.log("some error occured");
-    // }
     e.preventDefault();
-    const res = await fetch("/api/client/batch-add-clients", { method: "POST" });
-    console.log(res)
+    const response = await addClient(formState, clientDetails);
+    if (response) {
+      console.log("success", response);
+    } else {
+      console.log("some error occured");
+    }
   };
 
   return (

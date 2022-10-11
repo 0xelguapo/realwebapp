@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "realapp8e8e08f1": {}
+      },
+      "function": {
+        "batchcreateclients": {
+          "deploymentBucketName": "amplify-realapp-dev-142224-deployment",
+          "s3Key": "amplify-builds/batchcreateclients-6c5a6f364a462b384874-build.zip"
+        }
       }
     }
   }
