@@ -7,6 +7,8 @@ import useForm from "../../hooks/form-hook.js";
 import styles from "./AddClient.module.css";
 import { useClients } from "../../context/client-context";
 import { phoneFormat } from "../../utility/phoneFormat";
+import { API, graphqlOperation } from "aws-amplify";
+import { batchCreateClients } from "../../graphql/mutations";
 
 export default function AddClient() {
   const [open, setOpen] = useState(false);
@@ -81,6 +83,7 @@ export default function AddClient() {
     } else {
       console.log("some error occured");
     }
+
   };
 
   return (
@@ -90,7 +93,7 @@ export default function AddClient() {
         Add Client
       </button>
       {open && (
-        <Modal onOpen={handleOpen}>
+        <Modal onOpen={handleOpen} title="Add a Contact">
           <div className={styles.modalContainer}>
             <div className={styles.modalForm}>
               <h2 className={styles.modalTitle}>Add a Contact</h2>

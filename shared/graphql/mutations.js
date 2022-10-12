@@ -1,6 +1,12 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const batchCreateClients = /* GraphQL */ `
+  mutation BatchCreateClients($inputFields: String!) {
+    batchCreateClients(inputFields: $inputFields)
+  }
+`;
+
 export const createClient = /* GraphQL */ `
   mutation CreateClient(
     $input: CreateClientInput!

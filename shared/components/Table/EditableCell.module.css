@@ -1,6 +1,7 @@
 .editCellContainer {
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
 
 .editCellContainer:hover button {
@@ -20,6 +21,21 @@
 
 .valueContainer:hover {
   overflow: visible;
+}
+
+.input {
+  height: 1.8rem;
+  width: 100%;
+  flex: 1;
+  background: none;
+  border: 1px solid rgb(177, 177, 177);
+  border-radius: 3px;
+  padding-left: 0.3rem;
+}
+
+.input:focus {
+  outline: 0.5px solid #1a56db;
+  border: none;
 }
 
 .editInput {

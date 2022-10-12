@@ -45,7 +45,11 @@ export default function ClientTable() {
 
   const columns = useMemo(
     () => [
-      { Header: "Name", accessor: "name" },
+      {
+        Header: "Name",
+        accessor: (row) =>
+          row.lastName ? row.firstName + " " + row.lastName : row.firstName,
+      },
       { Header: "Company", accessor: "company" },
       { Header: "Phone", accessor: "phone" },
       { Header: "Email", accessor: "email" },

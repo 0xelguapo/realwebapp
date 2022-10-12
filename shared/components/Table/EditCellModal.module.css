@@ -1,5 +1,5 @@
 .overlay {
-  position: absolute;
+  position: fixed;
   background-color: none;
   height: 100vh;
   width: 100vw;
@@ -13,10 +13,18 @@
   flex: 1;
   flex-direction: column;
   background-color: white;
-  min-height: 12rem;
+  min-height: 11.5rem;
   width: 20rem;
   border-radius: 5px;
-  box-shadow: 0 1px 10px 3px rgba(58, 58, 58, 0.398);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+  right: 1rem;
+  margin-top: 2rem;
+  z-index: 2;
 }
 
 .headingContainer {
@@ -29,7 +37,7 @@
 
 .body {
   flex: 1;
-  padding: 1rem 0;
+  padding: 1rem 1rem;
 }
 
 .buttonsContainer {
@@ -38,19 +46,26 @@
   justify-content: flex-end;
   width: 100%;
   background-color: #f3f4f6;
-  padding: 0.5rem;
+  padding: .5rem;
+  border-top: 1px solid #e5e7eb;
 }
 
 .saveButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #026bff;
   color: white;
-  padding: 0.3rem 1rem;
+  padding: 0.2rem 0.8rem;
   font-weight: 500;
   border-radius: 5px;
   margin-left: 10px;
 }
 
 .cancelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #f9fafb;
   padding: 0.3rem 1rem;
   border-radius: 5px;

@@ -3,16 +3,26 @@ import Image from "next/image";
 import styles from "./EditableCell.module.css";
 import { FiEdit3 } from "react-icons/fi";
 import EditCellModal from "./EditCellModal";
+import update from "immutability-helper";
 
 const EditableCell = ({
   value: initialValue,
   row: { index },
-  column: { id },
+  column: { Header, id },
   updateMyData,
 }) => {
   const [value, setValue] = useState(initialValue);
   const [editMode, setEditMode] = useState(false);
+  const [inputsArray, setInputsArray] = useState([""]);
   const inputRef = useRef(null);
+
+  const handleInputArrayChange = (e, index) => {
+    setInputsArray(
+      update(inputsArray, {
+        [index]: { $set: e.target.value },
+      })
+    );
+  };
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -48,15 +58,22 @@ const EditableCell = ({
   // }, [editMode]);
 
   return (
-    <div className={styles.editCellContainer}>
-      {editMode ? (
-        <>
-          {id === "email" && (
-            <EditCellModal
-              title="Edit Emails"
-              handleCancel={() => setEditMode(false)}
-            >
-              {/* <input
+    <>
+      <div className={styles.editCellContainer}>
+        {editMode && (
+          <EditCellModal
+            title={`Edit ${Header}`}
+            handleCancel={() => setEditMode(false)}
+          >
+            {inputsArray.map((input, index) => (
+              <input
+                key={index}
+                className={styles.input}
+                value={inputsArray[index]}
+                onChange={(e) => handleInputArrayChange(e, index)}
+              />
+            ))}
+            {/* <input
                 className={styles.editInput}
                 value={value}
                 onChange={handleChange}
@@ -64,18 +81,14 @@ const EditableCell = ({
                 onBlur={handleBlur}
                 ref={inputRef}
               /> */}
-            </EditCellModal>
-          )}
-        </>
-      ) : (
-        <>
-          <div className={styles.valueContainer}>{value}</div>
-          <button className={styles.editButton} onClick={enterEditMode}>
-            <FiEdit3 size={15} color="#4e4e4e" />
-          </button>
-        </>
-      )}
-    </div>
+          </EditCellModal>
+        )}
+        <div className={styles.valueContainer}>{value}</div>
+        <button className={styles.editButton} onClick={enterEditMode}>
+          <FiEdit3 size={15} color="#4e4e4e" />
+        </button>
+      </div>
+    </>
   );
 };
 
