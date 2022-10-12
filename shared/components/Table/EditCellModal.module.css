@@ -5,6 +5,7 @@
   width: 100vw;
   top: 0;
   left: 0;
+  z-index: 2;
 }
 
 .container {
@@ -13,7 +14,6 @@
   flex: 1;
   flex-direction: column;
   background-color: white;
-  min-height: 11.5rem;
   width: 20rem;
   border-radius: 5px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
@@ -32,12 +32,14 @@
   align-items: center;
   font-weight: 500;
   flex: 0.1;
-  padding: 1rem;
+  padding: 1rem 1rem .5rem 1rem;
 }
 
 .body {
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  padding: 1rem 1rem;
+  padding: 0rem 1rem;
 }
 
 .buttonsContainer {

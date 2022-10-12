@@ -1,6 +1,6 @@
 import styles from "./EditCellModal.module.css";
 
-export default function EditCellModal({ title, handleCancel, children }) {
+export default function EditCellModal({ title, handleCancel, children, handleSubmit }) {
   return (
     <>
     <div className={styles.overlay} onClick={handleCancel}></div>
@@ -15,7 +15,7 @@ export default function EditCellModal({ title, handleCancel, children }) {
         <button className={styles.cancelButton} onClick={handleCancel}>
           Cancel
         </button>
-        <button className={styles.saveButton}>Save</button>
+        <button className={styles.saveButton} onClick={handleSubmit}>Save</button>
       </div>
     </div>
     </>

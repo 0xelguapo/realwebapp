@@ -57,15 +57,14 @@ export default function ClientTable() {
     []
   );
 
-  const updateMyData = async (rowIndex, columnId, value) => {
+  const updateMyData = async (rowIndex, editInputs) => {
     setSkipPageReset(true);
-    const clientObject = { ...data[rowIndex] };
-    const { createdAt, updatedAt, owner, ...updatedClient } = clientObject;
-    const response = await updateClient({
-      ...updatedClient,
-      [columnId]: value,
-    });
-    console.log(response);
+    const clientId = data[rowIndex].id
+    let clientInputs = {
+      id: clientId,
+      ...editInputs
+    }
+    dispatch(editClient(clientInputs));
   };
 
   const tableInstance = useTable(

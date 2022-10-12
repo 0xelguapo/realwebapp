@@ -23,12 +23,22 @@
   overflow: visible;
 }
 
+.inputContainer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.deleteInputButton {
+  padding: 0 .5rem;
+}
+
 .input {
   height: 1.8rem;
-  width: 100%;
   flex: 1;
   background: none;
-  border: 1px solid rgb(177, 177, 177);
+  border: 1px solid #B1B1B1;
   border-radius: 3px;
   padding-left: 0.3rem;
 }
@@ -116,4 +126,11 @@
   padding: 0.3rem 1rem;
   border-radius: 5px;
   border: 0.5px solid #d1d5db;
+}
+
+.addAnotherButton {
+  display: flex;
+  align-items: center;
+  color: #3f83f8;
+  margin-bottom: 1rem;
 }
