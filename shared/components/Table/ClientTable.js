@@ -20,6 +20,7 @@ import {
   selectAllClients,
 } from "../../redux/clients-slice";
 import { IoChevronForward, IoChevronBack } from "react-icons/io5";
+import AddClientModal from "../AddClient/AddClientModal";
 
 const defaultColumn = {
   Cell: EditableCell,
@@ -137,6 +138,7 @@ export default function ClientTable() {
           setGlobalFilter={setGlobalFilter}
         />
         <div className={styles.addClientContainer}>
+          <AddClientModal />
           <AddClient />
         </div>
       </div>

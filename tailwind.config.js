@@ -2,7 +2,8 @@
 module.exports = {
   content: [
     "./pages/**/*.{js, ts, jsx, tsx}",
-    "./shared/components/UI/CTA/**/*.js"
+    "./shared/components/UI/CTA/**/*.js",
+    "./shared/components/AddClient/AddClientModal.js"
   ],
   theme: {
     extend: {
