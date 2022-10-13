@@ -139,7 +139,7 @@ export default function ClientTable() {
         />
         <div className={styles.addClientContainer}>
           <AddClientModal />
-          <AddClient />
+          {/* <AddClient /> */}
         </div>
       </div>
       <div className={styles.pageButtonsContainer}>
