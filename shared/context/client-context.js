@@ -41,7 +41,7 @@ function ClientContextProvider({ children }) {
   const addClient = async (formState, clientDetails) => {
     let response;
     let newClientsArray = [];
-    if (!formState.inputs.name.value) {
+    if (!formState.inputs.firstName.value) {
       alert("Required name field is empty, please enter a value");
     } else {
       try {

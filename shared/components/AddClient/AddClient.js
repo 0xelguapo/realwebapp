@@ -14,7 +14,7 @@ export default function AddClient() {
   const [open, setOpen] = useState(false);
   const { addClient } = useClients();
   const [initialForm, setInitialForm] = useState({
-    name: {
+    firstName: {
       value: "",
       isValid: false,
     },
@@ -35,7 +35,7 @@ export default function AddClient() {
   const [phoneInputs, setPhoneInputs] = useState([]);
 
   const clientDetails = {
-    name: formState.inputs.name.value,
+    firstName: formState.inputs.firstName.value,
     company: formState.inputs.company.value,
     phone: [formState.inputs.phone.value, ...phoneInputs],
     email: formState.inputs.email.value,
@@ -100,9 +100,9 @@ export default function AddClient() {
               <form>
                 <div className={styles.inputBlocks}>
                   <Input
-                    id="name"
+                    id="firstName"
                     onInput={inputHandler}
-                    headerText="Name"
+                    headerText="First Name"
                     placeholder="Required"
                     errorText="Please enter a name"
                     validators={[VALIDATOR_REQUIRE()]}

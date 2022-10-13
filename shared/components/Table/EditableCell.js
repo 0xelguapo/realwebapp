@@ -3,6 +3,7 @@ import styles from "./EditableCell.module.css";
 import EditCellModal from "./EditCellModal";
 import update from "immutability-helper";
 import { FiEdit3, FiPlus, FiTrash } from "react-icons/fi";
+import { phoneFormatRegex } from "../../utility/phoneFormat";
 
 const EditableCell = ({
   value: initialValue,
@@ -10,16 +11,25 @@ const EditableCell = ({
   column: { Header, id },
   updateMyData,
 }) => {
+  if (!initialValue) initialValue = "";
   const [editMode, setEditMode] = useState(false);
-  const [value, setValue] = useState(initialValue || "");
+  const [value, setValue] = useState(initialValue.split(",") || "");
   const [inputsArray, setInputsArray] = useState([""]);
 
   const handleInputArrayChange = (e, index) => {
-    setInputsArray(
-      update(inputsArray, {
-        [index]: { $set: e.target.value },
-      })
-    );
+    if (id === "phone") {
+      setInputsArray(
+        update(inputsArray, {
+          [index]: { $set: phoneFormatRegex(e.target.value) },
+        })
+      );
+    } else {
+      setInputsArray(
+        update(inputsArray, {
+          [index]: { $set: e.target.value },
+        })
+      );
+    }
   };
 
   const handleAddAnotherInput = useCallback(() => {
@@ -65,7 +75,9 @@ const EditableCell = ({
   };
 
   useEffect(() => {
-    setValue(initialValue);
+    if (initialValue) {
+      setValue(initialValue.split(",") || "");
+    }
   }, [initialValue]);
 
   useEffect(() => {
@@ -96,7 +108,7 @@ const EditableCell = ({
               <div key={index} className={styles.inputContainer}>
                 <input
                   className={styles.input}
-                  value={inputsArray[index]}
+                  value={input}
                   onChange={(e) => handleInputArrayChange(e, index)}
                   autoFocus={true}
                   onKeyDown={handleEnter}
@@ -123,10 +135,30 @@ const EditableCell = ({
               ))}
           </EditCellModal>
         )}
-        <div className={styles.valueContainer}>{value}</div>
-        <button className={styles.editButton} onClick={enterEditMode}>
-          <FiEdit3 size={15} color="#4e4e4e" />
-        </button>
+        {Header === "Phone" || Header === "Email" ? (
+          <>
+            <div className={styles.multiValuesContainer}>
+              {value.map((val, i) => {
+                if (val.length > 0)
+                  return (
+                    <div key={i} className={styles.multiValue}>
+                      {val}
+                    </div>
+                  );
+              })}
+            </div>
+            <button className={styles.editButton} onClick={enterEditMode}>
+              <FiEdit3 size={15} color="#4e4e4e" />
+            </button>
+          </>
+        ) : (
+          <>
+            <div className={styles.valueContainer}>{value}</div>
+            <button className={styles.editButton} onClick={enterEditMode}>
+              <FiEdit3 size={15} color="#4e4e4e" />
+            </button>
+          </>
+        )}
       </div>
     </>
   );

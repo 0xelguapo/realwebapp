@@ -33,11 +33,6 @@ export default function ClientTable() {
     useClients();
   const [skipPageReset, setSkipPageReset] = useState(false);
 
-  const phoneFormat = (value) => {
-    if (value) {
-      return value.replace(/[\[\]']+/g, "");
-    }
-  };
 
   const data = useMemo(() => {
     return [...allClients];
