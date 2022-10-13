@@ -1,27 +1,31 @@
-import { useState, useRef, Fragment, useEffect } from "react";
+import { useState, useRef, Fragment, useEffect, useCallback } from "react";
 import { FormProvider, useForm, useFieldArray } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
 import { FiX, FiPlus, FiTrash } from "react-icons/fi";
 import AddClientInput from "./AddClientInput";
+import { useDispatch } from "react-redux";
+import { addClient } from "../../redux/clients-slice";
 
 const initialFormState = {
   firstName: "",
   lastName: "",
+  company: "",
   emails: [{ email: "" }],
   phones: [{ phone: "" }],
-  clientAddress: "",
+  clientStreet: "",
   clientCity: "",
   clientState: "",
   clientZip: "",
 };
 
 export default function AddClientModal() {
+  const dispatch = useDispatch();
   const { control, ...methods } = useForm({
     defaultValues: initialFormState,
   });
   const {
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = methods;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -45,25 +49,29 @@ export default function AddClientModal() {
 
   useEffect(() => {
     reset(initialFormState);
-  }, [isOpen, reset]);
+  }, [isOpen, reset, isSubmitSuccessful]);
 
-  const onSubmit = (data) => {
-    const { emails, phones, ...restOfData } = data;
-    let emailsArray = [];
-    let phonesArray = [];
-    for (const item of emails) {
-      emailsArray.push(item.email);
-    }
-    for (const item of phones) {
-      phonesArray.push(item.phone);
-    }
-    const clientData = {
-      ...restOfData,
-      email: emailsArray.toString(),
-      phone: phonesArray.toString(),
-    };
-    console.log(clientData);
-  };
+  const onSubmit = useCallback(
+    (data, shouldClose) => {
+      const { emails, phones, ...restOfData } = data;
+      let emailsArray = [];
+      let phonesArray = [];
+      for (const item of emails) {
+        emailsArray.push(item.email);
+      }
+      for (const item of phones) {
+        phonesArray.push(item.phone);
+      }
+      const clientData = {
+        ...restOfData,
+        email: emailsArray.toString(),
+        phone: phonesArray.toString(),
+      };
+      dispatch(addClient(clientData));
+      if(shouldClose) setIsOpen(false)
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -115,7 +123,7 @@ export default function AddClientModal() {
                 </div>
 
                 <FormProvider {...methods}>
-                  <form onSubmit={methods.handleSubmit(onSubmit)}>
+                  <form onSubmit={methods.handleSubmit((data) => onSubmit(data, true))}>
                     <div className="rounded-b-md py-3 px-5">
                       <div className="mb-3">
                         <AddClientInput
@@ -133,10 +141,18 @@ export default function AddClientModal() {
                           register="lastName"
                         />
                       </div>
+                      <div className="mb-3">
+                        <AddClientInput
+                          icon="person"
+                          placeholder="Title / Company"
+                          register="company"
+                        />
+                      </div>
                       {emailFields.map((field, index) => (
                         <div className="mb-2 flex" key={field.id}>
                           <AddClientInput
                             key={field.id}
+                            inputType="email"
                             icon="email"
                             placeholder="Email"
                             register={`emails.${index}.email`}
@@ -178,6 +194,16 @@ export default function AddClientModal() {
                             icon="phone"
                             placeholder="Phone"
                             register={`phones.${index}.phone`}
+                            inputType="number"
+                            validation={{
+                              pattern: {
+                                value: /^(\d|)?(\d{3})(\d{3})(\d{4})$/,
+                                message: "Please enter only numbers",
+                              },
+                            }}
+                            errorMessage={
+                              errors?.phones?.[index]?.phone.message
+                            }
                           />
                           {index > 0 && (
                             <button
@@ -210,7 +236,7 @@ export default function AddClientModal() {
                         <AddClientInput
                           icon="address"
                           placeholder="Contact's Street Address"
-                          register="clientAddress"
+                          register="clientStreet"
                         />
                       </div>
                       <div className="flex mt-3">
@@ -237,19 +263,27 @@ export default function AddClientModal() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex justify-end bg-gray-100 rounded-b-md h-[3.5rem] py-3 px-5">
-                      <button
-                        onClick={() => setIsOpen(false)}
-                        className="bg-gray-200 mr-4 rounded px-4"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="bg-ctablue text-white font-bold px-5 rounded"
-                        type="submit"
-                      >
-                        Save
-                      </button>
+                    <div className="flex justify-between bg-gray-100 rounded-b-md h-[3.5rem] py-2 px-5">
+                      <div className="flex">
+                        <button type="button" className="text-blue-500" onClick={methods.handleSubmit((data) => onSubmit(data, false))}>
+                          Save and add another
+                        </button>
+                      </div>
+                      <div className="flex">
+                        <button
+                          type="button"
+                          onClick={() => setIsOpen(false)}
+                          className="bg-gray-200 mr-4 rounded px-4"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="bg-ctablue text-white font-bold px-5 rounded"
+                          type="submit"
+                        >
+                          Save
+                        </button>
+                      </div>
                     </div>
                   </form>
                 </FormProvider>
