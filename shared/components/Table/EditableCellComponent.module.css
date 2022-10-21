@@ -1,0 +1,113 @@
+.editCellContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 2rem;
+}
+
+.editCellContainer:hover button {
+  display: flex;
+  cursor: pointer;
+  height: 100%;
+  opacity: 1;
+}
+
+.valueContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 10rem;
+  flex-grow: 1;
+  height: 1.5rem;
+  overflow: hidden;
+}
+
+.valueContainer:hover {
+  overflow: visible;
+}
+
+.multiValuesContainer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  width: 10rem;
+  min-height: 2rem;
+  overflow: hidden;
+  gap: 5px 0px;
+}
+
+.multiValuesContainer:hover {
+  flex-wrap: wrap;
+  position: absolute;
+  align-items: center;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  background-color: white;
+  outline: .5px solid blue;
+  border-radius: 5px;
+}
+
+.multiValuesContainer:hover .multiValue {
+  background-color: rgb(182, 182, 182);
+}
+
+.multiValue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 'auto';
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background-color: rgb(235, 235, 235);
+  height: 100%;
+  margin-right: 0.2rem;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.editButton {
+  display: none;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  align-items: center;
+  justify-content: center;
+  background: #d7d7d7;
+  border-radius: 5px;
+  border: none;
+  padding: 0 0.5rem;
+  height: 100%;
+  z-index: 3;
+}
+
+.inputContainer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.deleteInputButton {
+  padding: 0 0.5rem;
+}
+
+.input {
+  height: 1.8rem;
+  flex: 1;
+  background: none;
+  border: 1px solid #b1b1b1;
+  border-radius: 3px;
+  padding-left: 0.3rem;
+}
+
+.input:focus {
+  outline: 0.5px solid #1a56db;
+  border: none;
+}
+
+.addAnotherButton {
+  display: flex;
+  align-items: center;
+  color: #3f83f8;
+  margin-bottom: 1rem;
+}

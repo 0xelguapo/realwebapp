@@ -1,11 +1,11 @@
-.clientsContainer {
+.tableContainer {
   display: flex;
   width: 100%;
   flex-direction: column;
   flex: 1;
 }
 
-.clientsHeaderContainer {
+.headerContainer {
   display: flex;
   flex: 0.05;
   align-items: center;

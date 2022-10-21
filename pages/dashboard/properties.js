@@ -1,16 +1,56 @@
 import { useMemo, useState, useEffect } from "react";
-import Table from '../../shared/components/Table/Table'
-import DashboardLayout from '../../shared/components/UI/Layouts/DashboardLayout'
-import Head from 'next/head'
-import styles from './Dashboard.module.css'
+import Table from "../../shared/components/Table/Table";
+import DashboardLayout from "../../shared/components/UI/Layouts/DashboardLayout";
+import Head from "next/head";
+import styles from "./Dashboard.module.css";
 import EditableCell from "../../shared/components/Table/EditableCell";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProperties,
+  selectAllProperties,
+} from "../../shared/redux/properties-slice";
+import EditableCellComponent from "../../shared/components/Table/EditableCellComponent";
+import AddClientModal from "../../shared/components/AddClient/AddClientModal";
 
 const defaultColumn = {
-  Cell: EditableCell
-}
+  Cell: EditableCellComponent,
+};
 
-function Properties () {
-  
+function Properties() {
+  const dispatch = useDispatch();
+  const allProperties = useSelector(selectAllProperties);
+  const status = useSelector(state => state.properties.status)
+
+  const data = useMemo(() => {
+    return [...allProperties];
+  }, [allProperties]);
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Street",
+        accessor: "street",
+      },
+      { Header: "City", accessor: "city" },
+      { Header: "State", accessor: "state" },
+      { Header: "Zip Code", accessor: "zip" },
+      { Header: "Owner", accessor: "clientId" },
+    ],
+    []
+  );
+
+  const updateMyData = async (rowIndex, editInputs) => {
+
+  }
+
+  const handleDelete = async () => {
+    
+  }
+
+  useEffect(() => {
+    dispatch(fetchProperties());
+  }, [dispatch]);
+
   return (
     <div className={styles.pageContainer}>
       <Head>
@@ -22,12 +62,20 @@ function Properties () {
         <link rel="icon" href="/icon.svg" />
       </Head>
       <div className={styles.tableContainer}>
-        <Table />
+        <Table
+          data={data}
+          reduxState={allProperties}
+          columns={columns}
+          defaultColumn={defaultColumn}
+          updateMyData={updateMyData}
+          status={status}
+          addButton={<AddClientModal />}
+        />
       </div>
     </div>
-  )
+  );
 }
 
-Properties.PageLayout = DashboardLayout
+Properties.PageLayout = DashboardLayout;
 
-export default Properties
+export default Properties;

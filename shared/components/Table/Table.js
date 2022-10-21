@@ -10,57 +10,21 @@ import { useClients } from "../../context/client-context";
 import LoadingSpinner from "../UI/Loading/LoadingSpinner";
 import GlobalFilter from "./GlobalFilter";
 import InputCheckbox from "./IndeterminateCheckbox";
-import EditableCell from "./EditableCell";
 import Success from "../UI/Status/Success";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  editClient,
-  fetchClients,
-  selectAllClients,
-} from "../../redux/clients-slice";
 import { IoChevronForward, IoChevronBack } from "react-icons/io5";
-import AddClientModal from "../AddClient/AddClientModal";
 
-const defaultColumn = {
-  Cell: EditableCell,
-};
-
-export default function Table() {
-  const dispatch = useDispatch();
-  const allClients = useSelector(selectAllClients);
-  const status = useSelector((state) => state.clients.status);
-  const { updateClient, deleteClients, successStatus, successMessage } =
-    useClients();
+export default function Table({
+  data,
+  reduxState,
+  columns,
+  defaultColumn,
+  addButton,
+  updateMyData,
+  handleDelete,
+  status,
+}) {
+  const { successStatus, successMessage } = useClients();
   const [skipPageReset, setSkipPageReset] = useState(false);
-
-
-  const data = useMemo(() => {
-    return [...allClients];
-  }, [allClients]);
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: (row) =>
-          row.lastName ? row.firstName + " " + row.lastName : row.firstName,
-      },
-      { Header: "Company", accessor: "company" },
-      { Header: "Phone", accessor: "phone" },
-      { Header: "Email", accessor: "email" },
-    ],
-    []
-  );
-
-  const updateMyData = async (rowIndex, editInputs) => {
-    setSkipPageReset(true);
-    const clientId = data[rowIndex].id
-    let clientInputs = {
-      id: clientId,
-      ...editInputs
-    }
-    dispatch(editClient(clientInputs));
-  };
 
   const tableInstance = useTable(
     {
@@ -115,31 +79,19 @@ export default function Table() {
   state.pageSize = 25;
 
   useEffect(() => {
-    dispatch(fetchClients());
-  }, [dispatch]);
-
-  useEffect(() => {
     setSkipPageReset(false);
-  }, [data, allClients]);
-
-  const handleDeleteClients = async () => {
-    console.log(selectedFlatRows);
-    // await deleteClients(selectedFlatRows);
-  };
+  }, [data, reduxState]);
 
   return (
-    <div className={styles.clientsContainer}>
+    <div className={styles.tableContainer}>
       <Success status={successStatus}>{successMessage}</Success>
-      <div className={styles.clientsHeaderContainer}>
+      <div className={styles.headerContainer}>
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
-        <div className={styles.addClientContainer}>
-          <AddClientModal />
-          {/* <AddClient /> */}
-        </div>
+        <div className={styles.addContainer}>{addButton}</div>
       </div>
       <div className={styles.pageButtonsContainer}>
         <button
@@ -157,7 +109,7 @@ export default function Table() {
           <IoChevronForward size={20} color="#4e4e4e" />
         </button>
         {Object.keys(state.selectedRowIds).length !== 0 && (
-          <button onClick={handleDeleteClients}>Delete</button>
+          <button onClick={handleDelete}>Delete</button>
         )}
       </div>
       {status !== "succeeded" ? (
