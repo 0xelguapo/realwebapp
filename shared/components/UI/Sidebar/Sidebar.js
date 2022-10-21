@@ -6,7 +6,7 @@ export default function Sidebar() {
   return (
     <div className={styles.sidebarContainer}>
       <div className={styles.links}>
-        <Link href="/dashboard">
+        <Link href="/dashboard/clients">
           <a>
             <div className={styles.link}>
               <div className={styles.logoImage}>
@@ -21,13 +21,13 @@ export default function Sidebar() {
             </div>
           </a>
         </Link>
-        <Link href="/dashboard">
+        <Link href="/dashboard/properties">
           <a>
             <div className={styles.link}>
               <div className={styles.logoImage}>
                 <Image src="/task.svg" width={23} height={23} alt="task" />
               </div>
-              Tasks
+              Properties
             </div>
           </a>
         </Link>

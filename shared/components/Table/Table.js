@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import styles from "./ClientTable.module.css";
+import styles from "./Table.module.css";
 import {
   useTable,
   useGlobalFilter,
@@ -25,7 +25,7 @@ const defaultColumn = {
   Cell: EditableCell,
 };
 
-export default function ClientTable() {
+export default function Table() {
   const dispatch = useDispatch();
   const allClients = useSelector(selectAllClients);
   const status = useSelector((state) => state.clients.status);

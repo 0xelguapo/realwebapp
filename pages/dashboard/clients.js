@@ -15,7 +15,7 @@ function Dashboard() {
         />
         <link rel="icon" href="/icon.svg" />
       </Head>
-      <div className={styles.clientsContainer}>
+      <div className={styles.tableContainer}>
        <ClientTable />
       </div>
     </div>
