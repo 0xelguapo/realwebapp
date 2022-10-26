@@ -22,9 +22,9 @@ export default function Table({
   updateMyData,
   handleDelete,
   status,
+  skipPageReset
 }) {
   const { successStatus, successMessage } = useClients();
-  const [skipPageReset, setSkipPageReset] = useState(false);
 
   const tableInstance = useTable(
     {
@@ -78,9 +78,6 @@ export default function Table({
 
   state.pageSize = 25;
 
-  useEffect(() => {
-    setSkipPageReset(false);
-  }, [data, reduxState]);
 
   return (
     <div className={styles.tableContainer}>

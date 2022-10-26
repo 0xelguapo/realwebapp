@@ -6,6 +6,7 @@ import styles from "./Dashboard.module.css";
 import EditableCell from "../../shared/components/Table/EditableCell";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  editProperty,
   fetchProperties,
   selectAllProperties,
 } from "../../shared/redux/properties-slice";
@@ -19,7 +20,9 @@ const defaultColumn = {
 function Properties() {
   const dispatch = useDispatch();
   const allProperties = useSelector(selectAllProperties);
-  const status = useSelector(state => state.properties.status)
+  const status = useSelector((state) => state.properties.status);
+  const [skipPageReset, setSkipPageReset] = useState(false)
+  
 
   const data = useMemo(() => {
     return [...allProperties];
@@ -40,16 +43,28 @@ function Properties() {
   );
 
   const updateMyData = async (rowIndex, editInputs) => {
-
-  }
+    setSkipPageReset(true);
+    const propertyId = data[rowIndex].id;
+    let propertyInputs = {
+      id: propertyId,
+      ...editInputs
+    }
+    const response = await dispatch(editProperty(propertyInputs)).unwrap()
+    console.log(response)
+  };
 
   const handleDelete = async () => {
     
-  }
+  };
 
   useEffect(() => {
+    console.log('fetching properties...')
     dispatch(fetchProperties());
   }, [dispatch]);
+
+  useEffect(() => {
+    setSkipPageReset(false);
+  }, [data, allProperties])
 
   return (
     <div className={styles.pageContainer}>
@@ -69,6 +84,7 @@ function Properties() {
           defaultColumn={defaultColumn}
           updateMyData={updateMyData}
           status={status}
+          skipPageReset={skipPageReset}
           addButton={<AddClientModal />}
         />
       </div>

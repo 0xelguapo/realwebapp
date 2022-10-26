@@ -153,7 +153,7 @@ const EditableCell = ({
           </>
         ) : (
           <>
-            <div className={styles.valueContainer}>{value}</div>
+            <div className={styles.multiValuesContainer}>{value}</div>
             <button className={styles.editButton} onClick={enterEditMode}>
               <FiEdit3 size={15} color="#4e4e4e" />
             </button>

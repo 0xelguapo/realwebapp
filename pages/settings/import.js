@@ -6,13 +6,19 @@ import update from "immutability-helper";
 import StepOne from "../../shared/components/Import/steps-views/StepOne";
 import StepTwo from "../../shared/components/Import/steps-views/StepTwo";
 import StepThree from "../../shared/components/Import/steps-views/StepThree";
+import { API, graphqlOperation } from "aws-amplify";
+import { batchCreateClients } from "../../shared/graphql/mutations";
 
 const initialBoxState = [
-  { name: "First Name", schema: "firstname", type: "BOX" },
-  { name: "Last Name", schema: "lastname", type: "BOX" },
+  { name: "First Name", schema: "firstName", type: "BOX" },
+  { name: "Last Name", schema: "lastName", type: "BOX" },
   { name: "Company / Title", schema: "company", type: "BOX" },
   { name: "Email", schema: "email", type: "BOX" },
   { name: "Phone", schema: "phone" },
+  { name: "Contact Street Address", schema: "clientStreet" },
+  { name: "Contact City", schema: "clientCity" },
+  { name: "Contact State", schema: "clientState" },
+  { name: "Contact Zip Code", schema: "clientZip" },
   { name: "Property Street Address", schema: "street", type: "BOX" },
   { name: "Property City", schema: "city", type: "BOX" },
   { name: "Property State", schema: "state", type: "BOX" },
@@ -23,9 +29,7 @@ function Import() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState();
   const [hoverState, setHoverState] = useState(false);
-
   const [boxes, setBoxes] = useState(initialBoxState);
-
   const [droppedBoxNames, setDroppedBoxNames] = useState([]);
 
   const handleDrop = useCallback(
@@ -68,6 +72,23 @@ function Import() {
     }
     setBoxes(initialBoxState);
     setDroppedBoxNames([]);
+  };
+
+  const handleImport = async () => {
+    if (!selectedFile || !droppedBoxNames) console.error("data missing error");
+    else {
+      let response;
+      const mappedFields = droppedBoxNames.map((item) => item.item.schema);
+      try {
+        response = await API.graphql(
+          graphqlOperation(batchCreateClients, { data: JSON.stringify(selectedFile.data), mappedFields: mappedFields }
+          )
+        );
+      } catch (err) {
+        console.error(err);
+      }
+      console.log(response);
+    }
   };
 
   const handleDragOver = (e) => {
@@ -127,6 +148,7 @@ function Import() {
           <StepThree
             droppedBoxNames={droppedBoxNames}
             selectedFile={selectedFile}
+            handleImport={handleImport}
           />
         )}
         <div className={styles.buttonContainer}>
@@ -146,7 +168,9 @@ function Import() {
               Next
             </button>
           ) : (
-            <button className={styles.nextButton}>Import</button>
+            <button className={styles.nextButton} onClick={handleImport}>
+              Import
+            </button>
           )}
         </div>
       </div>

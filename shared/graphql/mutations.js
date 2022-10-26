@@ -2,10 +2,11 @@
 // this is an auto generated file. This will be overwritten
 
 export const batchCreateClients = /* GraphQL */ `
-  mutation BatchCreateClients($inputFields: String!) {
-    batchCreateClients(inputFields: $inputFields)
+  mutation BatchCreateClients($data: AWSJSON, $mappedFields: [String]) {
+    batchCreateClients(data: $data, mappedFields: $mappedFields)
   }
 `;
+
 export const deleteClient = /* GraphQL */ `
   mutation DeleteClient(
     $input: DeleteClientInput!
@@ -44,7 +45,6 @@ export const deleteClient = /* GraphQL */ `
           state
           zip
           price
-          capRate
           note
           clientId
           owner
@@ -112,7 +112,6 @@ export const deleteProperty = /* GraphQL */ `
       state
       zip
       price
-      capRate
       note
       tasks {
         items {
@@ -494,7 +493,6 @@ export const updateGroupsProperty = /* GraphQL */ `
         state
         zip
         price
-        capRate
         note
         tasks {
           nextToken
@@ -540,7 +538,6 @@ export const deleteGroupsProperty = /* GraphQL */ `
         state
         zip
         price
-        capRate
         note
         tasks {
           nextToken
@@ -608,7 +605,6 @@ export const createClient = /* GraphQL */ `
           state
           zip
           price
-          capRate
           note
           clientId
           owner
@@ -702,7 +698,6 @@ export const updateClient = /* GraphQL */ `
           state
           zip
           price
-          capRate
           note
           clientId
           owner
@@ -770,7 +765,6 @@ export const createProperty = /* GraphQL */ `
       state
       zip
       price
-      capRate
       note
       tasks {
         items {
@@ -818,7 +812,6 @@ export const updateProperty = /* GraphQL */ `
       state
       zip
       price
-      capRate
       note
       tasks {
         items {
@@ -1359,7 +1352,6 @@ export const createGroupsProperty = /* GraphQL */ `
         state
         zip
         price
-        capRate
         note
         tasks {
           nextToken

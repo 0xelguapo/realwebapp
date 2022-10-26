@@ -40,7 +40,7 @@ export default function StepTwo({
                     <div className={styles.importedFieldHeader}>
                       {selectedFile.data[0][index]}
                     </div>
-                    <div className={styles.importedFieldNonHeader}>{el}</div>
+                    <div className={styles.importedFieldNonHeader}>{el ? el : '<first row is blank>'}</div>
                   </div>
                   <div className={styles.mappingField}>
                     <Bucket
