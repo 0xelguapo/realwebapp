@@ -14,16 +14,18 @@ export default function HomepageLayout({ children }) {
           </Link>
           . All Rights Reserved.
         </span>
-        <ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+        <ul className="flex flex-wrap items-center text-sm text-gray-500 dark:text-gray-400 md:ml-5">
           <li>
             <Link href="/publications">
               <a className="mr-4 hover:underline md:mr-6 ">Blog</a>
             </Link>
           </li>
           <li>
-            <a href="#" className="mr-4 hover:underline md:mr-6">
-              Privacy Policy
-            </a>
+            <Link href="/privacy-policy">
+              <a href="#" className="mr-4 hover:underline md:mr-6">
+                Privacy Policy
+              </a>
+            </Link>
           </li>
           <li>
             <Link href="/contact">

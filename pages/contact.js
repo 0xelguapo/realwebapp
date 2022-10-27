@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import HomepageLayout from "../shared/components/UI/Layouts/HomepageLayout";
 
 export default function Contact() {
@@ -19,15 +20,23 @@ export default function Contact() {
         </div>
         <div className="mt-10">
           <h3 className="text-2xl font-bold">Email Us</h3>
-          <p>eric@coagent.co</p>
+          <Link href="mailto:eric@coagent.co">
+            <a>
+              <p className="text-blue-500">eric@coagent.co</p>
+            </a>
+          </Link>
         </div>
         <div className="mt-10">
           <h3 className="text-2xl font-bold">Facebook</h3>
-          <p>CoAgent Facebook</p>
+          <Link href="https://www.facebook.com/profile.php?id=100087469741646">
+            <a>
+              <p className="text-blue-500">CoAgent Facebook</p>
+            </a>
+          </Link>
         </div>
       </div>
     </>
   );
 }
 
-Contact.PageLayout = HomepageLayout
+Contact.PageLayout = HomepageLayout;
