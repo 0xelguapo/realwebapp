@@ -137,6 +137,7 @@ export default function Table({
                 <tr
                   className={styles.row}
                   key={row.original.id}
+                  
                   {...row.getRowProps()}
                 >
                   {row.cells.map((cell) => {

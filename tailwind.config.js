@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./pages/**/*.{js, ts, jsx, tsx}",
     "./shared/components/UI/CTA/**/*.js",
+    "./shared/components/UI/Modal/**/*.js",
     "./shared/components/AddClient/**/*.js",
     "./shared/components/UI/Layouts/**/*.js"
 

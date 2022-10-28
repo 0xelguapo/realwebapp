@@ -58,7 +58,6 @@ function Properties() {
   };
 
   useEffect(() => {
-    console.log('fetching properties...')
     dispatch(fetchProperties());
   }, [dispatch]);
 

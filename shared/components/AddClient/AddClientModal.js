@@ -51,27 +51,25 @@ export default function AddClientModal() {
     reset(initialFormState);
   }, [isOpen, reset, isSubmitSuccessful]);
 
-  const onSubmit = useCallback(
-    (data, shouldClose) => {
-      const { emails, phones, ...restOfData } = data;
-      let emailsArray = [];
-      let phonesArray = [];
-      for (const item of emails) {
-        emailsArray.push(item.email);
-      }
-      for (const item of phones) {
-        phonesArray.push(item.phone);
-      }
-      const clientData = {
-        ...restOfData,
-        email: emailsArray.toString(),
-        phone: phonesArray.toString(),
-      };
-      dispatch(addClient(clientData));
-      if(shouldClose) setIsOpen(false)
-    },
-    [dispatch]
-  );
+  const onSubmit = (data, shouldClose) => {
+    const { emails, phones, ...restOfData } = data;
+    let emailsArray = [];
+    let phonesArray = [];
+    for (const item of emails) {
+      emailsArray.push(item.email);
+    }
+    for (const item of phones) {
+      phonesArray.push(item.phone);
+    }
+    const clientData = {
+      ...restOfData,
+      email: emailsArray.toString(),
+      phone: phonesArray.toString(),
+    };
+    dispatch(addClient(clientData));
+    reset(initialFormState);
+    if (shouldClose) setIsOpen(false);
+  };
 
   return (
     <>
@@ -123,7 +121,11 @@ export default function AddClientModal() {
                 </div>
 
                 <FormProvider {...methods}>
-                  <form onSubmit={methods.handleSubmit((data) => onSubmit(data, true))}>
+                  <form
+                    onSubmit={methods.handleSubmit((data) =>
+                      onSubmit(data, true)
+                    )}
+                  >
                     <div className="rounded-b-md py-3 px-5">
                       <div className="mb-3">
                         <AddClientInput
@@ -265,7 +267,13 @@ export default function AddClientModal() {
                     </div>
                     <div className="flex justify-between bg-gray-100 rounded-b-md h-[3.5rem] py-2 px-5">
                       <div className="flex">
-                        <button type="button" className="text-blue-500" onClick={methods.handleSubmit((data) => onSubmit(data, false))}>
+                        <button
+                          type="button"
+                          className="text-blue-500"
+                          onClick={methods.handleSubmit((data) =>
+                            onSubmit(data, false)
+                          )}
+                        >
                           Save and add another
                         </button>
                       </div>

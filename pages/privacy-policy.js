@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
         />
         <link rel="icon" href="/logo.svg" />
       </Head>
-      <div className="h-full p-5 text-gray-500">
+      <div className="h-full py-10 px-12 md:px-[14rem] text-gray-500">
         <h1 className="font-bold text-3xl text-black">
           CoAgent Privacy Policy
         </h1>
@@ -119,7 +119,7 @@ export default function PrivacyPolicy() {
           </p>
           <br />
           <h3 className="font-medium text-xl">
-            4. Personal Information We Receive from Third Parties.{" "}
+            4. Personal Information We Receive from Third Parties.
           </h3>
           <p>
             Information from third party services. We obtain Personal

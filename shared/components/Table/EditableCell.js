@@ -123,8 +123,8 @@ const EditableCell = ({
                 )}
               </div>
             ))}
-            {Header === "Email" ||
-              (Header === "Phone" && (
+            {(Header === "Email" ||
+              Header === "Phone") && (
                 <button
                   className={styles.addAnotherButton}
                   onClick={handleAddAnotherInput}
@@ -132,10 +132,10 @@ const EditableCell = ({
                   <FiPlus size={18} color="#f83f8" />
                   Add Another {Header}
                 </button>
-              ))}
+              )}
           </EditCellModal>
         )}
-        {Header === "Phone" || Header === "Email" ? (
+        {(Header === "Phone" || Header === "Email") ? (
           <>
             <div className={styles.multiValuesContainer}>
               {value.map((val, i) => {
