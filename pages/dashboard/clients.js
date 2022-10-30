@@ -9,6 +9,7 @@ import { useClients } from "../../shared/context/client-context";
 import Success from "../../shared/components/UI/Status/Success";
 import AddClientModal from "../../shared/components/AddClient/AddClientModal";
 import EditableCell from "../../shared/components/Table/EditableCell";
+import SideModal from "../../shared/components/UI/Modal/SideModal";
 
 const defaultColumn = {
   Cell: EditableCell,
@@ -20,6 +21,7 @@ function Dashboard() {
   const status = useSelector((state) => state.clients.status);
   const { successStatus, successMessage } = useClients();
   const [skipPageReset, setSkipPageReset] = useState(false);
+
 
   const data = useMemo(() => {
     return [...allClients];

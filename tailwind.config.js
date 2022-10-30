@@ -5,8 +5,8 @@ module.exports = {
     "./shared/components/UI/CTA/**/*.js",
     "./shared/components/UI/Modal/**/*.js",
     "./shared/components/AddClient/**/*.js",
-    "./shared/components/UI/Layouts/**/*.js"
-
+    "./shared/components/UI/Layouts/**/*.js",
+    "./shared/components/Table/**/*.js",
   ],
   theme: {
     extend: {

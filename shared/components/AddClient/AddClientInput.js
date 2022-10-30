@@ -12,7 +12,7 @@ export default function AddClientInput({
   let iconComponent;
   switch (icon) {
     case "email":
-      iconComponent = <FiMail />;
+      iconComponent = <FiMail />
       break;
     case "person":
       iconComponent = <FiUser size={16} />

@@ -10,6 +10,7 @@ const EditableCell = ({
   row: { index, ...restOfRow },
   column: { Header, id },
   updateMyData,
+  setPreviewIsOpen
 }) => {
   if (!initialValue) initialValue = "";
   const [editMode, setEditMode] = useState(false);
@@ -137,7 +138,7 @@ const EditableCell = ({
         )}
         {(Header === "Phone" || Header === "Email") ? (
           <>
-            <div className={styles.multiValuesContainer}>
+            <div className={styles.multiValuesContainer} onClick={() => setPreviewIsOpen(true)}>
               {value.map((val, i) => {
                 if (val.length > 0)
                   return (
@@ -153,7 +154,7 @@ const EditableCell = ({
           </>
         ) : (
           <>
-            <div className={styles.multiValuesContainer}>{value}</div>
+            <div className={styles.multiValuesContainer} onClick={() => setPreviewIsOpen(true)}>{value}</div>
             <button className={styles.editButton} onClick={enterEditMode}>
               <FiEdit3 size={15} color="#4e4e4e" />
             </button>

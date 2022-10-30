@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, Fragment } from "react";
 import styles from "./Table.module.css";
 import {
   useTable,
@@ -12,6 +12,9 @@ import GlobalFilter from "./GlobalFilter";
 import InputCheckbox from "./IndeterminateCheckbox";
 import Success from "../UI/Status/Success";
 import { IoChevronForward, IoChevronBack } from "react-icons/io5";
+import SideModal from "../UI/Modal/SideModal";
+import { set } from "nprogress";
+import { Transition } from "@headlessui/react";
 
 export default function Table({
   data,
@@ -22,9 +25,11 @@ export default function Table({
   updateMyData,
   handleDelete,
   status,
-  skipPageReset
+  skipPageReset,
 }) {
   const { successStatus, successMessage } = useClients();
+  const [previewIsOpen, setPreviewIsOpen] = useState(false);
+  const [previewId, setPreviewId] = useState(null);
 
   const tableInstance = useTable(
     {
@@ -33,6 +38,7 @@ export default function Table({
       defaultColumn,
       autoResetPage: !skipPageReset,
       updateMyData,
+      setPreviewIsOpen,
     },
     useGlobalFilter,
     usePagination,
@@ -78,85 +84,110 @@ export default function Table({
 
   state.pageSize = 25;
 
+  const handleOpenPreview = (id) => {
+    setPreviewId(id);
+    setPreviewIsOpen(true);
+  };
 
   return (
-    <div className={styles.tableContainer}>
-      <Success status={successStatus}>{successMessage}</Success>
-      <div className={styles.headerContainer}>
-        <GlobalFilter
-          preGlobalFilteredRows={preGlobalFilteredRows}
-          globalFilter={state.globalFilter}
-          setGlobalFilter={setGlobalFilter}
-        />
-        <div className={styles.addContainer}>{addButton}</div>
-      </div>
-      <div className={styles.pageButtonsContainer}>
-        <button
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-          className={styles.pageButton}
+    <>
+      <div className={styles.tableContainer}>
+        <Transition
+          show={previewIsOpen}
+          enter="transition ease-in-out duration-300 transform"
+          enterFrom="-translate-x-[-500px]"
+          enterTo="-translate-x-0"
+          leave="transition ease-in-out duration-300 transform"
+          leaveFrom="translate-x-0"
+          leaveTo="-translate-x-[-500px]"
+          className="fixed flex flex-col h-screen right-0 w-1/4 bg-slate-100 z-[4] shadow-2xl overflow-auto pb-[8rem]"
         >
-          <IoChevronBack size={20} color="#4e4e4e" />
-        </button>
-        <button
-          onClick={() => nextPage()}
-          disabled={!canNextPage}
-          className={styles.pageButton}
-        >
-          <IoChevronForward size={20} color="#4e4e4e" />
-        </button>
-        {Object.keys(state.selectedRowIds).length !== 0 && (
-          <button onClick={handleDelete}>Delete</button>
+          <SideModal
+            previewIsOpen={previewIsOpen}
+            setPreviewIsOpen={() => setPreviewIsOpen(!previewIsOpen)}
+            previewId={previewId}
+          />
+        </Transition>
+
+        <Success status={successStatus}>{successMessage}</Success>
+        <div className={styles.headerContainer}>
+          <GlobalFilter
+            preGlobalFilteredRows={preGlobalFilteredRows}
+            globalFilter={state.globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+          <div className={styles.addContainer}>{addButton}</div>
+        </div>
+        <div className={styles.pageButtonsContainer}>
+          <button
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+            className={styles.pageButton}
+          >
+            <IoChevronBack size={20} color="#4e4e4e" />
+          </button>
+          <button
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+            className={styles.pageButton}
+          >
+            <IoChevronForward size={20} color="#4e4e4e" />
+          </button>
+          {Object.keys(state.selectedRowIds).length !== 0 && (
+            <button onClick={handleDelete}>Delete</button>
+          )}
+        </div>
+        {status !== "succeeded" ? (
+          <div className={styles.loadingContainer}>
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <table {...getTableProps()}>
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      className={styles.header}
+                      key={column.id}
+                      {...column.getHeaderProps()}
+                    >
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <tr
+                    className={styles.row}
+                    key={row.original.id}
+                    {...row.getRowProps()}
+                  >
+                    {row.cells.map((cell) => {
+                      return (
+                        <td
+                          className={styles.data}
+                          key={cell.row.original.id}
+                          onClick={() =>
+                            handleOpenPreview(cell.row.original.id)
+                          }
+                          {...cell.getCellProps()}
+                        >
+                          {cell.render("Cell")}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         )}
       </div>
-      {status !== "succeeded" ? (
-        <div className={styles.loadingContainer}>
-          <LoadingSpinner />
-        </div>
-      ) : (
-        <table {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    className={styles.header}
-                    key={column.id}
-                    {...column.getHeaderProps()}
-                  >
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr
-                  className={styles.row}
-                  key={row.original.id}
-                  
-                  {...row.getRowProps()}
-                >
-                  {row.cells.map((cell) => {
-                    return (
-                      <td
-                        className={styles.data}
-                        key={cell.row.original.id}
-                        {...cell.getCellProps()}
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
-    </div>
+    </>
   );
 }
