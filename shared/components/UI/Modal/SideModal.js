@@ -1,8 +1,8 @@
-import { Dialog, Transition } from "@headlessui/react";
 import { forwardRef, Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOneClient, selectClientById } from "../../../redux/clients-slice";
 import { FiExternalLink } from "react-icons/fi";
+import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { phoneFormatRegex } from "../../../utility/phoneFormat";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,7 +15,7 @@ function CardContainer({ children }) {
 
 CardContainer.Card = function Card({ children }) {
   return (
-    <div className="flex flex-col bg-white w-11/12 border-neutral-200 border rounded-sm px-4 mt-2 py-2">
+    <div className="flex flex-col bg-white w-11/12 border-neutral-200 border rounded-sm px-4 mt-2 py-3">
       {children}
     </div>
   );
@@ -44,6 +44,11 @@ export default function SideModal({
   const clientEmails = selectedClient?.email?.split(",");
   const clientPhones = selectedClient?.phone?.split(",");
   const clientProperties = selectedClient.properties?.items;
+  const clientConnections = selectedClient.connectionHistory?.items;
+  const clientReminders = selectedClient.reminder?.items;
+  const clientTasks = selectedClient.tasks?.items;
+  console.log(clientTasks);
+
   const [activityRadio, setActivityRadio] = useState(0);
   const [date, setDate] = useState(new Date());
   const [addTaskDate, setTaskDate] = useState(false);
@@ -77,7 +82,7 @@ export default function SideModal({
       </button>
       <CardContainer>
         <CardContainer.Card>
-          <div className="border-b">
+          <div className="border-b pb-2">
             <h2 className="font-bold text-2xl text-gray-700 mb-0">
               {selectedClient.firstName + " " + selectedClient?.lastName}
             </h2>
@@ -86,14 +91,18 @@ export default function SideModal({
             </h4>
           </div>
           <div className="mt-3 pb-4">
-            <p className="text-xs font-medium text-gray-400">NOTES</p>
+            <p className="text-xs font-medium text-gray-400 tracking-wider">
+              NOTES
+            </p>
             {selectedClient.notes ? (
               <p className="text-gray-600">{selectedClient.notes}</p>
             ) : (
-              <p className="font-light text-gray-300 text-sm mt-1">Add a note...</p>
+              <p className="font-light text-gray-300 text-sm mt-1">
+                Add a note...
+              </p>
             )}
           </div>
-          <div className="border-t py-2">
+          <div className="border-t pt-2">
             <button className="flex items-center font-medium text-gray-600">
               View Full Profile <FiExternalLink className="ml-2" />
             </button>
@@ -102,12 +111,15 @@ export default function SideModal({
 
         <CardContainer>
           <CardContainer.Card>
-            <h2 className="font-bold text-xs text-gray-500 tracking-wide">
+            <h2 className="font-bold text-xs text-gray-400 tracking-wider">
               ASSOCIATED PROPERTIES
             </h2>
             {clientProperties?.length > 0 ? (
               clientProperties.map((prop, index) => (
-                <div key={prop.id} className="text-gray-600 border-b py-2">
+                <div
+                  key={prop.id}
+                  className="text-gray-600 border-b py-2 first-of-type:border-b-0"
+                >
                   <p className="font-medium">{prop.street}</p>
                   <p>
                     {prop.city}, {prop.state} {prop.zip}
@@ -123,7 +135,7 @@ export default function SideModal({
         </CardContainer>
 
         <CardContainer.Card>
-          <h2 className="font-bold text-xs text-gray-500 tracking-wide">
+          <h2 className="font-bold text-xs text-gray-400 tracking-wider">
             CONTACT INFORMATION
           </h2>
           {clientEmails
@@ -254,6 +266,59 @@ export default function SideModal({
                 Create Task
               </button>
             </div>
+          )}
+        </CardContainer.Card>
+
+        <CardContainer.Card>
+          <h2 className="font-bold text-xs text-gray-400 tracking-wider">
+            CONNECTION HISTORY
+          </h2>
+          {clientConnections?.length > 0 ? (
+            clientConnections.map((c, index) => (
+              <div key={c.id} className="flex flex-col py-1">
+                <h5 className="font-medium text-gray-900">{c.title}</h5>
+                <p className="font-light text-sm">{c.date}</p>
+              </div>
+            ))
+          ) : (
+            <p className="font-light text-sm text-gray-400">No history yet...</p>
+          )}
+        </CardContainer.Card>
+
+        <CardContainer.Card>
+          <h2 className="font-bold text-xs text-gray-400 tracking-wider">
+            REMINDERS
+          </h2>
+          {clientReminders?.length > 0 ? (
+            clientReminders.map((r, index) => (
+              <div key={r.id} className="flex flex-col py-1">
+                <h5 className="font-medium text-gray-900">Reminder</h5>
+                <p className="text-xs font-light">
+                  {formatDistanceToNowStrict(parseISO(r.date), {
+                    addSuffix: true,
+                    unit: "day",
+                  })}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="font-light text-sm text-gray-400">No reminders yet...</p>
+          )}
+        </CardContainer.Card>
+
+        <CardContainer.Card>
+          <h2 className="font-bold text-xs text-gray-400 tracking-widerr">
+            TASKS
+          </h2>
+          {clientTasks?.length ? (
+            clientTasks.map((task, index) => (
+              <div key={task.id} className="flex flex-col py-1">
+                <h5 className="font-medium text-gray-900">{task.title}</h5>
+                <p className="text-sm font-light">{task.content}</p>
+              </div>
+            ))
+          ) : (
+            <p className="font-light text-sm text-gray-400">No tasks yet...</p>
           )}
         </CardContainer.Card>
       </CardContainer>

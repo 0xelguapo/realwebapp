@@ -4,6 +4,8 @@ import EditCellModal from "./EditCellModal";
 import update from "immutability-helper";
 import { FiEdit3, FiPlus, FiTrash } from "react-icons/fi";
 import { phoneFormatRegex } from "../../utility/phoneFormat";
+import { useSelector } from "react-redux";
+import { selectClientById } from "../../redux/clients-slice";
 
 const EditableCellComponent = ({
   value: initialValue,
@@ -15,6 +17,10 @@ const EditableCellComponent = ({
   const [editMode, setEditMode] = useState(false);
   const [value, setValue] = useState(initialValue.split(",") || "");
   const [inputsArray, setInputsArray] = useState([""]);
+  const propertyOwner = useSelector(state => {
+    if(Header ==='Owner') return selectClientById(state, initialValue)
+    else return null
+  })
 
   const handleInputArrayChange = (e, index) => {
     if (id === "phone") {
@@ -94,6 +100,13 @@ const EditableCellComponent = ({
       }
     }
   }, [initialValue, editMode, id, restOfRow.original]);
+
+  useEffect(() => {
+    //fetch all clients if it hasn't been fetched already
+    if(Header === 'Owner' && propertyOwner?.firstName) {
+      setValue(propertyOwner?.firstName + ' ' + propertyOwner?.lastName)
+    }
+  }, [Header, propertyOwner?.firstName, propertyOwner?.lastName])
 
   return (
     <>

@@ -100,7 +100,7 @@ export default function Table({
           leave="transition ease-in-out duration-300 transform"
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-[-500px]"
-          className="fixed flex flex-col h-screen right-0 w-1/4 bg-slate-100 z-[4] shadow-2xl overflow-auto pb-[8rem]"
+          className="fixed flex flex-col h-screen right-0 w-1/4 bg-slate-50 z-[4] shadow-2xl overflow-auto pb-[8rem]"
         >
           <SideModal
             previewIsOpen={previewIsOpen}
