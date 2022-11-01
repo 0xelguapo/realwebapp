@@ -10,6 +10,7 @@ import {
   deleteGroupsClients,
   deleteClient,
   deleteReminder,
+  createConnectionHistory,
 } from "../graphql/mutations";
 import { listClients, getClient } from "../graphql/queries";
 
@@ -98,6 +99,21 @@ export const editClient = createAsyncThunk(
   }
 );
 
+export const addConnectionHistory = createAsyncThunk(
+  "clients/addConnectionHistory",
+  async (details) => {
+    let response;
+    try {
+      response = await API.graphql(
+        graphqlOperation(createConnectionHistory, { input: details })
+      );
+    } catch (err) {
+      console.error(err);
+    }
+    return response.data.createConnectionHistory;
+  }
+);
+
 export const removeClient = createAsyncThunk(
   "clients/removeClient",
   async (clientId) => {
@@ -123,7 +139,6 @@ export const removeClient = createAsyncThunk(
 
     try {
       deleteGroupClientResponse = await Promise.all(groupPromises);
-      console.log(deleteGroupClientResponse);
     } catch (err) {
       console.error("error delete group clients", err);
       return err;
@@ -152,7 +167,6 @@ export const removeClient = createAsyncThunk(
       } catch (err) {
         console.error("error removing client", err);
       }
-      console.log(response.data.deleteClient);
     }
     return response.data.deleteClient;
   }
@@ -163,13 +177,19 @@ export const clientsSlice = createSlice({
   initialState,
   reducers: {
     handleAddClientToGroup: (state, action) => {
-      state.entities[action.payload.clientId].group.items.push(action.payload)
+      state.entities[action.payload.clientId].group.items.push(action.payload);
     },
     handleRemoveClientFromGroup: (state, action) => {
-      const { clientId, clientGroupID, id } = action.payload
-      const indexToRemove = state.entities[clientId].group.items.findIndex(item => item.clientGroupID === clientGroupID);
-      state.entities[clientId].group.items.splice(indexToRemove, 1)
+      const { clientId, clientGroupID, id } = action.payload;
+      const indexToRemove = state.entities[clientId].group.items.findIndex(
+        (item) => item.clientGroupID === clientGroupID
+      );
+      state.entities[clientId].group.items.splice(indexToRemove, 1);
     },
+    handleAddTask: (state, action) => {
+      const { client, clientId, ...taskDetails } = action.payload;
+      state.entities[clientId].tasks.items.push(taskDetails)
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -193,8 +213,13 @@ export const clientsSlice = createSlice({
         clientsAdapter.removeOne(state, action.payload.id);
       })
       .addCase(editClient.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.entities[action.payload.id] = action.payload;
+      })
+      .addCase(addConnectionHistory.fulfilled, (state, action) => {
+        const { client, ...historyData } = action.payload;
+        state.entities[action.payload.client.id].connectionHistory.items.push(
+          historyData
+        );
       });
   },
 });
@@ -205,7 +230,7 @@ export const {
   selectIds: selectClientIds,
 } = clientsAdapter.getSelectors((state) => state.clients);
 
-export const { handleAddClientToGroup, handleRemoveClientFromGroup } =
+export const { handleAddClientToGroup, handleRemoveClientFromGroup, handleAddTask } =
   clientsSlice.actions;
 
 export default clientsSlice.reducer;

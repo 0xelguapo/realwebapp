@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
         />
         <link rel="icon" href="/logo.svg" />
       </Head>
-      <div className="h-full py-10 px-12 md:px-[17rem] text-gray-500">
+      <div className="h-full py-10 px-10 md:px-[17rem] text-gray-500">
         <h1 className="font-bold text-3xl text-black">
           CoAgent Privacy Policy
         </h1>

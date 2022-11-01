@@ -44,6 +44,7 @@
   background-color: white;
   outline: .5px solid blue;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .multiValuesContainer:hover .multiValue {

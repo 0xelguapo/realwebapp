@@ -12,14 +12,14 @@ export default function TermsOfUse() {
         />
         <link rel="icon" href="/logo.svg" />
       </Head>
-      <div className="h-full w-screen py-10 px-12 md:px-[17rem]">
+      <div className="h-full w-screen py-10 px-10 md:px-[17rem]">
         <article className="prose max-w-none">
           <h1 className="text-black">CoAgent Terms Of Use</h1>
           <p>
             CoAgent Terms of Use Terms and Conditions Agreement between User and
             coagent.co. Welcome to coagent.co. The coagent.co website (the
             &quot;Site&quot;) is comprised of various web pages operated by
-            CoAgent, (&quot;CoAgent&quot;). coagent.co is offered to you
+            CoAgent, a sole proprietorship,(&quot;CoAgent&quot;). coagent.co is offered to you
             conditioned on your acceptance without modification of the terms,
             conditions, and notices contained herein (the &quot;Terms&quot;).
             Your use of coagent.co constitutes your agreement to all such Terms.

@@ -9,7 +9,7 @@ import { useClients } from "../../shared/context/client-context";
 import Success from "../../shared/components/UI/Status/Success";
 import AddClientModal from "../../shared/components/AddClient/AddClientModal";
 import EditableCell from "../../shared/components/Table/EditableCell";
-import SideModal from "../../shared/components/UI/Modal/SideModal";
+import SideModal from "../../shared/components/UI/Modal/SideModalClient";
 
 const defaultColumn = {
   Cell: EditableCell,
