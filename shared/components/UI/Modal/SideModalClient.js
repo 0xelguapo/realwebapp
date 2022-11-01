@@ -6,15 +6,15 @@ import {
   handleAddTask,
   selectClientById,
 } from "../../../redux/clients-slice";
-import { FiExternalLink } from "react-icons/fi";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { phoneFormatRegex } from "../../../utility/phoneFormat";
-import { TbArrowAutofitRight } from "react-icons/tb";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addTask } from "../../../redux/tasks-slice";
 import CardContainer from "./SideModalCard";
-
+import { TbArrowAutofitRight } from "react-icons/tb";
+import { FiExternalLink, FiPlus, FiMail, FiPhone } from "react-icons/fi";
+import { BiBuildingHouse } from "react-icons/bi";
 
 const CustomDatePicker = forwardRef(({ value, onClick }, ref) => (
   <button
@@ -142,6 +142,28 @@ export default function SideModal({
                 </p>
               )}
             </div>
+            <div className="border-t py-2">
+              <p className="text-xs font-medium text-gray-400 tracking-wider">
+                GROUPS
+              </p>
+              {selectedClient.group?.items?.length > 0 ? (
+                selectedClient.group.items.map((group, index) => (
+                  <div
+                    key={group.id}
+                    className="bg-[#e8eef4] mr-2 px-4 rounded"
+                  >
+                    {group.title}
+                  </div>
+                ))
+              ) : (
+                <p className="font-light text-gray-300 text-sm mt-1">
+                  No groups set up...
+                </p>
+              )}
+              <button className="flex items-center font-medium text-sm text-ctablue mt-3">
+                <FiPlus /> Add to Group
+              </button>
+            </div>
             <div className="border-t pt-2">
               <button className="flex items-center font-medium text-gray-600">
                 View Full Profile <FiExternalLink className="ml-2" />
@@ -158,12 +180,17 @@ export default function SideModal({
                 clientProperties.map((prop, index) => (
                   <div
                     key={prop.id}
-                    className="text-gray-600 border-b py-2 first-of-type:border-b-0"
+                    className="text-gray-600 border-b py-2 first-of-type:border-b-0 flex items-center"
                   >
-                    <p className="font-medium">{prop.street}</p>
-                    <p>
-                      {prop.city}, {prop.state} {prop.zip}
-                    </p>
+                    <div>
+                      <BiBuildingHouse />
+                    </div>
+                    <div>
+                      <p className="font-medium">{prop.street}</p>
+                      <p>
+                        {prop.city}, {prop.state} {prop.zip}
+                      </p>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -180,17 +207,29 @@ export default function SideModal({
             </h2>
             {clientEmails
               ? clientEmails.map((email, index) => (
-                  <p key={index} className="text-gray-600 py-1 font-normal">
+                  <div
+                    key={index}
+                    className="flex items-center text-gray-500 py-1"
+                  >
+                    <div className="mr-1 bg-[#f7f9fb] px-1 py-1 rounded-full border">
+                      <FiMail size={12} />
+                    </div>
                     {email}
-                  </p>
+                  </div>
                 ))
               : "Nothing here"}
             <div className="border-b my-1 border-neutral-200" />
             {clientPhones
               ? clientPhones.map((phone, index) => (
-                  <p key={index} className="text-gray-600 py-1 font-normal">
+                  <div
+                    key={index}
+                    className="flex items-center text-gray-500 py-1"
+                  >
+                    <div className="mr-1 bg-[#f7f9fb] px-1 py-1 rounded-full border">
+                      <FiPhone size={12} />
+                    </div>
                     {phoneFormatRegex(phone)}
-                  </p>
+                  </div>
                 ))
               : "Nothing here"}
           </CardContainer.Card>
@@ -214,7 +253,7 @@ export default function SideModal({
                   Connection Log
                 </span>
               </div>
-              
+
               {/* Reminder is removed until further ado */}
               {/* <div className="flex justify-center items-center">
                 <input

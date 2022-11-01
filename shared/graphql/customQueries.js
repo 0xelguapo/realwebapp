@@ -179,3 +179,52 @@ export const listPropertyGroupsWithProperties = /* GraphQL */ `
     }
   }
 `;
+
+export const getPropertyWithGroups = /* GraphQL */ `
+  query GetProperty($id: ID!) {
+    getProperty(id: $id) {
+      id
+      street
+      city
+      state
+      zip
+      price
+      note
+      tasks {
+        items {
+          id
+          clientId
+          propertyId
+          title
+          content
+          completed
+          date
+          notificationId
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      group {
+        items {
+          id
+          propertyID
+          propertyGroupID
+          createdAt
+          updatedAt
+          owner
+          propertyGroup {
+            id
+            title
+          }
+        }
+        nextToken
+      }
+      clientId
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;

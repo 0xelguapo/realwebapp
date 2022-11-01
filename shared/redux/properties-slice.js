@@ -4,6 +4,7 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 import { API, graphqlOperation } from "aws-amplify";
+import { getPropertyWithGroups } from "../graphql/customQueries";
 import {
   createProperty,
   deleteProperty,
@@ -39,7 +40,7 @@ export const fetchOneProperty = createAsyncThunk(
     let response;
     try {
       response = await API.graphql(
-        graphqlOperation(getProperty, { id: propertyId })
+        graphqlOperation(getPropertyWithGroups, { id: propertyId })
       );
     } catch (err) {
       console.error(err);

@@ -12,6 +12,7 @@ import {
 } from "../../shared/redux/properties-slice";
 import EditableCellComponent from "../../shared/components/Table/EditableCellComponent";
 import AddClientModal from "../../shared/components/AddClient/AddClientModal";
+import { fetchClients } from "../../shared/redux/clients-slice";
 
 const defaultColumn = {
   Cell: EditableCellComponent,
@@ -20,9 +21,9 @@ const defaultColumn = {
 function Properties() {
   const dispatch = useDispatch();
   const allProperties = useSelector(selectAllProperties);
+  const clientStatus = useSelector((state) => state.clients.status);
   const status = useSelector((state) => state.properties.status);
-  const [skipPageReset, setSkipPageReset] = useState(false)
-  
+  const [skipPageReset, setSkipPageReset] = useState(false);
 
   const data = useMemo(() => {
     return [...allProperties];
@@ -47,23 +48,27 @@ function Properties() {
     const propertyId = data[rowIndex].id;
     let propertyInputs = {
       id: propertyId,
-      ...editInputs
-    }
-    const response = await dispatch(editProperty(propertyInputs)).unwrap()
-    console.log(response)
+      ...editInputs,
+    };
+    const response = await dispatch(editProperty(propertyInputs)).unwrap();
+    console.log(response);
   };
 
-  const handleDelete = async () => {
-    
-  };
+  const handleDelete = async () => {};
 
   useEffect(() => {
     dispatch(fetchProperties());
   }, [dispatch]);
 
   useEffect(() => {
+    if (clientStatus !== "succeeded") {
+      dispatch(fetchClients());
+    }
+  }, [clientStatus, dispatch]);
+
+  useEffect(() => {
     setSkipPageReset(false);
-  }, [data, allProperties])
+  }, [data, allProperties]);
 
   return (
     <div className={styles.pageContainer}>

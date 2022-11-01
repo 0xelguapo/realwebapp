@@ -44,9 +44,9 @@ export default function Navbar({ dashboard }) {
 
         <div className={styles.right}>
           <div className={styles.signIn}>
-            <Link href="/login">
+            {/* <Link href="/login">
               <a>Sign In</a>
-            </Link>
+            </Link> */}
           </div>
           <div
             className={
