@@ -13,20 +13,8 @@ import { TbArrowAutofitRight } from "react-icons/tb";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addTask } from "../../../redux/tasks-slice";
+import CardContainer from "./SideModalCard";
 
-function CardContainer({ children }) {
-  return (
-    <div className="flex flex-col items-center w-full pt-1">{children}</div>
-  );
-}
-
-CardContainer.Card = function Card({ children }) {
-  return (
-    <div className="flex flex-col bg-white w-11/12 border-neutral-200 border rounded-sm px-4 mt-2 py-3">
-      {children}
-    </div>
-  );
-};
 
 const CustomDatePicker = forwardRef(({ value, onClick }, ref) => (
   <button

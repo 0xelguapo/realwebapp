@@ -85,6 +85,7 @@ function Properties() {
           status={status}
           skipPageReset={skipPageReset}
           addButton={<AddClientModal />}
+          tableType="properties"
         />
       </div>
     </div>

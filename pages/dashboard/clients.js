@@ -85,6 +85,7 @@ function Dashboard() {
           status={status}
           skipPageReset={skipPageReset}
           addButton={<AddClientModal />}
+          tableType="clients"
         />
         {/* <ClientTable /> */}
       </div>

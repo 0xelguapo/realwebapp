@@ -14,6 +14,7 @@ import Success from "../UI/Status/Success";
 import { IoChevronForward, IoChevronBack } from "react-icons/io5";
 import SideModalClient from "../UI/Modal/SideModalClient";
 import { Transition } from "@headlessui/react";
+import SideModalProperties from "../UI/Modal/SideModalProperties";
 
 export default function Table({
   data,
@@ -25,6 +26,7 @@ export default function Table({
   handleDelete,
   status,
   skipPageReset,
+  tableType,
 }) {
   const { successStatus, successMessage } = useClients();
   const [previewIsOpen, setPreviewIsOpen] = useState(false);
@@ -100,12 +102,21 @@ export default function Table({
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-[-500px]"
           className="fixed flex flex-col h-screen right-0 w-1/4 bg-slate-50 z-[5] shadow-2xl overflow-visible"
-          >
-          <SideModalClient
-            previewIsOpen={previewIsOpen}
-            setPreviewIsOpen={() => setPreviewIsOpen(!previewIsOpen)}
-            previewId={previewId}
-          />
+        >
+          {tableType === "clients" && (
+            <SideModalClient
+              previewIsOpen={previewIsOpen}
+              setPreviewIsOpen={() => setPreviewIsOpen(!previewIsOpen)}
+              previewId={previewId}
+            />
+          )}
+          {tableType === "properties" && (
+            <SideModalProperties
+              previewIsOpen={previewIsOpen}
+              setPreviewIsOpen={() => setPreviewIsOpen(!previewIsOpen)}
+              previewId={previewId}
+            />
+          )}
         </Transition>
 
         <Success status={successStatus}>{successMessage}</Success>
