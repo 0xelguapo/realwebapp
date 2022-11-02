@@ -19,6 +19,7 @@ module.exports = {
         ctablue: "#0071e3",
         buttonblue: "#026bff",
         hoverctablue: "#0077ed",
+        extrahoverctablue: "#007DF9"
       },
     },
   },

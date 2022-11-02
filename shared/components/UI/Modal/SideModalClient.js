@@ -1,31 +1,28 @@
-import { forwardRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addConnectionHistory,
   fetchOneClient,
+  handleAddClientToGroup,
   handleAddTask,
   selectClientById,
 } from "../../../redux/clients-slice";
-import { formatDistanceToNowStrict, parseISO } from "date-fns";
-import { phoneFormatRegex } from "../../../utility/phoneFormat";
+import { addTask } from "../../../redux/tasks-slice";
+import { CustomDatePicker } from "../DatePicker/CustomDatePicker";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addTask } from "../../../redux/tasks-slice";
+import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import CardContainer from "./SideModalCard";
+import { phoneFormatRegex } from "../../../utility/phoneFormat";
 import { TbArrowAutofitRight } from "react-icons/tb";
 import { FiExternalLink, FiPlus, FiMail, FiPhone } from "react-icons/fi";
 import { BiBuildingHouse } from "react-icons/bi";
-
-const CustomDatePicker = forwardRef(({ value, onClick }, ref) => (
-  <button
-    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md block w-auto py-1 px-2 text-left font-medium focus:ring-blue-500 focus:border-blue-500"
-    onClick={onClick}
-    ref={ref}
-  >
-    {value}
-  </button>
-));
-CustomDatePicker.displayName = "CustomDatePicker";
+import ComboBox from "./ComboBox";
+import {
+  addClientToGroup,
+  fetchGroups,
+  selectAllGroups,
+} from "../../../redux/groups-slice";
 
 export default function SideModal({
   previewIsOpen,
@@ -36,8 +33,13 @@ export default function SideModal({
   const selectedClient = useSelector((state) =>
     selectClientById(state, previewId)
   );
-  const clientEmails = selectedClient?.email?.split(",");
-  const clientPhones = selectedClient?.phone?.split(",");
+  const clientGroups = useSelector(selectAllGroups);
+  const clientGroupsStatus = useSelector((state) => state.groups.status);
+
+  const clientEmails =
+    selectedClient.email.length > 0 && selectedClient?.email?.split(",");
+  const clientPhones =
+    selectedClient.phone.length > 0 && selectedClient?.phone?.split(",");
   const clientProperties = selectedClient?.properties?.items;
   const clientConnections = selectedClient?.connectionHistory?.items
     ?.slice(0)
@@ -52,6 +54,8 @@ export default function SideModal({
   const [connectionContent, setConnectionContent] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
   const [taskContent, setTaskContent] = useState("");
+  const [groupBoxVisible, setGroupBoxVisible] = useState(false);
+  console.log(selectedClient)
 
   const handleSubmitConnectionHistory = async (e) => {
     e.preventDefault();
@@ -94,6 +98,24 @@ export default function SideModal({
     dispatch(handleAddTask(response));
   };
 
+  const handleGroupBox = (e) => {
+    setGroupBoxVisible(!groupBoxVisible);
+  };
+
+  const handleAddToGroup = async (clientGroupID) => {
+    let response = await dispatch(
+      addClientToGroup({ clientId: previewId, clientGroupID: clientGroupID })
+    ).unwrap();
+    if (response)
+      dispatch(
+        handleAddClientToGroup({
+          clientId: response.client.id,
+          clientGroupID: response.clientGroupID,
+          id: response.id,
+        })
+      );
+  };
+
   useEffect(() => {
     dispatch(fetchOneClient(previewId));
   }, [dispatch, previewId]);
@@ -109,6 +131,15 @@ export default function SideModal({
       document.removeEventListener("keydown", detectEscKey);
     };
   }, [setPreviewIsOpen]);
+
+  useEffect(() => {
+    const handleFetchGroups = () => {
+      dispatch(fetchGroups());
+    };
+    if (groupBoxVisible && clientGroupsStatus !== "succeeded") {
+      handleFetchGroups();
+    }
+  }, [groupBoxVisible, dispatch, clientGroupsStatus]);
 
   return (
     <>
@@ -160,9 +191,20 @@ export default function SideModal({
                   No groups set up...
                 </p>
               )}
-              <button className="flex items-center font-medium text-sm text-ctablue mt-3">
+              <button
+                className="flex items-center font-medium text-sm text-ctablue mt-3"
+                onClick={handleGroupBox}
+              >
                 <FiPlus /> Add to Group
               </button>
+              {groupBoxVisible && (
+                <ComboBox
+                  data={clientGroups}
+                  setGroupBoxVisible={setGroupBoxVisible}
+                  inputPlaceholderText="Search by Group Name"
+                  handleSubmit={handleAddToGroup}
+                />
+              )}
             </div>
             <div className="border-t pt-2">
               <button className="flex items-center font-medium text-gray-600">
@@ -182,7 +224,7 @@ export default function SideModal({
                     key={prop.id}
                     className="text-gray-600 border-b py-2 first-of-type:border-b-0 flex items-center"
                   >
-                    <div>
+                    <div className="mr-1 bg-[#f7f9fb] px-1 py-1 rounded-full border">
                       <BiBuildingHouse />
                     </div>
                     <div>
@@ -205,33 +247,41 @@ export default function SideModal({
             <h2 className="font-bold text-xs text-gray-400 tracking-wider">
               CONTACT INFORMATION
             </h2>
-            {clientEmails
-              ? clientEmails.map((email, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center text-gray-500 py-1"
-                  >
-                    <div className="mr-1 bg-[#f7f9fb] px-1 py-1 rounded-full border">
-                      <FiMail size={12} />
-                    </div>
-                    {email}
+            {clientEmails.length > 0 ? (
+              clientEmails.map((email, index) => (
+                <div
+                  key={index}
+                  className="flex items-center text-gray-500 py-1"
+                >
+                  <div className="mr-1 bg-[#f7f9fb] px-1 py-1 rounded-full border">
+                    <FiMail size={12} />
                   </div>
-                ))
-              : "Nothing here"}
+                  {email}
+                </div>
+              ))
+            ) : (
+              <p className="font-light text-gray-300 text-sm mt-1">
+                No emails...
+              </p>
+            )}
             <div className="border-b my-1 border-neutral-200" />
-            {clientPhones
-              ? clientPhones.map((phone, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center text-gray-500 py-1"
-                  >
-                    <div className="mr-1 bg-[#f7f9fb] px-1 py-1 rounded-full border">
-                      <FiPhone size={12} />
-                    </div>
-                    {phoneFormatRegex(phone)}
+            {clientPhones ? (
+              clientPhones.map((phone, index) => (
+                <div
+                  key={index}
+                  className="flex items-center text-gray-500 py-1"
+                >
+                  <div className="mr-1 bg-[#f7f9fb] px-1 py-1 rounded-full border">
+                    <FiPhone size={12} />
                   </div>
-                ))
-              : "Nothing here"}
+                  {phoneFormatRegex(phone)}
+                </div>
+              ))
+            ) : (
+              <p className="font-light text-gray-300 text-sm mt-1">
+                No phone numbers...
+              </p>
+            )}
           </CardContainer.Card>
         </CardContainer>
 

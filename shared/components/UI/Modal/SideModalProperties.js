@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchOneProperty,
+  handleAddPropertyTask,
   selectPropertyById,
 } from "../../../redux/properties-slice";
 import CardContainer from "./SideModalCard";
@@ -9,12 +10,20 @@ import { FiExternalLink, FiPlus, FiMail, FiPhone } from "react-icons/fi";
 import { TbArrowAutofitRight } from "react-icons/tb";
 import { fetchOneClient, selectClientById } from "../../../redux/clients-slice";
 import { phoneFormatRegex } from "../../../utility/phoneFormat";
+import { addTask } from "../../../redux/tasks-slice";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { CustomDatePicker } from "../DatePicker/CustomDatePicker";
 
 export default function SideModalProperties({
   previewIsOpen,
   setPreviewIsOpen,
   previewId,
 }) {
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskContent, setTaskContent] = useState("");
+  const [date, setDate] = useState(new Date());
+
   const dispatch = useDispatch();
   const selectedProperty = useSelector((state) =>
     selectPropertyById(state, previewId)
@@ -22,6 +31,28 @@ export default function SideModalProperties({
   const selectedOwner = useSelector((state) =>
     selectClientById(state, selectedProperty?.clientId)
   );
+
+  const handleSubmitTask = async (e) => {
+    e.preventDefault();
+    let taskDetails = {
+      title: taskTitle,
+      content: taskContent,
+      date: date.toLocaleString(undefined, {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      propertyId: previewId,
+    };
+    let response = await dispatch(addTask(taskDetails)).unwrap();
+    if (response) {
+      dispatch(handleAddPropertyTask(response));
+      setTaskTitle("");
+      setTaskContent("");
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchOneProperty(previewId));
@@ -146,6 +177,66 @@ export default function SideModalProperties({
             ) : (
               <p className="font-light text-gray-300 text-sm mt-1">
                 No owner associated...
+              </p>
+            )}
+          </CardContainer.Card>
+        </CardContainer>
+
+        <div className="bg-white w-full py-1 text-center mt-5 border-y border-neutral-200">
+          <h3 className="font-semibold">Activities</h3>
+        </div>
+
+        <CardContainer>
+          <CardContainer.Card>
+            <h2 className="font-bold text-xs text-gray-400 tracking-wider">
+              CREATE A TASK
+            </h2>
+            <div className="flex flex-col mt-3">
+              <input
+                type="text"
+                placeholder="Title"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md block w-full p-1 pl-2 mb-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setTaskTitle(e.target.value)}
+                value={taskTitle}
+              />
+              <textarea
+                type="text"
+                placeholder="Description"
+                className="justify-start bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md block w-full p-1 pl-2 mb-2 h-16 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setTaskContent(e.target.value)}
+                value={taskContent}
+              />
+              <DatePicker
+                selected={date}
+                onChange={setDate}
+                showTimeSelect={true}
+                customInput={<CustomDatePicker />}
+                dateFormat="MM/dd/yyyy h:mm"
+              />
+              <button
+                className="mt-3 w-fit inline bg-ctablue text-white text-left px-3 py-1 rounded font-semibold hover:bg-hoverctablue"
+                onClick={handleSubmitTask}
+              >
+                Create Task
+              </button>
+            </div>
+          </CardContainer.Card>
+          
+          <CardContainer.Card>
+            <h2 className="font-bold text-xs text-gray-400 tracking-widerr">
+              TASKS
+            </h2>
+            {selectedProperty?.tasks?.items?.length > 0 ? (
+              selectedProperty.tasks.items.map((task, index) => (
+                <div key={task.id} className="flex flex-col py-1">
+                  <h5 className="font-medium text-gray-900">{task.title}</h5>
+                  <p className="text-sm font-light">{task.content}</p>
+                  <p className="text-xs font-light mt-1">{task.date}</p>
+                </div>
+              ))
+            ) : (
+              <p className="font-light text-sm text-gray-400">
+                No tasks yet...
               </p>
             )}
           </CardContainer.Card>

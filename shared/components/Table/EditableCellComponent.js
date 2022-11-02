@@ -76,9 +76,15 @@ const EditableCellComponent = ({
     }
   };
 
-  const enterEditMode = () => {
+  const enterEditMode = (e) => {
+    e.stopPropagation()
     setEditMode(true);
   };
+
+  const exitEditMode = (e) => {
+    e.stopPropagation();
+    setEditMode(false)
+  }
 
   useEffect(() => {
     if (initialValue) {
@@ -114,7 +120,7 @@ const EditableCellComponent = ({
         {editMode && (
           <EditCellModal
             title={`Edit ${Header}`}
-            handleCancel={() => setEditMode(false)}
+            handleCancel={exitEditMode}
             handleSubmit={handleSubmit}
           >
             {inputsArray.map((input, index) => (
