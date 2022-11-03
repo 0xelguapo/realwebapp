@@ -31,6 +31,7 @@ export default function Table({
   const { successStatus, successMessage } = useClients();
   const [previewIsOpen, setPreviewIsOpen] = useState(false);
   const [previewId, setPreviewId] = useState(null);
+  const [previewIndex, setPreviewIndex] = useState(null);
 
   const tableInstance = useTable(
     {
@@ -85,10 +86,32 @@ export default function Table({
 
   state.pageSize = 25;
 
-  const handleOpenPreview = (id) => {
+  const handleOpenPreview = (id, rowIndex) => {
     setPreviewId(id);
     setPreviewIsOpen(true);
+    setPreviewIndex(rowIndex);
   };
+
+  useEffect(() => {
+    const detectLeftKey = (e) => {
+      if (e.key === "ArrowLeft" && previewIndex > 0) {
+        setPreviewIndex((prevState) => prevState - 1);
+        setPreviewId(data[previewIndex].id);
+      }
+    };
+    const detectRightKey = (e) => {
+      if (e.key === "ArrowRight" && previewIndex < state.pageSize) {
+        setPreviewIndex((prevState) => prevState + 1);
+        setPreviewId(data[previewIndex].id);
+      }
+    };
+    document.addEventListener("keydown", detectLeftKey);
+    document.addEventListener("keydown", detectRightKey);
+    return () => {
+      document.removeEventListener("keydown", detectLeftKey);
+      document.removeEventListener("keydown", detectRightKey);
+    };
+  }, [previewIndex, state.pageSize, data]);
 
   return (
     <>
@@ -183,7 +206,7 @@ export default function Table({
                           className={styles.data}
                           key={cell.row.original.id}
                           onClick={() =>
-                            handleOpenPreview(cell.row.original.id)
+                            handleOpenPreview(cell.row.original.id, i)
                           }
                           {...cell.getCellProps()}
                         >

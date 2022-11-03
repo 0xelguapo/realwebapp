@@ -7,7 +7,8 @@ export default function ComboBox({
   data,
   inputPlaceholderText,
   setGroupBoxVisible,
-  handleSubmit
+  handleSubmit,
+  handleCreateGroup,
 }) {
   const [selected, setSelected] = useState("");
   const [query, setQuery] = useState("");
@@ -19,9 +20,17 @@ export default function ComboBox({
   };
 
   const handleAdd = async () => {
-    // console.log(selected)
-    await handleSubmit(selected.id)
-  }
+    await handleSubmit(selected.id);
+    setQuery("");
+    setSelected("");
+  };
+
+  const handleCreateAndAdd = async () => {
+    const response = await handleCreateGroup(query);
+    await handleSubmit(response.id);
+    setQuery("");
+    setSelected("");
+  };
 
   const filteredData =
     query === ""
@@ -62,42 +71,49 @@ export default function ComboBox({
           >
             <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {filteredData.length === 0 && query !== "" ? (
-                <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                  Create a new group <span className="font-bold">{`"${query}"`}</span>
+                <div
+                  className="relative cursor-default select-none py-2 px-4 text-gray-700 hover:cursor-pointer hover:bg-gray-300 hover:rounded-lg"
+                  onClick={handleCreateAndAdd}
+                >
+                  Create a new group{" "}
+                  <span className="font-bold">{`"${query}"`}</span>
                 </div>
               ) : (
-                filteredData.map((d) => (
-                  <Combobox.Option
-                    key={d.id}
-                    className={({ active }) =>
-                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                        active ? "bg-blue-500 text-white" : "text-gray-900"
-                      }`
-                    }
-                    value={d}
-                  >
-                    {({ selected, active }) => (
-                      <>
-                        <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
-                        >
-                          {d.title}
-                        </span>
-                        {selected ? (
+                filteredData.map((d) => {
+                  if (d.inGroup) return null;
+                  return (
+                    <Combobox.Option
+                      key={d.id}
+                      className={({ active }) =>
+                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                          active ? "bg-blue-500 text-white" : "text-gray-900"
+                        }`
+                      }
+                      value={d}
+                    >
+                      {({ selected, active }) => (
+                        <>
                           <span
-                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                              active ? "text-white" : "text-teal-600"
+                            className={`block truncate ${
+                              selected ? "font-medium" : "font-normal"
                             }`}
                           >
-                            <FiCheck className="h-5 w-5" aria-hidden="true" />
+                            {d.title}
                           </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Combobox.Option>
-                ))
+                          {selected ? (
+                            <span
+                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                active ? "text-white" : "text-teal-600"
+                              }`}
+                            >
+                              <FiCheck className="h-5 w-5" aria-hidden="true" />
+                            </span>
+                          ) : null}
+                        </>
+                      )}
+                    </Combobox.Option>
+                  );
+                })
               )}
             </Combobox.Options>
           </Transition>
@@ -109,7 +125,10 @@ export default function ComboBox({
           >
             Cancel
           </button>
-          <button className="bg-ctablue text-white font-bold px-5 py-[2px] rounded hover:bg-extrahoverctablue" onClick={handleAdd}>
+          <button
+            className="bg-ctablue text-white font-bold px-5 py-[2px] rounded hover:bg-extrahoverctablue"
+            onClick={handleAdd}
+          >
             Add
           </button>
         </div>

@@ -53,6 +53,7 @@ function Dashboard() {
 
   useEffect(() => {
     dispatch(fetchClients());
+    console.log('fetchClients')
   }, [dispatch]);
 
   useEffect(() => {

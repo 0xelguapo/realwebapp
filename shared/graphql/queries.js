@@ -68,6 +68,9 @@ export const getClient = /* GraphQL */ `
           createdAt
           updatedAt
           owner
+          clientGroup {
+            title
+          }
         }
         nextToken
       }

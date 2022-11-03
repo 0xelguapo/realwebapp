@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addConnectionHistory,
@@ -20,6 +20,7 @@ import { BiBuildingHouse } from "react-icons/bi";
 import ComboBox from "./ComboBox";
 import {
   addClientToGroup,
+  addGroup,
   fetchGroups,
   selectAllGroups,
 } from "../../../redux/groups-slice";
@@ -33,19 +34,20 @@ export default function SideModal({
   const selectedClient = useSelector((state) =>
     selectClientById(state, previewId)
   );
-  const clientGroups = useSelector(selectAllGroups);
-  const clientGroupsStatus = useSelector((state) => state.groups.status);
+  const groups = useSelector(selectAllGroups);
+  const groupStatus = useSelector((state) => state.groups.status);
 
   const clientEmails =
-    selectedClient.email.length > 0 && selectedClient?.email?.split(",");
+    selectedClient.email?.length > 0 && selectedClient?.email?.split(",");
   const clientPhones =
-    selectedClient.phone.length > 0 && selectedClient?.phone?.split(",");
+    selectedClient.phone?.length > 0 && selectedClient?.phone?.split(",");
   const clientProperties = selectedClient?.properties?.items;
   const clientConnections = selectedClient?.connectionHistory?.items
     ?.slice(0)
     .sort((a, b) => new Date(b.date) - new Date(a.date));
   const clientReminders = selectedClient?.reminder?.items;
   const clientTasks = selectedClient?.tasks?.items;
+  const clientGroups = selectedClient.group.items;
 
   const [activityRadio, setActivityRadio] = useState(0);
   const [date, setDate] = useState(new Date());
@@ -55,7 +57,39 @@ export default function SideModal({
   const [taskTitle, setTaskTitle] = useState("");
   const [taskContent, setTaskContent] = useState("");
   const [groupBoxVisible, setGroupBoxVisible] = useState(false);
-  console.log(selectedClient)
+  const [updatedGroups, setUpdatedGroups] = useState([]);
+
+  const updateClientGroups = (allGroups, clientsGroups) => {
+    let allGroupsCopy = [...allGroups];
+    for (let i = 0; i < allGroupsCopy.length; i++) {
+      const allGroupsId = allGroupsCopy[i].id;
+      for (let j = 0; j < clientsGroups.length; j++) {
+        if (allGroupsId === clientsGroups[j].clientGroupID) {
+          allGroupsCopy[i] = {
+            ...allGroupsCopy[i],
+            inGroup: true,
+            clientGroupID: clientsGroups[j].id,
+          };
+          break;
+        } else if (allGroupsId !== clientsGroups[j].clientGroupID) {
+          allGroupsCopy[i] = {
+            ...allGroupsCopy[i],
+            inGroup: false,
+            clientGroupID: null,
+          };
+        }
+      }
+    }
+    return allGroupsCopy;
+  };
+
+  const handleCreateGroup = useCallback(
+    async (title) => {
+      let response = await dispatch(addGroup(title)).unwrap();
+      return response;
+    },
+    [dispatch]
+  );
 
   const handleSubmitConnectionHistory = async (e) => {
     e.preventDefault();
@@ -136,10 +170,17 @@ export default function SideModal({
     const handleFetchGroups = () => {
       dispatch(fetchGroups());
     };
-    if (groupBoxVisible && clientGroupsStatus !== "succeeded") {
+    if (groupStatus !== "succeeded") {
       handleFetchGroups();
     }
-  }, [groupBoxVisible, dispatch, clientGroupsStatus]);
+  }, [groupBoxVisible, dispatch, groupStatus]);
+
+  useEffect(() => {
+    if (groupStatus === "succeeded" && clientGroups) {
+      let finalArray = updateClientGroups(groups, clientGroups);
+      setUpdatedGroups(finalArray);
+    }
+  }, [groups, clientGroups, groupStatus, handleCreateGroup]);
 
   return (
     <>
@@ -173,24 +214,32 @@ export default function SideModal({
                 </p>
               )}
             </div>
+
             <div className="border-t py-2">
               <p className="text-xs font-medium text-gray-400 tracking-wider">
                 GROUPS
               </p>
-              {selectedClient.group?.items?.length > 0 ? (
-                selectedClient.group.items.map((group, index) => (
-                  <div
-                    key={group.id}
-                    className="bg-[#e8eef4] mr-2 px-4 rounded"
-                  >
-                    {group.title}
-                  </div>
-                ))
-              ) : (
-                <p className="font-light text-gray-300 text-sm mt-1">
-                  No groups set up...
-                </p>
-              )}
+              <div className="flex flex-wrap gap-1 mt-1">
+                {clientGroups?.length > 0 ? (
+                  updatedGroups.map((group, index) => {
+                    if (group.inGroup) {
+                      return (
+                        <div
+                          key={group.id}
+                          className="bg-[#e8eef4] mr-2 px-4 rounded text-sm font-medium"
+                        >
+                          {group.title}
+                        </div>
+                      );
+                    }
+                  })
+                ) : (
+                  <p className="font-light text-gray-300 text-sm mt-1">
+                    No groups set up...
+                  </p>
+                )}
+              </div>
+
               <button
                 className="flex items-center font-medium text-sm text-ctablue mt-3"
                 onClick={handleGroupBox}
@@ -199,10 +248,11 @@ export default function SideModal({
               </button>
               {groupBoxVisible && (
                 <ComboBox
-                  data={clientGroups}
+                  data={updatedGroups}
                   setGroupBoxVisible={setGroupBoxVisible}
                   inputPlaceholderText="Search by Group Name"
                   handleSubmit={handleAddToGroup}
+                  handleCreateGroup={handleCreateGroup}
                 />
               )}
             </div>
