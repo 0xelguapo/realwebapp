@@ -51,7 +51,6 @@ export default function SideModal({
 
   const [activityRadio, setActivityRadio] = useState(0);
   const [date, setDate] = useState(new Date());
-  const [addTaskDate, setTaskDate] = useState(false);
   const [connectionTitle, setConnectionTitle] = useState("");
   const [connectionContent, setConnectionContent] = useState("");
   const [taskTitle, setTaskTitle] = useState("");

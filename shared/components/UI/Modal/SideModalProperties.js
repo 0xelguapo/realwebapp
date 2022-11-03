@@ -1,19 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchOneProperty,
   handleAddPropertyTask,
+  handleAddPropertyToGroup,
   selectPropertyById,
 } from "../../../redux/properties-slice";
-import CardContainer from "./SideModalCard";
-import { FiExternalLink, FiPlus, FiMail, FiPhone } from "react-icons/fi";
-import { TbArrowAutofitRight } from "react-icons/tb";
+import {
+  addPropertyGroup,
+  addPropertyToGroup,
+  fetchPropertyGroups,
+  selectAllPropertyGroups,
+} from "../../../redux/propertyGroups-slice";
 import { fetchOneClient, selectClientById } from "../../../redux/clients-slice";
-import { phoneFormatRegex } from "../../../utility/phoneFormat";
 import { addTask } from "../../../redux/tasks-slice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CustomDatePicker } from "../DatePicker/CustomDatePicker";
+import CardContainer from "./SideModalCard";
+import ComboBox from "./ComboBox";
+import { phoneFormatRegex } from "../../../utility/phoneFormat";
+import { FiExternalLink, FiPlus, FiMail, FiPhone } from "react-icons/fi";
+import { TbArrowAutofitRight } from "react-icons/tb";
 
 export default function SideModalProperties({
   previewIsOpen,
@@ -23,6 +31,8 @@ export default function SideModalProperties({
   const [taskTitle, setTaskTitle] = useState("");
   const [taskContent, setTaskContent] = useState("");
   const [date, setDate] = useState(new Date());
+  const [groupBoxVisible, setGroupBoxVisible] = useState(false);
+  const [updatedGroups, setUpdatedGroups] = useState([]);
 
   const dispatch = useDispatch();
   const selectedProperty = useSelector((state) =>
@@ -31,6 +41,61 @@ export default function SideModalProperties({
   const selectedOwner = useSelector((state) =>
     selectClientById(state, selectedProperty?.clientId)
   );
+  const allPropertyGroups = useSelector(selectAllPropertyGroups);
+  const allPropertyGroupsStatus = useSelector(
+    (state) => state.propertyGroups.status
+  );
+  const groupsOfSelectedProperty = selectedProperty.group.items;
+
+  const updatePropertyGroups = (allPropertyGroups, groupsOfProperty) => {
+    let allPropertyGroupsCopy = [...allPropertyGroups];
+    for (let i = 0; i < allPropertyGroupsCopy.length; i++) {
+      const propertyGroupsId = allPropertyGroupsCopy[i].id;
+      for (let j = 0; j < groupsOfProperty.length; j++) {
+        if (propertyGroupsId === groupsOfProperty[j].propertyGroupID) {
+          allPropertyGroupsCopy[i] = {
+            ...allPropertyGroupsCopy[i],
+            inGroup: true,
+            groupsPropertyID: groupsOfProperty[j].id,
+          };
+          break;
+        } else if (propertyGroupsId !== groupsOfProperty[j].propertyGroupID) {
+          allPropertyGroups[i] = {
+            ...allPropertyGroups[i],
+            inGroup: false,
+            groupsPropertyID: null,
+          };
+        }
+      }
+    }
+    return allPropertyGroupsCopy;
+  };
+
+  const handleCreatePropertyGroup = useCallback(
+    async (title) => {
+      let response = await dispatch(addPropertyGroup(title)).unwrap();
+      return response;
+    },
+    [dispatch]
+  );
+
+  const handleAddToGroup = async (propertyGroupID) => {
+    let response = await dispatch(
+      addPropertyToGroup({
+        propertyID: previewId,
+        propertyGroupID: propertyGroupID,
+      })
+    ).unwrap();
+    if (response) {
+      dispatch(
+        handleAddPropertyToGroup({
+          propertyId: response.property.id,
+          propertyGroupID: response.propertyGroupID,
+          id: response.id,
+        })
+      );
+    }
+  };
 
   const handleSubmitTask = async (e) => {
     e.preventDefault();
@@ -54,6 +119,10 @@ export default function SideModalProperties({
     }
   };
 
+  const handleGroupBox = (e) => {
+    setGroupBoxVisible(!groupBoxVisible);
+  };
+
   useEffect(() => {
     dispatch(fetchOneProperty(previewId));
   }, [previewId, dispatch]);
@@ -63,6 +132,30 @@ export default function SideModalProperties({
       dispatch(fetchOneClient(selectedProperty.clientId));
     }
   }, [dispatch, selectedProperty.clientId]);
+
+  useEffect(() => {
+    const handleFetchPropertyGroups = () => {
+      dispatch(fetchPropertyGroups());
+    };
+    if (allPropertyGroupsStatus !== "succeeded") {
+      handleFetchPropertyGroups();
+    }
+  }, [allPropertyGroupsStatus, dispatch]);
+
+  useEffect(() => {
+    if (allPropertyGroupsStatus === "succeeded" && groupsOfSelectedProperty) {
+      let finalArray = updatePropertyGroups(
+        allPropertyGroups,
+        groupsOfSelectedProperty
+      );
+      setUpdatedGroups(finalArray);
+    }
+  }, [
+    allPropertyGroups,
+    allPropertyGroupsStatus,
+    groupsOfSelectedProperty,
+    handleCreatePropertyGroup,
+  ]);
 
   return (
     <>
@@ -107,24 +200,40 @@ export default function SideModalProperties({
                 GROUPS
               </p>
               <div className="flex mt-1">
-                {selectedProperty.group?.items?.length > 0 ? (
-                  selectedProperty.group.items.map((group, index) => (
-                    <div
-                      key={group.id}
-                      className="bg-[#e8eef4] mr-2 px-4 rounded"
-                    >
-                      {group.propertyGroup.title}
-                    </div>
-                  ))
+                {groupsOfSelectedProperty?.length > 0 ? (
+                  updatedGroups.map((group, index) => {
+                    if (group.inGroup) {
+                      return (
+                        <div
+                          key={group.id}
+                          className="bg-[#e8eef4] mr-2 px-4 rounded"
+                        >
+                          {group.title}
+                        </div>
+                      );
+                    }
+                  })
                 ) : (
                   <p className="font-light text-gray-300 text-sm mt-1">
                     No groups set up...
                   </p>
                 )}
               </div>
-              <button className="flex items-center font-medium text-sm text-ctablue mt-3">
+              <button
+                className="flex items-center font-medium text-sm text-ctablue mt-3"
+                onClick={handleGroupBox}
+              >
                 <FiPlus /> Add to Group
               </button>
+              {groupBoxVisible && (
+                <ComboBox
+                  data={updatedGroups}
+                  setGroupBoxVisible={setGroupBoxVisible}
+                  inputPlaceholderText="Search by Group Name"
+                  handleSubmit={handleAddToGroup}
+                  handleCreateGroup={handleCreatePropertyGroup}
+                />
+              )}
             </div>
             <div className="border-t pt-2">
               <button className="flex items-center font-medium text-gray-600">
@@ -221,7 +330,7 @@ export default function SideModalProperties({
               </button>
             </div>
           </CardContainer.Card>
-          
+
           <CardContainer.Card>
             <h2 className="font-bold text-xs text-gray-400 tracking-widerr">
               TASKS

@@ -100,7 +100,7 @@ export default function Table({
       }
     };
     const detectRightKey = (e) => {
-      if (e.key === "ArrowRight" && previewIndex < state.pageSize) {
+      if (e.key === "ArrowRight" && previewIndex < (data.length - 1 < state.pageSize ? data.length - 1 : state.pageSize)) {
         setPreviewIndex((prevState) => prevState + 1);
         setPreviewId(data[previewIndex].id);
       }

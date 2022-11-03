@@ -13,6 +13,7 @@ import {
   createConnectionHistory,
 } from "../graphql/mutations";
 import { listClients, getClient } from "../graphql/queries";
+import { getClientCustom } from "../graphql/customQueries";
 
 const clientsAdapter = createEntityAdapter({
   sortComparer: (a, b) => a.firstName.localeCompare(b.firstName),
@@ -42,7 +43,7 @@ export const fetchOneClient = createAsyncThunk(
     let response;
     try {
       response = await API.graphql(
-        graphqlOperation(getClient, { id: clientId })
+        graphqlOperation(getClientCustom, { id: clientId })
       );
     } catch (err) {
       console.error(err);
