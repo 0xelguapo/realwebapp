@@ -4,12 +4,14 @@ import {
   fetchOneProperty,
   handleAddPropertyTask,
   handleAddPropertyToGroup,
+  handleRemovePropertyFromGroup,
   selectPropertyById,
 } from "../../../redux/properties-slice";
 import {
   addPropertyGroup,
   addPropertyToGroup,
   fetchPropertyGroups,
+  removePropertyFromGroup,
   selectAllPropertyGroups,
 } from "../../../redux/propertyGroups-slice";
 import { fetchOneClient, selectClientById } from "../../../redux/clients-slice";
@@ -74,6 +76,7 @@ export default function SideModalProperties({
   const handleCreatePropertyGroup = useCallback(
     async (title) => {
       let response = await dispatch(addPropertyGroup(title)).unwrap();
+      setGroupBoxVisible(false)
       return response;
     },
     [dispatch]
@@ -92,6 +95,22 @@ export default function SideModalProperties({
           propertyId: response.property.id,
           propertyGroupID: response.propertyGroupID,
           id: response.id,
+        })
+      );
+    }
+    setGroupBoxVisible(false)
+  };
+
+  const handleRemoveFromGroup = async (groupsPropertyID) => {
+    let response = await dispatch(
+      removePropertyFromGroup(groupsPropertyID)
+    ).unwrap();
+    if (response) {
+      dispatch(
+        handleRemovePropertyFromGroup({
+          propertyId: response.property.id,
+          propertyGroupID: response.propertyGroupID,
+          id: response.id
         })
       );
     }
@@ -199,16 +218,24 @@ export default function SideModalProperties({
               <p className="text-xs font-medium text-gray-400 tracking-wider">
                 GROUPS
               </p>
-              <div className="flex mt-1">
+              <div className="flex mt-1 flex-wrap gap-1">
                 {groupsOfSelectedProperty?.length > 0 ? (
                   updatedGroups.map((group, index) => {
                     if (group.inGroup) {
                       return (
                         <div
                           key={group.id}
-                          className="bg-[#e8eef4] mr-2 px-4 rounded"
+                          className="bg-[#e8eef4] mr-2 px-2 rounded text-sm font-medium group flex justify-between"
                         >
                           {group.title}
+                          <button
+                            className="ml-3 opacity-0 text-sm group-hover:opacity-100 hover:text-gray-500"
+                            onClick={() =>
+                              handleRemoveFromGroup(group.groupsPropertyID)
+                            }
+                          >
+                            X
+                          </button>
                         </div>
                       );
                     }

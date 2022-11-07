@@ -97,6 +97,7 @@ type Note @model @auth(rules: [{ allow: owner }, { allow: public, provider: apiK
 }
 
 type Mutation {
-  batchCreateClients(data: [AWSJSON], mappedFields: [String]): String
+  batchCreateClients(data: AWSJSON, mappedFields: [String]): String
     @function(name: "batchcreateclients-dev")
+  deleteUserData: Boolean! @function(name: "deleteUserData-dev")
 }

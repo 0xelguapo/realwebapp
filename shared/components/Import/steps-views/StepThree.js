@@ -24,17 +24,17 @@ export default function StepThree({ droppedBoxNames, selectedFile }) {
                   <div className={styles.previewRow}>
                     {selectedFile.data[1][index]
                       ? selectedFile.data[1][index]
-                      : "<second row is blank>"}
+                      : "<first row is blank>"}
                   </div>
                   <div className={styles.previewRow}>
                     {selectedFile.data[2][index]
                       ? selectedFile.data[2][index]
-                      : "<third row is blank>"}
+                      : "<second row is blank>"}
                   </div>
                   <div className={styles.previewRow}>
                     {selectedFile.data[3][index]
                       ? selectedFile.data[3][index]
-                      : "<fourth row is blank>"}
+                      : "<third row is blank>"}
                   </div>
                 </div>
               );

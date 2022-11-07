@@ -123,8 +123,9 @@ function Import() {
         <div className={styles.headingContainer}>
           <h1 className={styles.headingText}>Import Data</h1>
           <p className={styles.headingDescription}>
-            You can import contacts and properties separately, or you can import
-            contacts along with their associated properties together.
+            Import your contacts directly from your excel or .csv file.
+            {/* You can import contacts and properties separately, or you can import
+            contacts along with their associated properties together. */}
           </p>
         </div>
         {currentStep === 0 && (

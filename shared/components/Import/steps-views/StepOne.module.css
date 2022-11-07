@@ -1,13 +1,3 @@
-.headingText {
-  font-weight: 400;
-  font-size: 1.5rem;
-}
-
-.headingDescription {
-  margin-top: 1rem;
-}
-
-
 .stepOneContainer {
   display: flex;
   flex-direction: row;
@@ -17,9 +7,34 @@
 
 .oneLeftContainer {
   display: flex;
+  flex-direction: column;
   flex: 1;
   padding: 1rem 1.5rem;
   border-right: 1px solid #e5e7eb;
+}
+
+
+.subContainer {
+  display: flex;
+  padding: 2rem 0;
+}
+
+.iconContainer {
+  padding: 0rem 2rem
+}
+
+.headingText {
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.headingDescription {
+  margin-top: 1rem;
+}
+
+.subHeadingText {
+  font-size: 1.1rem;
+  font-weight: 600
 }
 
 .oneRightContainer {

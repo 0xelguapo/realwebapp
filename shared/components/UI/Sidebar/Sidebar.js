@@ -31,7 +31,7 @@ export default function Sidebar() {
             </div>
           </a>
         </Link>
-        <Link href="/settings">
+        <Link href="/settings/import">
           <a>
             <div className={styles.link}>
               <div className={styles.logoImage}>
@@ -42,7 +42,7 @@ export default function Sidebar() {
                   alt="settings"
                 />
               </div>
-              Settings
+              Import
             </div>
           </a>
         </Link>

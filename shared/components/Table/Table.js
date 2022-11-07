@@ -31,7 +31,7 @@ export default function Table({
   const { successStatus, successMessage } = useClients();
   const [previewIsOpen, setPreviewIsOpen] = useState(false);
   const [previewId, setPreviewId] = useState(null);
-  const [previewIndex, setPreviewIndex] = useState(null);
+  const [previewIndex, setPreviewIndex] = useState(0);
 
   const tableInstance = useTable(
     {
@@ -100,7 +100,11 @@ export default function Table({
       }
     };
     const detectRightKey = (e) => {
-      if (e.key === "ArrowRight" && previewIndex < (data.length - 1 < state.pageSize ? data.length - 1 : state.pageSize)) {
+      if (
+        e.key === "ArrowRight" &&
+        previewIndex <
+          (data.length - 1 < state.pageSize ? data.length - 1 : state.pageSize)
+      ) {
         setPreviewIndex((prevState) => prevState + 1);
         setPreviewId(data[previewIndex].id);
       }
@@ -127,11 +131,13 @@ export default function Table({
           className="fixed flex flex-col h-screen right-0 w-1/4 bg-slate-50 z-[5] shadow-2xl overflow-visible"
         >
           {tableType === "clients" && (
-            <SideModalClient
-              previewIsOpen={previewIsOpen}
-              setPreviewIsOpen={() => setPreviewIsOpen(!previewIsOpen)}
-              previewId={previewId}
-            />
+            <>
+              <SideModalClient
+                previewIsOpen={previewIsOpen}
+                setPreviewIsOpen={() => setPreviewIsOpen(!previewIsOpen)}
+                previewId={previewId}
+              />
+            </>
           )}
           {tableType === "properties" && (
             <SideModalProperties

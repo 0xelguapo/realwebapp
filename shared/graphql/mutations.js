@@ -6,7 +6,11 @@ export const batchCreateClients = /* GraphQL */ `
     batchCreateClients(data: $data, mappedFields: $mappedFields)
   }
 `;
-
+export const deleteUserData = /* GraphQL */ `
+  mutation DeleteUserData {
+    deleteUserData
+  }
+`;
 export const deleteClient = /* GraphQL */ `
   mutation DeleteClient(
     $input: DeleteClientInput!
@@ -29,6 +33,7 @@ export const deleteClient = /* GraphQL */ `
         items {
           id
           title
+          content
           date
           clientId
           owner
@@ -256,6 +261,7 @@ export const deleteConnectionHistory = /* GraphQL */ `
     deleteConnectionHistory(input: $input, condition: $condition) {
       id
       title
+      content
       date
       clientId
       client {
@@ -589,6 +595,7 @@ export const createClient = /* GraphQL */ `
         items {
           id
           title
+          content
           date
           clientId
           owner
@@ -682,6 +689,7 @@ export const updateClient = /* GraphQL */ `
         items {
           id
           title
+          content
           date
           clientId
           owner
@@ -1057,6 +1065,7 @@ export const createConnectionHistory = /* GraphQL */ `
     createConnectionHistory(input: $input, condition: $condition) {
       id
       title
+      content
       date
       clientId
       client {
@@ -1105,6 +1114,7 @@ export const updateConnectionHistory = /* GraphQL */ `
     updateConnectionHistory(input: $input, condition: $condition) {
       id
       title
+      content
       date
       clientId
       client {

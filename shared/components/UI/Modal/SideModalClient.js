@@ -1,3 +1,4 @@
+import Script from "next/script";
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -5,6 +6,7 @@ import {
   fetchOneClient,
   handleAddClientToGroup,
   handleAddTask,
+  handleRemoveClientFromGroup,
   selectClientById,
 } from "../../../redux/clients-slice";
 import { addTask } from "../../../redux/tasks-slice";
@@ -22,6 +24,7 @@ import {
   addClientToGroup,
   addGroup,
   fetchGroups,
+  removeClientFromGroup,
   selectAllGroups,
 } from "../../../redux/groups-slice";
 
@@ -85,6 +88,7 @@ export default function SideModal({
   const handleCreateGroup = useCallback(
     async (title) => {
       let response = await dispatch(addGroup(title)).unwrap();
+      setGroupBoxVisible(false);
       return response;
     },
     [dispatch]
@@ -147,6 +151,22 @@ export default function SideModal({
           id: response.id,
         })
       );
+    setGroupBoxVisible(false);
+  };
+
+  const handleRemoveFromGroup = async (clientGroupID) => {
+    let response = await dispatch(
+      removeClientFromGroup(clientGroupID)
+    ).unwrap();
+    if (response) {
+      dispatch(
+        handleRemoveClientFromGroup({
+          clientId: response.client.id,
+          clientGroupID: response.clientGroupID,
+          id: response.id,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -225,9 +245,17 @@ export default function SideModal({
                       return (
                         <div
                           key={group.id}
-                          className="bg-[#e8eef4] mr-2 px-4 rounded text-sm font-medium"
+                          className="bg-[#e8eef4] mr-2 px-2 rounded text-sm font-medium group flex justify-between"
                         >
                           {group.title}
+                          <button
+                            className="ml-3 opacity-0 text-sm group-hover:opacity-100 hover:text-gray-500"
+                            onClick={() =>
+                              handleRemoveFromGroup(group.clientGroupID)
+                            }
+                          >
+                            X
+                          </button>
                         </div>
                       );
                     }
@@ -354,7 +382,7 @@ export default function SideModal({
               </div>
 
               {/* Reminder is removed until further ado */}
-              {/* <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center">
                 <input
                   type="radio"
                   className="w-3"
@@ -362,7 +390,7 @@ export default function SideModal({
                   onChange={() => setActivityRadio(1)}
                 />
                 <span className="ml-1 mr-4 font-medium text-sm">Reminder</span>
-              </div> */}
+              </div>
 
               <div className="flex justify-center items-center">
                 <input
@@ -409,6 +437,27 @@ export default function SideModal({
 
             {activityRadio === 1 && (
               <div className="flex flex-col mt-3">
+                <Script src="https://accounts.google.com/gsi/client" />
+                {/* <div
+                  id="g_id_onload"
+                  data-client_id="722122786669-rkc7u3no792gnf3emamhqrhdicgte146.apps.googleusercontent.com"
+                  data-context="signin"
+                  data-ux_mode="popup"
+                  data-login_uri="http://localhost:3000"
+                  data-nonce=""
+                  data-auto_select="true"
+                  data-itp_support="true"
+                ></div>
+
+                <div
+                  className="g_id_signin"
+                  data-type="standard"
+                  data-shape="rectangular"
+                  data-theme="filled_blue"
+                  data-text="signin_with"
+                  data-size="large"
+                  data-logo_alignment="left"
+                ></div> */}
                 <h3 className="mt-0 mb-1 text-gray-500 ml-.5">
                   Remind me to contact{" "}
                   <span className="font-bold">

@@ -7,8 +7,7 @@ import useForm from "../../hooks/form-hook.js";
 import styles from "./AddClient.module.css";
 import { useClients } from "../../context/client-context";
 import { phoneFormat } from "../../utility/phoneFormat";
-import { API, graphqlOperation } from "aws-amplify";
-import { batchCreateClients } from "../../graphql/mutations";
+
 
 export default function AddClient() {
   const [open, setOpen] = useState(false);

@@ -140,6 +140,7 @@ export const getPropertyCustom = /* GraphQL */ `
   }
 `;
 
+
 export const getClientGroups = /* GraphQL */ `
   query GetClient($id: ID!) {
     getClient(id: $id) {

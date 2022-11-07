@@ -13,6 +13,7 @@
     "aws-amplify": "^4.3.14",
     "daisyui": "^2.31.0",
     "date-fns": "^2.29.3",
+    "googleapis": "^109.0.1",
     "gray-matter": "^4.0.3",
     "immutability-helper": "^3.1.1",
     "markdown-it": "^13.0.1",
