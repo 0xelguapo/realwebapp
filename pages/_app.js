@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { ClientContextProvider } from "../shared/context/client-context";
 import { Provider } from "react-redux";
 import store from "../shared/redux/index";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Script from "next/script";
 
 Amplify.configure(awsconfig);
 
@@ -29,17 +31,20 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthContextProvider>
-      <Provider store={store}>
-        <ClientContextProvider>
-          {Component.PageLayout ? (
-            <Component.PageLayout>
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+        <Provider store={store}>
+          <ClientContextProvider>
+          {/* <Script src="https://accounts.google.com/gsi/client" async defer/> */}
+            {Component.PageLayout ? (
+              <Component.PageLayout>
+                <Component {...pageProps} />
+              </Component.PageLayout>
+            ) : (
               <Component {...pageProps} />
-            </Component.PageLayout>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </ClientContextProvider>
-      </Provider>
+            )}
+          </ClientContextProvider>
+        </Provider>
+      </GoogleOAuthProvider>
     </AuthContextProvider>
   );
 }

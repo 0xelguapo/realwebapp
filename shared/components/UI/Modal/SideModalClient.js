@@ -1,5 +1,5 @@
 import Script from "next/script";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addConnectionHistory,
@@ -27,6 +27,9 @@ import {
   removeClientFromGroup,
   selectAllGroups,
 } from "../../../redux/groups-slice";
+import useGoogleAuth from "../../../hooks/google-hook";
+import { useGoogleLogin, hasGrantedAllScopesGoogle } from "@react-oauth/google";
+import { AuthContext } from "../../../context/auth-context";
 
 export default function SideModal({
   previewIsOpen,
@@ -60,6 +63,29 @@ export default function SideModal({
   const [taskContent, setTaskContent] = useState("");
   const [groupBoxVisible, setGroupBoxVisible] = useState(false);
   const [updatedGroups, setUpdatedGroups] = useState([]);
+
+  const [googleSubmit] = useGoogleAuth();
+  const { googleAuthToken, setGoogleAuthToken } = useContext(AuthContext);
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: (codeResponse) => {
+      console.log(codeResponse)
+      if(codeResponse.access_token) {
+        setGoogleAuthToken(codeResponse.access_token);
+      } else setGoogleAuthToken(codeResponse.code)
+    },
+    flow: "implicit",
+    scope:
+      "https://www.googleapis.com/auth/calendar",
+  });
+
+  const createEvent = async () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://www.googleapis.com/calendar/v3/users/me/calendarList')
+    xhr.setRequestHeader('Authorization', `Bearer ${googleAuthToken}`)
+    xhr.onreadystatechange = () => console.log(xhr.response);
+    xhr.send(null)
+  }
 
   const updateClientGroups = (allGroups, clientsGroups) => {
     let allGroupsCopy = [...allGroups];
@@ -313,7 +339,7 @@ export default function SideModal({
                   </div>
                 ))
               ) : (
-                <p className="font-light text-gray-300">
+                <p className="font-light text-gray-300 text-sm">
                   No properties set up...
                 </p>
               )}
@@ -437,27 +463,29 @@ export default function SideModal({
 
             {activityRadio === 1 && (
               <div className="flex flex-col mt-3">
-                <Script src="https://accounts.google.com/gsi/client" />
-                {/* <div
+                {/* <Script src="https://accounts.google.com/gsi/client" async defer/>
+                <div
                   id="g_id_onload"
                   data-client_id="722122786669-rkc7u3no792gnf3emamhqrhdicgte146.apps.googleusercontent.com"
                   data-context="signin"
                   data-ux_mode="popup"
-                  data-login_uri="http://localhost:3000"
                   data-nonce=""
                   data-auto_select="true"
                   data-itp_support="true"
                 ></div>
-
                 <div
                   className="g_id_signin"
                   data-type="standard"
                   data-shape="rectangular"
-                  data-theme="filled_blue"
                   data-text="signin_with"
                   data-size="large"
                   data-logo_alignment="left"
                 ></div> */}
+
+                <button onClick={() => loginGoogle()}>
+                  Link Google Calender
+                </button>
+                {/* <button onClick={googleSubmit}>google</button> */}
                 <h3 className="mt-0 mb-1 text-gray-500 ml-.5">
                   Remind me to contact{" "}
                   <span className="font-bold">

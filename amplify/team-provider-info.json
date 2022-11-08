@@ -9,34 +9,7 @@
       "UnauthRoleName": "amplify-realapp-dev-142224-unauthRole",
       "StackName": "amplify-realapp-dev-142224",
       "StackId": "arn:aws:cloudformation:us-west-1:512520082405:stack/amplify-realapp-dev-142224/a008fd00-892d-11ec-951f-025d34d4a3ff",
-      "AmplifyAppId": "d3m1z9i4a8u83m",
-      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-realapp-dev-142224-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
-    },
-    "categories": {
-      "auth": {
-        "realapp9a7ac49c": {},
-        "realapp8e8e08f1": {
-          "googleClientId": "973695514664-mek3ctj1oppfglu3knj55snkt7lmj3m6.apps.googleusercontent.com"
-        }
-      },
-      "function": {
-        "batchcreateclients": {
-          "deploymentBucketName": "amplify-realapp-dev-142224-deployment",
-          "s3Key": "amplify-builds/batchcreateclients-4f5146496c6433495131-build.zip",
-          "secretsPathAmplifyAppId": "d3m1z9i4a8u83m"
-        },
-        "postsignup": {
-          "deploymentBucketName": "amplify-realapp-dev-142224-deployment",
-          "s3Key": "amplify-builds/postsignup-4874492b577374424279-build.zip"
-        },
-        "deleteUserData": {
-          "deploymentBucketName": "amplify-realapp-dev-142224-deployment",
-          "s3Key": "amplify-builds/deleteUserData-424f7a716f684f7a7541-build.zip"
-        }
-      },
-      "api": {
-        "realapp": {}
-      }
+      "AmplifyAppId": "d3m1z9i4a8u83m"
     }
   }
 }

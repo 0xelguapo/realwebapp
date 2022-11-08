@@ -6,6 +6,7 @@ const AuthContext = createContext();
 
 function AuthContextProvider({ children }) {
   const [user, setUser] = useState();
+  const [googleAuthToken, setGoogleAuthToken] = useState(null)
 
   useEffect(() => {
     checkUser();
@@ -31,7 +32,7 @@ function AuthContextProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user }}
+      value={{ user, googleAuthToken, setGoogleAuthToken }}
     >
       {children}
     </AuthContext.Provider>

@@ -7,12 +7,26 @@ const awsmobile = {
     "aws_cognito_region": "us-west-1",
     "aws_user_pools_id": "us-west-1_5puWuhRLg",
     "aws_user_pools_web_client_id": "59rn8jaiimo134acaahk00em9l",
-    "oauth": {},
-    "federationTarget": "COGNITO_IDENTITY_POOLS",
+    "oauth": {
+        "domain": "realapp36e78817-36e78817-dev.auth.us-west-1.amazoncognito.com",
+        "scope": [
+            "phone",
+            "email",
+            "openid",
+            "profile",
+            "aws.cognito.signin.user.admin"
+        ],
+        "redirectSignIn": "https://coagent.co/dashboard/clients/,https://coagent.co/,http://localhost:3000/dashboard/clients/,http://localhost:3000/",
+        "redirectSignOut": "https://coagent.co/,http://localhost:3000/",
+        "responseType": "code"
+    },
+    "federationTarget": "COGNITO_USER_AND_IDENTITY_POOLS",
     "aws_cognito_username_attributes": [
         "EMAIL"
     ],
-    "aws_cognito_social_providers": [],
+    "aws_cognito_social_providers": [
+        "GOOGLE"
+    ],
     "aws_cognito_signup_attributes": [
         "EMAIL"
     ],

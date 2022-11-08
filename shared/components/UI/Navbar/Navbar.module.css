@@ -127,7 +127,7 @@
   display: flex;
   position: fixed;
   width: 100%;
-  position: -webkit-sticky;
+  /* position: -webkit-sticky; */
   height: 4rem;
   padding: 0 1.5rem;
   background: #fdfdfd;
