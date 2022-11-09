@@ -262,11 +262,11 @@ export default function SideModalProperties({
                 />
               )}
             </div>
-            <div className="border-t pt-2">
+            {/* <div className="border-t pt-2">
               <button className="flex items-center font-medium text-gray-600">
                 View Full Profile <FiExternalLink className="ml-2" />
               </button>
-            </div>
+            </div> */}
           </CardContainer.Card>
 
           <CardContainer.Card>
