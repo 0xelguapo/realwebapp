@@ -10,7 +10,6 @@ import { ClientContextProvider } from "../shared/context/client-context";
 import { Provider } from "react-redux";
 import store from "../shared/redux/index";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import Script from "next/script";
 
 Amplify.configure(awsconfig);
 

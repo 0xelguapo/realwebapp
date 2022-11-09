@@ -28,7 +28,12 @@ import {
   selectAllGroups,
 } from "../../../redux/groups-slice";
 import useGoogleAuth from "../../../hooks/google-hook";
-import { useGoogleLogin, hasGrantedAllScopesGoogle } from "@react-oauth/google";
+import {
+  useGoogleLogin,
+  hasGrantedAllScopesGoogle,
+  useGoogleOneTapLogin,
+  GoogleLogin,
+} from "@react-oauth/google";
 import { AuthContext } from "../../../context/auth-context";
 
 export default function SideModal({
@@ -69,23 +74,82 @@ export default function SideModal({
 
   const loginGoogle = useGoogleLogin({
     onSuccess: (codeResponse) => {
-      console.log(codeResponse)
-      if(codeResponse.access_token) {
+      console.log(codeResponse);
+      if (codeResponse.access_token) {
         setGoogleAuthToken(codeResponse.access_token);
-      } else setGoogleAuthToken(codeResponse.code)
+        const tokenObject = {
+          access: codeResponse.access_token,
+          exp: Date.now() + 1000 * 60 * 50,
+        };
+        localStorage.setItem("google", JSON.stringify(tokenObject));
+      } else setGoogleAuthToken(codeResponse.code);
     },
     flow: "implicit",
-    scope:
-      "https://www.googleapis.com/auth/calendar",
+    scope: "https://www.googleapis.com/auth/calendar",
+    auto_select: true,
   });
 
+  useEffect(() => {
+    console.log("running");
+    const googleObject = JSON.parse(localStorage.getItem("google"));
+    if (googleObject && googleObject.exp > Date.now()) {
+      setGoogleAuthToken(googleObject.access);
+    } else {
+      localStorage.removeItem("google");
+    }
+  }, [setGoogleAuthToken]);
+
   const createEvent = async () => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://www.googleapis.com/calendar/v3/users/me/calendarList')
-    xhr.setRequestHeader('Authorization', `Bearer ${googleAuthToken}`)
-    xhr.onreadystatechange = () => console.log(xhr.response);
-    xhr.send(null)
-  }
+    let timeZone;
+
+    function setTimeZone(input) {
+      timeZone = input;
+    }
+
+    const googleObject = JSON.parse(localStorage.getItem("google"));
+    if (!googleObject || googleObject.exp < Date.now()) {
+      loginGoogle();
+    } else {
+      console.log(new Date(date.getTime()).toISOString());
+      console.log(new Date(date.getTime() + 60 * 60000).toISOString());
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        "GET",
+        "https://www.googleapis.com/calendar/v3/calendars/primary"
+      );
+      xhr.setRequestHeader("Authorization", `Bearer ${googleAuthToken}`);
+      xhr.onreadystatechange = () => {
+        if (xhr.response) {
+          setTimeZone(JSON.parse(xhr.response).timeZone);
+        }
+      };
+      xhr.send(null);
+
+      const event = {
+        summary: `Contact ${
+          selectedClient.firstName + " " + selectedClient?.lastName
+        }`,
+        start: {
+          dateTime: new Date(date.getTime()).toISOString(),
+          timeZone: timeZone
+        },
+        end: {
+          dateTime: new Date(date.getTime() + 60 * 60000).toISOString(),
+          timeZone: timeZone
+        },
+        reminders: {
+          useDefault: true
+        }
+      };
+      xhr.open(
+        "POST",
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events"
+      );
+      xhr.setRequestHeader("Authorization", `Bearer ${googleAuthToken}`);
+      xhr.onreadystatechange = () => console.log(xhr.response);
+      xhr.send(JSON.stringify(event));
+    }
+  };
 
   const updateClientGroups = (allGroups, clientsGroups) => {
     let allGroupsCopy = [...allGroups];
@@ -450,7 +514,7 @@ export default function SideModal({
                   onChange={setDate}
                   showTimeSelect={true}
                   customInput={<CustomDatePicker />}
-                  dateFormat="MM/dd/yyyy h:mm"
+                  dateFormat="MM/dd/yyyy hh:mm aa"
                 />
                 <button
                   className="mt-3 w-fit inline bg-ctablue text-white text-left px-3 py-1 rounded font-semibold hover:bg-hoverctablue"
@@ -481,32 +545,42 @@ export default function SideModal({
                   data-size="large"
                   data-logo_alignment="left"
                 ></div> */}
-
-                <button onClick={() => loginGoogle()}>
-                  Link Google Calender
-                </button>
-                {/* <button onClick={googleSubmit}>google</button> */}
-                <h3 className="mt-0 mb-1 text-gray-500 ml-.5">
-                  Remind me to contact{" "}
-                  <span className="font-bold">
-                    {selectedClient.firstName +
-                      " " +
-                      selectedClient?.lastName +
-                      " "}
-                  </span>
-                  on...
-                </h3>
-                <DatePicker
-                  selected={date}
-                  onChange={setDate}
-                  showTimeSelect={true}
-                  customInput={<CustomDatePicker />}
-                  dateFormat="MM/dd/yyyy h:mm aa"
-                  minDate={new Date()}
-                />
-                <button className="mt-3 w-fit inline bg-ctablue text-white text-left px-3 py-1 rounded font-semibold hover:bg-hoverctablue">
-                  Create Reminder
-                </button>
+                {!googleAuthToken ? (
+                  // <GoogleLogin auto_select />
+                  <button
+                    onClick={() => loginGoogle()}
+                    className="bg-ctablue text-white font-medium rounded w-full hover:bg-hoverctablue self-center"
+                  >
+                    Link Google Calendar
+                  </button>
+                ) : (
+                  <>
+                    <h3 className="mt-0 mb-1 text-gray-500 ml-.5">
+                      Remind me to contact{" "}
+                      <span className="font-bold">
+                        {selectedClient.firstName +
+                          " " +
+                          selectedClient?.lastName +
+                          " "}
+                      </span>
+                      on...
+                    </h3>
+                    <DatePicker
+                      selected={date}
+                      onChange={setDate}
+                      showTimeSelect={true}
+                      customInput={<CustomDatePicker />}
+                      dateFormat="MM/dd/yyyy hh:mm aa"
+                      minDate={new Date()}
+                    />
+                    <button
+                      className="mt-3 w-fit inline bg-ctablue text-white text-left px-3 py-1 rounded font-semibold hover:bg-hoverctablue"
+                      onClick={createEvent}
+                    >
+                      Create Reminder
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
@@ -531,7 +605,7 @@ export default function SideModal({
                   onChange={setDate}
                   showTimeSelect={true}
                   customInput={<CustomDatePicker />}
-                  dateFormat="MM/dd/yyyy h:mm aa"
+                  dateFormat="MM/dd/yyyy hh:mm aa"
                   minDate={new Date()}
                 />
                 <button
