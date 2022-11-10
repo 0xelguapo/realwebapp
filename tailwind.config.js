@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./pages/**/*.{js, ts, jsx, tsx}",
     "./shared/components/UI/CTA/**/*.js",
+    "./shared/components/UI/**/*.js",
     "./shared/components/UI/Modal/**/*.js",
     "./shared/components/AddClient/**/*.js",
     "./shared/components/UI/Layouts/**/*.js",
@@ -19,7 +20,7 @@ module.exports = {
         ctablue: "#0071e3",
         buttonblue: "#026bff",
         hoverctablue: "#0077ed",
-        extrahoverctablue: "#007DF9"
+        extrahoverctablue: "#007DF9",
       },
     },
   },

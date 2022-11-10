@@ -1,15 +1,18 @@
-import { useState, useRef, Fragment, useEffect, useCallback } from "react";
-import { FormProvider, useForm, useFieldArray } from "react-hook-form";
+import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { FiX, FiPlus, FiTrash } from "react-icons/fi";
+import { FiX, FiPlus } from "react-icons/fi";
 
-export default function AddModal({ children, buttonTitle, title }) {
-  const [isOpen, setIsOpen] = useState(false);
-
+export default function AddModal({
+  children,
+  buttonTitle,
+  title,
+  isOpen = false,
+  setIsOpen,
+}) {
   return (
     <>
       <button
-        className="flex items-center w-32 h-11 rounded justify-center bg-ctablue text-white font-bold hover:bg-hoverctablue"
+        className="flex items-center px-6 h-11 rounded justify-center bg-ctablue text-white font-bold hover:bg-hoverctablue"
         onClick={() => setIsOpen(true)}
       >
         <FiPlus size={22} />

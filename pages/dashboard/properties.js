@@ -13,6 +13,7 @@ import {
 import EditableCellComponent from "../../shared/components/Table/EditableCellComponent";
 import AddClientModal from "../../shared/components/AddClient/AddClientModal";
 import { fetchClients } from "../../shared/redux/clients-slice";
+import AddPropertyModal from "../../shared/components/Property/AddPropertyModal";
 
 const defaultColumn = {
   Cell: EditableCellComponent,
@@ -89,7 +90,7 @@ function Properties() {
           updateMyData={updateMyData}
           status={status}
           skipPageReset={skipPageReset}
-          addButton={<AddClientModal />}
+          addButton={<AddPropertyModal />}
           tableType="properties"
         />
       </div>

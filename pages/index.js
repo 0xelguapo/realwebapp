@@ -36,7 +36,7 @@ export default function Home({ allPostsData }) {
             Finally, a powerful app to help you manage <br />
             client and prospect relationships
           </p>
-          <div className="flex w-full justify-center">
+          <div className="flex w-full justify-center z-10">
             <CTAButton>Try It Free</CTAButton>
           </div>
           <div className="block h-[700px] md:w-[20vw] md:-mt-12">

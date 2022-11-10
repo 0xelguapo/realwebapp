@@ -1,7 +1,6 @@
-import { useState, useRef, Fragment, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { FormProvider, useForm, useFieldArray } from "react-hook-form";
-import { Dialog, Transition } from "@headlessui/react";
-import { FiX, FiPlus, FiTrash } from "react-icons/fi";
+import { FiPlus, FiTrash } from "react-icons/fi";
 import AddClientInput from "./AddClientInput";
 import { useDispatch } from "react-redux";
 import { addClient } from "../../redux/clients-slice";
@@ -74,7 +73,7 @@ export default function AddClientModal() {
 
   return (
     <>
-      <AddModal buttonTitle={"Add Client"} title={"Add a Contact"}>
+      <AddModal buttonTitle={"Add Client"} title={"Add a Contact"} isOpen={isOpen} setIsOpen={setIsOpen}>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit((data) => onSubmit(data, true))}>
             <div className="rounded-b-md py-3 px-5">
